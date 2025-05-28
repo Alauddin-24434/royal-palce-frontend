@@ -27,6 +27,10 @@ import {
   Car,
   Coffee,
   Shield,
+  Bed,
+  LuggageIcon,
+  BedDouble,
+  Lock,
 } from "lucide-react"
 
 export default function LuxuryResortWebsite() {
@@ -156,6 +160,53 @@ export default function LuxuryResortWebsite() {
       {/* About Section */}
       <section className="py-24 bg-gray-900">
         <div className="container mx-auto px-4">
+           {/* Header */}
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center mb-6">
+            <div className="h-px bg-yellow-500 w-16 mr-4"></div>
+            <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">
+              About Us
+            </h2>
+            <div className="h-px bg-yellow-500 w-16 ml-4"></div>
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-4xl mx-auto">
+            We're Dedicated To Create Moments Of Joy & Delight For Every Guest
+          </h1>
+        </div>
+
+        {/* Features */}
+        <div className="grid md:grid-cols-4 gap-8 mb-16">
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
+              <Lock className="w-8 h-8 text-yellow-500" />
+            </div>
+            <h3 className="text-xl font-medium mb-3">Serenity and bliss</h3>
+            <p className="text-gray-400">Your comfort zone away from home</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
+              <LuggageIcon className="w-8 h-8 text-yellow-500" />
+            </div>
+            <h3 className="text-xl font-medium mb-3">Store Luggage</h3>
+            <p className="text-gray-400">Hospitality Meets Home</p>
+          </div>
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
+              <BedDouble className="w-8 h-8 text-yellow-500" />
+            </div>
+            <h3 className="text-xl font-medium mb-3">Room Services</h3>
+            <p className="text-gray-400">Hospitality Meets Home</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
+              <Utensils className="w-8 h-8 text-yellow-500" />
+            </div>
+            <h3 className="text-xl font-medium mb-3">Fine Dining</h3>
+            <p className="text-gray-400">Culinary excellence at its finest</p>
+          </div>
+        </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
@@ -290,83 +341,9 @@ export default function LuxuryResortWebsite() {
         </div>
       </section>
 
-      {/* Resort Amenities */}
-      <section className="py-32 relative">
-        <Image src="/resortHero.jpg" alt="Resort Amenities" fill className="object-cover" />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-bold mb-8">Resort Amenities & Views</h2>
-          <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
-            Immerse yourself in luxury with our world-class amenities and breathtaking views that create unforgettable
-            moments
-          </p>
-        </div>
-      </section>
 
-      {/* Hotel Facilities */}
-      <section className="py-24 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Hotel Facilities</h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Experience our premium facilities and services designed to exceed your expectations
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Spa,
-                title: "Luxury Spa",
-                description: "Rejuvenate your body and soul",
-                image: "/spa.webp",
-              },
-              {
-                icon: Utensils,
-                title: "Fine Dining",
-                description: "World-class culinary experiences",
-                image: "/dining.webp",
-              },
-              {
-                icon: Waves,
-                title: "Infinity Pool",
-                description: "Stunning ocean views",
-                image: "/placeholder.svg?height=250&width=350",
-              },
-              {
-                icon: Dumbbell,
-                title: "Fitness Center",
-                description: "State-of-the-art equipment",
-                image: "/placeholder.svg?height=250&width=350",
-              },
-            ].map((facility, index) => (
-              <Card
-                key={index}
-                className="bg-black border-gray-800 overflow-hidden group cursor-pointer hover:transform hover:scale-105 transition-all duration-300 p-0 rounded-none"
-              >
-                <div className="relative">
-                  <Image
-                    src={facility.image || "/placeholder.svg"}
-                    alt={facility.title}
-                    width={350}
-                    height={250}
-                    unoptimized
-                    className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <facility.icon className="w-16 h-16 text-amber-400" />
-                  </div>
-                </div>
-                <CardContent className="p-6 text-center">
-                  <h3 className="font-bold text-xl mb-2">{facility.title}</h3>
-                  <p className="text-gray-400 text-sm">{facility.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Testimonials */}
       <section className="py-24 bg-black">
