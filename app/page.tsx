@@ -181,7 +181,102 @@ const featuresData = [
 </section>
 {/* about us */}
 
+   <section className="bg-black text-white py-16 px-4 md:px-6 lg:px-8">
+      <div className="container mx-auto">
+    
+        <div className=" mb-16">
+          <div className="flex items-center  mb-6">
+            <div className="h-px bg-yellow-500 w-16 mr-4"></div>
+            <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">About Us</h2>
+            <div className="h-px bg-yellow-500 w-16 ml-4"></div>
+          </div>
+          <h1 className="text-xl md:text-2xl lg:text-5xl font-light leading-tight ">
+            We're Dedicated To Create Moments <br /> Of Joy & Delight For Every Guest
+          </h1>
+        </div>
 
+  
+          {/* Services Grid */}
+          <div className="grid md:grid-cols-4 gap-8 mb-16">
+            {featuresData?.map((data) => (
+              <div key={data?.title} className="flex items-start gap-4">
+                <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center">
+                  <span className="w-8 h-8 text-yellow-500">{data?.icon}</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium mb-2">{data?.title}</h3>
+                  <p className="text-gray-400">{data?.subtitle}</p>
+                </div>
+              </div>
+            ))}
+
+          
+          </div>
+    
+
+        {/* Main Content Section */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Video/Image Section */}
+          <div className="relative">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+              <Image
+                src="/reception.avif"
+                alt="Luxury bathroom interior"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/20" />
+
+              <button className="absolute inset-0 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300">
+                  <Play className="w-6 h-6 text-white ml-1" />
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div>
+            {/* Statistics */}
+            <div className="grid grid-cols-3 gap-8 mb-8">
+              <div>
+                <div className="text-3xl md:text-4xl font-light text-yellow-500 mb-2">290+</div>
+                <div className="text-gray-400 text-sm">Luxury Rooms</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-light text-yellow-500 mb-2">4.8+</div>
+                <div className="text-gray-400 text-sm">Guest Rating</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-light text-yellow-500 mb-2">128K+</div>
+                <div className="text-gray-400 text-sm">Clients Happy</div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="space-y-4 mb-8">
+              <p className="text-gray-300 leading-relaxed">
+                All our Standard rooms have big windows to help you take a broad view of the cityscape and nature. We
+                offer bigger bed and every bathroom has bathtub and shower, which brings relaxation to you after a long
+                day.
+              </p>
+
+              <p className="text-gray-300 leading-relaxed">
+                Fast WiFi connection, satellite TV and international standard electric socket are standard throughout
+                Hotel. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                ut aliquip ex ea commodo consequat.
+              </p>
+            </div>
+
+            <Button className="bg-yellow-500 text-black hover:bg-yellow-600 font-medium">
+              LEARN MORE
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
       {/* Rooms & Suites */}
       <section className="py-24 bg-black">
         <div className="container mx-auto px-4">
