@@ -31,6 +31,8 @@ import {
   LuggageIcon,
   BedDouble,
   Lock,
+  ArrowRight,
+  Play,
 } from "lucide-react"
 
 export default function LuxuryResortWebsite() {
@@ -72,7 +74,28 @@ export default function LuxuryResortWebsite() {
     "/placeholder.svg?height=400&width=600",
     "/placeholder.svg?height=400&width=600",
   ]
-
+const featuresData = [
+  {
+    icon: <Bed />,
+    title: "Serenity and Bliss",
+    subtitle: "Your comfort zone away from home",
+  },
+  {
+    icon: <LuggageIcon />,
+    title: "Store Luggage",
+    subtitle: "Hospitality Meets Home",
+  },
+  {
+    icon: <Utensils />,
+    title: "Room Services",
+    subtitle: "Hospitality meets home",
+  },
+  {
+    icon: <Car />,
+    title: "Pick up & Drop",
+    subtitle: "Experience elegance stay distinctive",
+  },
+];
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
@@ -156,106 +179,8 @@ export default function LuxuryResortWebsite() {
     </Card>
   </div>
 </section>
+{/* about us */}
 
-      {/* About Section */}
-      <section className="py-24 bg-gray-900">
-        <div className="container mx-auto px-4">
-           {/* Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
-            <div className="h-px bg-yellow-500 w-16 mr-4"></div>
-            <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">
-              About Us
-            </h2>
-            <div className="h-px bg-yellow-500 w-16 ml-4"></div>
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-4xl mx-auto">
-            We're Dedicated To Create Moments Of Joy & Delight For Every Guest
-          </h1>
-        </div>
-
-        {/* Features */}
-        <div className="grid md:grid-cols-4 gap-8 mb-16">
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
-              <Lock className="w-8 h-8 text-yellow-500" />
-            </div>
-            <h3 className="text-xl font-medium mb-3">Serenity and bliss</h3>
-            <p className="text-gray-400">Your comfort zone away from home</p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
-              <LuggageIcon className="w-8 h-8 text-yellow-500" />
-            </div>
-            <h3 className="text-xl font-medium mb-3">Store Luggage</h3>
-            <p className="text-gray-400">Hospitality Meets Home</p>
-          </div>
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
-              <BedDouble className="w-8 h-8 text-yellow-500" />
-            </div>
-            <h3 className="text-xl font-medium mb-3">Room Services</h3>
-            <p className="text-gray-400">Hospitality Meets Home</p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-full border-2 border-yellow-500 flex items-center justify-center mx-auto mb-6">
-              <Utensils className="w-8 h-8 text-yellow-500" />
-            </div>
-            <h3 className="text-xl font-medium mb-3">Fine Dining</h3>
-            <p className="text-gray-400">Culinary excellence at its finest</p>
-          </div>
-        </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
-                We're Dedicated To Create Memories,
-                <br />
-                <span className="text-amber-400">Of Joy & Delight For Every Guest</span>
-              </h2>
-              <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                Our luxury resort offers an unparalleled experience where every detail is crafted to perfection. From
-                our world-class amenities to our exceptional service, we ensure that every moment of your stay is
-                memorable and extraordinary. Discover the perfect blend of comfort, elegance, and natural beauty.
-              </p>
-              <div className="grid grid-cols-3 gap-8 mb-10">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-amber-400 mb-2">250+</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wide">Luxury Rooms</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-amber-400 mb-2">15+</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wide">Years Experience</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-amber-400 mb-2">98%</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wide">Happy Guests</div>
-                </div>
-              </div>
-              <Button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-8 py-3">
-                Learn More About Us
-              </Button>
-            </div>
-            <div className="relative">
-              <Image
-                src="/reception.avif"
-                alt="Luxury Interior"
-                width={700}
-                height={600}
-                unoptimized
-                className="rounded-lg shadow-2xl"
-              />
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-amber-500 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-black">5★</div>
-                  <div className="text-xs text-black font-medium">Rating</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Rooms & Suites */}
       <section className="py-24 bg-black">
@@ -398,220 +323,10 @@ export default function LuxuryResortWebsite() {
       </section>
 
       {/* Check Availability */}
-      <section className="py-24 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-8">Check Availability</h2>
-              <p className="text-gray-300 mb-10 text-lg leading-relaxed">
-                Plan your perfect getaway with us. Check our availability and book your dream vacation today with our
-                easy-to-use booking system and flexible options.
-              </p>
-
-              <Card className="bg-black border-gray-800">
-                <CardContent className="p-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <Label htmlFor="checkin2" className="text-white text-sm font-medium mb-2 block">
-                        Check In
-                      </Label>
-                      <Input id="checkin2" type="date" className="bg-gray-800 border-gray-700 text-white h-12" />
-                    </div>
-                    <div>
-                      <Label htmlFor="checkout2" className="text-white text-sm font-medium mb-2 block">
-                        Check Out
-                      </Label>
-                      <Input id="checkout2" type="date" className="bg-gray-800 border-gray-700 text-white h-12" />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                      <Label htmlFor="guests2" className="text-white text-sm font-medium mb-2 block">
-                        Guests
-                      </Label>
-                      <Select>
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white h-12">
-                          <SelectValue placeholder="2 Adults" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1">1 Adult</SelectItem>
-                          <SelectItem value="2">2 Adults</SelectItem>
-                          <SelectItem value="3">3 Adults</SelectItem>
-                          <SelectItem value="4">4 Adults</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="rooms2" className="text-white text-sm font-medium mb-2 block">
-                        Rooms
-                      </Label>
-                      <Select>
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white h-12">
-                          <SelectValue placeholder="1 Room" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1">1 Room</SelectItem>
-                          <SelectItem value="2">2 Rooms</SelectItem>
-                          <SelectItem value="3">3 Rooms</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold h-12 text-lg">
-                    Check Availability
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="space-y-8">
-              <div className="flex items-center space-x-6">
-                <div className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Calendar className="w-10 h-10 text-black" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-xl mb-2">Flexible Booking</h3>
-                  <p className="text-gray-400">
-                    Free cancellation up to 24 hours before check-in with full refund guarantee
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <div className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Users className="w-10 h-10 text-black" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-xl mb-2">Group Bookings</h3>
-                  <p className="text-gray-400">Special rates and exclusive packages for groups of 10 or more guests</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <div className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Star className="w-10 h-10 text-black" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-xl mb-2">Best Rate Guarantee</h3>
-                  <p className="text-gray-400">We guarantee the best rates when you book directly with us</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <div className="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Shield className="w-10 h-10 text-black" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-xl mb-2">Secure Booking</h3>
-                  <p className="text-gray-400">Your personal and payment information is always protected and secure</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    
 
       {/* Best Offers */}
-      <section className="py-24 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Best Offers at Our Resort</h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Take advantage of our exclusive deals and packages designed to make your stay even more memorable
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <Card className="bg-gray-900 border-gray-800 overflow-hidden group hover:transform hover:scale-105 transition-all duration-300">
-              <div className="relative">
-                <Image
-                  src="/placeholder.svg?height=350&width=600"
-                  alt="Summer Package"
-                  width={600}
-                  height={350}
-                  className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <Badge className="absolute top-6 left-6 bg-red-500 text-white font-medium px-4 py-2">
-                  Limited Time
-                </Badge>
-                <div className="absolute top-6 right-6 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-1">
-                  <span className="text-amber-400 font-bold">30% OFF</span>
-                </div>
-              </div>
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-4">Summer Escape Package</h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  Enjoy 3 nights with daily breakfast, $100 spa credit, complimentary airport transfer, and exclusive
-                  beach access.
-                </p>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="text-3xl font-bold text-amber-400">From $899</div>
-                  <div className="text-lg text-gray-400 line-through">$1,299</div>
-                  <div className="text-sm text-gray-400">per person</div>
-                </div>
-                <ul className="space-y-2 mb-8 text-gray-300">
-                  <li className="flex items-center">
-                    <Wifi className="w-4 h-4 mr-2 text-amber-400" /> Free WiFi
-                  </li>
-                  <li className="flex items-center">
-                    <Car className="w-4 h-4 mr-2 text-amber-400" /> Airport Transfer
-                  </li>
-                  <li className="flex items-center">
-                    <Coffee className="w-4 h-4 mr-2 text-amber-400" /> Daily Breakfast
-                  </li>
-                </ul>
-                <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold py-3">
-                  Book Package
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gray-900 border-gray-800 overflow-hidden group hover:transform hover:scale-105 transition-all duration-300">
-              <div className="relative">
-                <Image
-                  src="/placeholder.svg?height=350&width=600"
-                  alt="Romantic Getaway"
-                  width={600}
-                  height={350}
-                  className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <Badge className="absolute top-6 left-6 bg-pink-500 text-white font-medium px-4 py-2">
-                  Most Popular
-                </Badge>
-                <div className="absolute top-6 right-6 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-1">
-                  <span className="text-amber-400 font-bold">25% OFF</span>
-                </div>
-              </div>
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-4">Romantic Getaway</h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  Perfect for couples with champagne welcome, couples massage, candlelit dinner, and rose petal turndown
-                  service.
-                </p>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="text-3xl font-bold text-amber-400">From $1,199</div>
-                  <div className="text-lg text-gray-400 line-through">$1,599</div>
-                  <div className="text-sm text-gray-400">per couple</div>
-                </div>
-                <ul className="space-y-2 mb-8 text-gray-300">
-                  <li className="flex items-center">
-                    <Star className="w-4 h-4 mr-2 text-amber-400" /> Champagne Welcome
-                  </li>
-                  <li className="flex items-center">
-                    <Spa className="w-4 h-4 mr-2 text-amber-400" /> Couples Massage
-                  </li>
-                  <li className="flex items-center">
-                    <Utensils className="w-4 h-4 mr-2 text-amber-400" /> Candlelit Dinner
-                  </li>
-                </ul>
-                <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold py-3">
-                  Book Package
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+ 
 
       {/* More Testimonials */}
       <section className="py-24 bg-gray-900">
