@@ -39,6 +39,9 @@ import {
   Lock,
   ArrowRight,
   Play,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 export default function LuxuryResortWebsite() {
@@ -47,25 +50,22 @@ export default function LuxuryResortWebsite() {
 
   const testimonials = [
     {
-      text: "The resort exceeded all our expectations. The service was impeccable and the views were breathtaking. Every detail was perfect.",
-      author: "Sarah Johnson",
-      location: "New York, USA",
-      rating: 5,
-      image: "/placeholder.svg?height=60&width=60",
+      id: 1,
+      name: "Marshell Jack",
+      role: "Guest",
+      rating: 4.8,
+      image: "/manager.png",
+      testimonial:
+        "Perfect place for a business trip! The location was convenient, and the Wi-Fi was reliable. I had everything I needed, from a quiet workspace in the room to a great breakfast in the morning.",
     },
     {
-      text: "A perfect blend of luxury and comfort. We had an amazing time and will definitely return. The staff made us feel like royalty.",
-      author: "Michael Chen",
-      location: "London, UK",
-      rating: 5,
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      text: "Outstanding facilities and world-class hospitality. This place is truly a paradise on earth. Unforgettable experience.",
-      author: "Emma Rodriguez",
-      location: "Barcelona, Spain",
-      rating: 5,
-      image: "/placeholder.svg?height=60&width=60",
+      id: 2,
+      name: "Michel Doe",
+      role: "Guest",
+      rating: 4.8,
+      image: "/manager.png",
+      testimonial:
+        "The spa was amazing! After a long day exploring the city, it was a dream to relax in the sauna and get a massage. Five stars just for the spa experience alone! a quiet workspace in the room to a great breakfast in the morning.",
     },
   ];
 
@@ -441,132 +441,262 @@ export default function LuxuryResortWebsite() {
       </section>
 
       {/* Featured Amenities */}
-   <section className="relative min-h-screen ">
-  {/* Hero Video Section */}
-  <div className="relative h-[70vh] flex items-center justify-center">
-    <Image
-      src="/resortHero.jpg"
-      alt="Luxury resort with ocean view"
-      fill
-      className="object-cover"
-      priority
-    />
-    <div className="absolute inset-0 bg-black/30" />
+      <section className="relative min-h-screen ">
+        {/* Hero Video Section */}
+        <div className="relative h-[70vh] flex items-center justify-center">
+          <Image
+            src="/resortHero.jpg"
+            alt="Luxury resort with ocean view"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/30" />
 
-    <div className="relative z-10 text-center text-white">
-      <div className="flex items-center justify-center mb-4">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400 mr-1" />
-        ))}
-      </div>
-      <p className="text-sm font-medium mb-4 tracking-wider">Best Royal Resort</p>
-      <h1 className="text-4xl md:text-5xl font-light mb-8">Resort Promotional Video</h1>
-
-      <button className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300">
-        <Play className="w-8 h-8 text-white ml-1" />
-      </button>
-    </div>
-  </div>
-
-  {/* Featured Amenities Section */}
-  <div className="relative -mt-32 z-20 bg-gray-900 py-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto rounded-lg shadow-lg">
-    <div>
-      <div className="flex items-center mb-8">
-        <div className="h-px bg-yellow-500 w-16 mr-4"></div>
-        <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">Featured Amenities</h2>
-      </div>
-
-      <h3 className="text-white text-3xl md:text-4xl font-light mb-12">Hotel Facilities</h3>
-
-      <div className="grid md:grid-cols-4 gap-6">
-        {[
-          { src: "/room1.jpg", title: "Wellness & Spa" },
-          { src: "/room2.jpg", title: "Fitness Center" },
-          { src: "/room3.jpg", title: "Infinity Pool" },
-          { src: "/room1.jpg", title: "Gastronomy" },
-        ].map(({ src, title }, idx) => (
-          <div className="group cursor-pointer" key={idx}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg mb-4">
-              <Image
-                src={src}
-                alt={title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <div className="flex items-center justify-between text-white">
-              <h4 className="text-lg font-medium">{title}</h4>
-              <ArrowRight className="w-5 h-5 text-yellow-500" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-
-  {/* Manager Section */}
-  <div className="bg-black py-16 px-4 md:px-6 lg:px-8">
-    <div className="max-w-7xl mx-auto">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <div className="flex items-center mb-6">
-            <div className="h-px bg-yellow-500 w-16 mr-4"></div>
-            <span className="text-yellow-500 text-sm font-medium tracking-wider uppercase">Manager</span>
-          </div>
-
-          <h2 className="text-white text-3xl md:text-4xl font-light mb-6">The Royal In The Heart Of Switzerland</h2>
-
-          <p className="text-gray-400 mb-8 leading-relaxed">
-            Hotels & Resorts is a modern, upscale hospitality company that is passionate about 'making moments'
-            recognising that small gestures make a big difference to our guests. We do ordinary things in an
-            extraordinary way - A philosophy that has defined our brand's success.
-          </p>
-
-          <Button
-            variant="outline"
-            className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
-          >
-            EXPLORE MORE
-          </Button>
-        </div>
-
-        <div className="relative">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-            <Image
-              src="/room1.jpg"
-              alt="Luxury hotel room interior"
-              fill
-              className="object-cover"
-            />
-          </div>
-
-          <div className="absolute -bottom-8 -right-8 bg-black p-6 rounded-lg border border-gray-800">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full overflow-hidden">
-                <Image
-                  src="/manager.png"
-                  alt="Andrew Karlex"
-                  width={64}
-                  height={64}
-                  className="object-cover"
+          <div className="relative z-10 text-center text-white">
+            <div className="flex items-center justify-center mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className="w-5 h-5 fill-yellow-400 text-yellow-400 mr-1"
                 />
-              </div>
+              ))}
+            </div>
+            <p className="text-sm font-medium mb-4 tracking-wider">
+              Best Royal Resort
+            </p>
+            <h1 className="text-4xl md:text-5xl font-light mb-8">
+              Resort Promotional Video
+            </h1>
+
+            <button className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300">
+              <Play className="w-8 h-8 text-white ml-1" />
+            </button>
+          </div>
+        </div>
+
+        {/* Featured Amenities Section */}
+        <div className="relative -mt-32 z-20 bg-gray-900 py-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto rounded-lg shadow-lg">
+          <div>
+            <div className="flex items-center mb-8">
+              <div className="h-px bg-yellow-500 w-16 mr-4"></div>
+              <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">
+                Featured Amenities
+              </h2>
+            </div>
+
+            <h3 className="text-white text-3xl md:text-4xl font-light mb-12">
+              Hotel Facilities
+            </h3>
+
+            <div className="grid md:grid-cols-4 gap-6">
+              {[
+                { src: "/room1.jpg", title: "Wellness & Spa" },
+                { src: "/room2.jpg", title: "Fitness Center" },
+                { src: "/room3.jpg", title: "Infinity Pool" },
+                { src: "/room1.jpg", title: "Gastronomy" },
+              ].map(({ src, title }, idx) => (
+                <div className="group cursor-pointer" key={idx}>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg mb-4">
+                    <Image
+                      src={src}
+                      alt={title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-white">
+                    <h4 className="text-lg font-medium">{title}</h4>
+                    <ArrowRight className="w-5 h-5 text-yellow-500" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Manager Section */}
+        <div className="bg-black py-16 px-4 md:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h4 className="text-white font-medium">Andrew Karlex</h4>
-                <p className="text-gray-400 text-sm">Manager</p>
-                <div className="text-yellow-500 text-lg font-script mt-1">Andrew</div>
+                <div className="flex items-center mb-6">
+                  <div className="h-px bg-yellow-500 w-16 mr-4"></div>
+                  <span className="text-yellow-500 text-sm font-medium tracking-wider uppercase">
+                    Manager
+                  </span>
+                </div>
+
+                <h2 className="text-white text-3xl md:text-4xl font-light mb-6">
+                  The Royal In The Heart Of Switzerland
+                </h2>
+
+                <p className="text-gray-400 mb-8 leading-relaxed">
+                  Hotels & Resorts is a modern, upscale hospitality company that
+                  is passionate about 'making moments' recognising that small
+                  gestures make a big difference to our guests. We do ordinary
+                  things in an extraordinary way - A philosophy that has defined
+                  our brand's success.
+                </p>
+
+                <Button
+                  variant="outline"
+                  className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
+                >
+                  EXPLORE MORE
+                </Button>
+              </div>
+
+              <div className="relative">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                  <Image
+                    src="/room1.jpg"
+                    alt="Luxury hotel room interior"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="absolute -bottom-8 -right-8 bg-black p-6 rounded-lg border border-gray-800">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 rounded-full overflow-hidden">
+                      <Image
+                        src="/manager.png"
+                        alt="Andrew Karlex"
+                        width={64}
+                        height={64}
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium">Andrew Karlex</h4>
+                      <p className="text-gray-400 text-sm">Manager</p>
+                      <div className="text-yellow-500 text-lg font-script mt-1">
+                        Andrew
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
+      {/* testimonials  */}
+      <section className="relative min-h-screen">
+        {/* Background Image */}
+        <div className="absolute h-[70vh] inset-0">
+          <Image
+            src="/08d793fa28a68cda.jpg"
+            alt="Luxury resort sunset view"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60" />
+        </div>
 
+        {/* Content */}
+        <div className="relative z-10 py-16 px-4 md:px-6 lg:px-8 min-h-screen flex flex-col justify-center">
+          <div className="max-w-7xl mx-auto w-full">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-16">
+              <div>
+                <div className="flex items-center mb-6">
+                  <div className="h-px bg-yellow-500 w-16 mr-4"></div>
+                  <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">
+                    Testimonials
+                  </h2>
+                </div>
+                <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-light leading-tight max-w-2xl">
+                  Explore More, Worry Less
+                  <br />
+                  Book A Resort Now
+                </h1>
+              </div>
 
-    
+              <Button
+                variant="outline"
+                className="border-white bg-transparent text-white hover:bg-yellow-400 hover:text-white hidden md:block rounded-none"
+              >
+                VIEW ALL
+              </Button>
+            </div>
+
+            {/* Testimonials Grid */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {testimonials.map((testimonial) => (
+                <div
+                  key={testimonial.id}
+                  className="bg-black/40 backdrop-blur-sm border border-gray-700 rounded-lg p-8"
+                >
+                  {/* Profile and Rating */}
+                  <div className="flex items-center mb-6">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white">
+                        <Image
+                          src={testimonial.image || "/placeholder.svg"}
+                          alt={testimonial.name}
+                          width={64}
+                          height={64}
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="absolute -top-2 -right-2 bg-white rounded-full px-2 py-1 flex items-center space-x-1">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs font-medium text-black">
+                          {testimonial.rating}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quote Icon */}
+                  <Quote className="w-12 h-12 text-yellow-500 mb-6" />
+
+                  {/* Testimonial Text */}
+                  <p className="text-white text-lg leading-relaxed mb-6">
+                    "{testimonial.testimonial}"
+                  </p>
+
+                  {/* Name and Role */}
+                  <div>
+                    <h4 className="text-white font-medium text-lg">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-gray-400">{testimonial.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Navigation */}
+            <div className="flex items-center justify-center space-x-4">
+            <button className="w-12 h-12 rounded-full border border-gray-600 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex-1 h-px bg-gray-600 max-w-md">
+                <div className="h-full bg-yellow-500 w-2/3"></div>
+              </div>
+  
+            <button className="w-12 h-12 rounded-full bg-yellow-500 text-black flex items-center justify-center hover:bg-yellow-600 transition-colors">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Mobile View All Button */}
+            {/* <div className="flex justify-center mt-8 md:hidden">
+              <Button
+                variant="outline"
+                className="border-white bg-tra text-white hover:bg-white hover:text-black"
+              >
+                VIEW ALL
+              </Button>
+            </div> */}
+          </div>
+        </div>
+      </section>
 
       {/* Newsletter */}
       <section className="py-24 bg-gray-900">
