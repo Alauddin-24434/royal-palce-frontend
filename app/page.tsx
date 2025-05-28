@@ -6,47 +6,40 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Badge } from "@/components/ui/badge";
 import {
-  Calendar,
+ 
   MapPin,
   Star,
-  Users,
+ 
   Utensils,
-  Waves,
-  Dumbbell,
+
   SpadeIcon as Spa,
   Phone,
   Mail,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Wifi,
+ 
+  
   Car,
-  Coffee,
-  Shield,
+
   Bed,
   LuggageIcon,
-  BedDouble,
-  Lock,
+ 
+ 
   ArrowRight,
   Play,
   Quote,
   ChevronLeft,
   ChevronRight,
+  Facebook,
+  Twitter,
+  Instagram,
+  Youtube,
+  Calendar,
+  Tag,
 } from "lucide-react";
 
 export default function LuxuryResortWebsite() {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
 
   const testimonials = [
     {
@@ -69,17 +62,30 @@ export default function LuxuryResortWebsite() {
     },
   ];
 
-  const galleryImages = [
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-  ];
+
+  const blogPosts = [
+    {
+      id: 1,
+      date: "22 DEC, 2024",
+      category: "HOTEL ROOM",
+      title: "Renovation of bathrooms throughout the resort",
+      image: "/room1.jpg",
+      description:
+        "Ready to book your vacation? Our hotel booking category provides an extensive array of choices, from lavish resorts to economical lodgings, guaranteeing a delightful and unforgettable experience without breaking the bank.",
+      featured: false,
+    },
+    {
+      id: 2,
+      date: "22 DEC, 2024",
+      category: "HOTEL ROOM",
+      title: "Renovation of bathrooms throughout the resort",
+      image: "/room2.jpg",
+      description:
+        "Ready to book your vacation? Our hotel booking category provides an extensive array of choices, from lavish resorts to economical lodgings, guaranteeing a delightful and unforgettable experience without breaking the bank.",
+      featured: true,
+    },
+  ]
+
   const featuresData = [
     {
       icon: <Bed />,
@@ -698,34 +704,96 @@ export default function LuxuryResortWebsite() {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-24 bg-gray-900">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Stay Updated with Luxe Resort
-          </h2>
-          <p className="text-gray-400 mb-12 text-lg max-w-2xl mx-auto">
-            Subscribe to our newsletter for exclusive offers, resort updates,
-            and insider tips for the perfect luxury vacation
-          </p>
 
-          <div className="max-w-lg mx-auto">
-            <div className="flex gap-4">
-              <Input
-                type="email"
-                placeholder="Enter your email address"
-                className="bg-gray-800 border-gray-700 text-white h-14 text-lg flex-1"
-              />
-              <Button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-8 h-14">
-                Subscribe
-              </Button>
+{/*  blogs */}
+
+<section className="bg-black py-16 px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+       
+
+        {/* Blog Section */}
+        <div>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-12">
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="h-px bg-yellow-500 w-16 mr-4"></div>
+                <h2 className="text-yellow-500 text-sm font-medium tracking-wider uppercase">Blog & News</h2>
+              </div>
+              <h1 className="text-white text-3xl md:text-4xl lg:text-5xl font-light leading-tight max-w-2xl">
+                Room Refresh Service Morning
+                <br />
+                Wake-Up Call Tour
+              </h1>
             </div>
-            <p className="text-gray-500 text-sm mt-4">
-              We respect your privacy. Unsubscribe at any time.
-            </p>
+
+            <Button className="bg-yellow-500 text-black hover:bg-yellow-600 hidden md:block">VIEW ALL</Button>
+          </div>
+
+          {/* Blog Posts Grid */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {blogPosts.map((post) => (
+              <article
+                key={post.id}
+                className="border border-gray-800  overflow-hidden transition-colors p-6"
+              >
+                     {/* Meta */}
+                  <div className="flex items-center space-x-4 mb-4">
+                    <div className="flex items-center space-x-2 text-yellow-500 text-sm">
+                      <Calendar className="w-4 h-4" />
+                      <span>{post.date}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-yellow-500 text-sm">
+                      <Tag className="w-4 h-4" />
+                      <span>{post.category}</span>
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-white text-xl font-medium mb-4 leading-tight">{post.title}</h3>
+
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={post.image || "/placeholder.svg"}
+                    alt={post.title}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+
+                {/* Content */}
+                <div >
+             
+                  {/* Description */}
+                  <p className="text-gray-400 leading-relaxed mb-6">{post.description}</p>
+
+                  {/* Read More Button */}
+                  <Button
+                    variant={post.featured ? "default" : "outline"}
+                    className={
+                      post.featured
+                        ? "bg-yellow-500 text-black hover:bg-yellow-600 rounded-none"
+                        : "border-gray-600 bg-transparent text-white hover:bg-white rounded-none hover:text-black"
+                    }
+                  >
+                    READ MORE
+                  </Button>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Mobile View All Button */}
+          <div className="flex justify-center mt-8 md:hidden">
+            <Button className="bg-yellow-500 text-black hover:bg-yellow-600">VIEW ALL</Button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+
+
+   
 
       {/* Footer */}
       <footer className="bg-black py-16">
