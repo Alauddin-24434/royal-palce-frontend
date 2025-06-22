@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏨 Royal Place — Hotel Management Frontend
 
-## Getting Started
+Welcome to the frontend of Royal Place, a modern and responsive hotel management website built with Next.js, TypeScript, and Tailwind CSS. This application provides users with seamless access to essential features like browsing rooms, booking stays, managing profiles, making payments, and exploring hotel amenities — all with a clean and intuitive interface.
+---
 
-First, run the development server:
+## 🚀 Features
+
+- **User Authentication & Role Management**
+- **Room Booking System**
+- **Stripe Payment Integration**
+- **Hotel Amenities & Services**
+- **Customer Testimonials**
+- **Refund & Cancellation Prediction Endpoint**
+
+
+
+---
+
+## 🛠 Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Alauddin-24434/royal-place-backend
+cd royal-place-backend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project uses [pnpm](https://pnpm.io/) (recommended), but you can use npm if needed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Using pnpm (recommended):
 
-## Learn More
+```bash
+pnpm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Using npm:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Delete the pnpm lockfile first:**
+    ```bash
+    rm -rf pnpm-lock.yaml
+    ```
+2. **Then install dependencies:**
+    ```bash
+    npm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> **Warning:** Do **not** mix pnpm and npm in the same project.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Running the Project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Development
+
+```bash
+pnpm run dev
+# or
+npm run dev
+```
+
+### Production
+
+```bash
+pnpm run build && pnpm start
+# or
+npm run build && npm start
+```
+
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please open issues or submit pull requests for improvements and bug fixes.
+
+---
+
+## 📫 Contact
+
+For questions or support, please contact [alauddin150900@gmail.com].
