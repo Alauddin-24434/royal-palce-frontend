@@ -21,8 +21,8 @@ Welcome to the frontend of Royal Place, a modern and responsive hotel management
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Alauddin-24434/royal-place-backend
-cd royal-place-backend
+git clone https://github.com/Alauddin-24434/royal-palce-frontend.git
+cd royal-palce-frontend
 ```
 
 ### 2. Install Dependencies
