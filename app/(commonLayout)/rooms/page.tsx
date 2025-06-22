@@ -1,277 +1,217 @@
-import Image from "next/image"
-import { Calendar, Check, ChevronDown, Phone, Star,} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+"use client";
 
-export default function Rooms() {
+import type React from "react";
+import { useState, useCallback } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Bed,
+  Star,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  ArrowRight,
+} from "lucide-react";
+import { useFilterAllRoomsQuery } from "@/redux/features/room/room.api";
+import Image from "next/image";
+import Link from "next/link";
 
-  const rooms= [
-    {
-      id: 1,
-      roomNumber: "101",
-      name: "Deluxe King Bed",
-      price: "$190.00/night",
-      image: "/room1.jpg",
-      description: "A luxurious room with a king-sized bed and modern amenities.",
-    },
-    {
-      id: 2,
-      roomNumber: "102",
-      name: "Executive Suite",
-      price: "$250.00/night",
-      image: "/room2.jpg",
-      description: "An elegant suite with a separate living area and stunning views.",
-    },
-    {
-      id: 3,
-      roomNumber: "103",
-      name: "Family Room",
-      price: "$220.00/night",
-      image: "/room3.jpg",
-      description: "Spacious room perfect for families, with multiple beds and amenities.",
-    },
-    {
-      id: 4,
-      roomNumber: "104",
-      name: "Luxury Suite",
-      price: "$300.00/night",
-      image: "/room1.jpg",
-      description: "A lavish suite with premium furnishings and exclusive services.",
-    },
-    {
-      id: 5,
-      roomNumber: "105",
-      name: "Standard Room",
-      price: "$150.00/night",
-      image: "/room2.jpg",
-      description: "A comfortable room with essential amenities for a pleasant stay.",
-    },
-    {
-      id: 6,
-      roomNumber: "106",
-      name: "Presidential Suite",
-      price: "$500.00/night",
-      image: "/room3.jpg",
-      description: "The epitome of luxury with top-notch services and breathtaking views.",
-    },
-  ]
-  return (
-    <div className="flex min-h-screen flex-col bg-black text-white">
-  
-      {/* Hero Section */}
-      <div className="relative bg-gray-900 py-20">
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-serif mb-2">Royal Rooms & Suites</h1>
-          <div className="flex items-center justify-center space-x-2 text-sm">
-            <a href="#" className="hover:text-amber-500">
-              HOME
-            </a>
-            <span>〉</span>
-            <span className="text-amber-500">ROOMS & SUITES</span>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 overflow-hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto fill-black">
-            <path d="M0,96L1440,192L1440,320L0,320Z"></path>
-          </svg>
-        </div>
-      </div>
-
-      {/* Room Categories */}
-      <div className="bg-black py-8">
-        <div className="container mx-auto px-4">
-          <Tabs defaultValue="luxury" className="w-full max-w-2xl mx-auto">
-            <TabsList className="grid grid-cols-4 bg-transparent">
-              <TabsTrigger
-                value="luxury"
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-black rounded-none border border-amber-500 text-white"
-              >
-                Luxury Room
-              </TabsTrigger>
-              <TabsTrigger
-                value="suite"
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-black rounded-none border border-amber-500 text-white"
-              >
-                Suite Room
-              </TabsTrigger>
-              <TabsTrigger
-                value="deluxe"
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-black rounded-none border border-amber-500 text-white"
-              >
-                Deluxe Room
-              </TabsTrigger>
-              <TabsTrigger
-                value="twine"
-                className="data-[state=active]:bg-amber-500 data-[state=active]:text-black rounded-none border border-amber-500 text-white"
-              >
-                Twine Rooms
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      </div>
-
-      {/* Room Listings */}
-      <div className="bg-black py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Room  */}
-          
-          {
-            rooms?.map((room)=>
-                <div key={room.id} className="relative group overflow-hidden rounded-lg">
-              <div className="absolute top-4 right-0 bg-amber-500 text-black font-bold py-1 px-4 z-10">
-              {room?.price}
-              </div>
-              <div className="relative h-80 overflow-hidden">
-                <Image
-                  src={room?.image}
-                  alt="Deluxe King Bed"
-                  width={480}
-                  height={320}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 text-white">
-                  <div className="text-amber-500 font-bold mb-1">{room?.roomNumber}</div>
-                  <h3 className="text-xl font-serif mb-4">{room?.name}</h3>
-                  <Button variant="outline" className="border-white text-white hover:bg-white bg-transparent hover:text-black">
-                    VIEW DETAILS
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            )
-          }
-           
-          </div>
-
-          {/* Pagination */}
-          <div className="flex justify-center mt-8 space-x-2">
-            <Button className="rounded-full w-8 h-8 p-0 bg-amber-500 text-black hover:bg-amber-600">1</Button>
-            <Button variant="outline" className="rounded-full w-8 h-8 p-0 border-gray-700 text-white hover:bg-gray-800">
-              2
-            </Button>
-            <Button variant="outline" className="rounded-full w-8 h-8 p-0 border-gray-700 text-white hover:bg-gray-800">
-              3
-            </Button>
-            <Button variant="outline" className="rounded-full w-8 h-8 p-0 border-gray-700 text-white hover:bg-gray-800">
-              4
-            </Button>
-            <Button variant="outline" className="rounded-full w-8 h-8 p-0 border-gray-700 text-white hover:bg-gray-800">
-              5
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Booking Section */}
-      <div className="bg-black py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Booking Form */}
-            <div className="bg-gray-900 p-8 rounded-lg">
-              <div className="uppercase text-amber-500 text-sm font-medium mb-2">ROOMS RESERVATION</div>
-              <h2 className="text-3xl font-serif mb-6">Check Availability</h2>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm mb-1">CHECK - IN</label>
-                  <div className="relative">
-                    <Input type="text" placeholder="19 Dec 2024" className="bg-gray-800 border-gray-700 text-white" />
-                    <Calendar className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">CHECK - OUT</label>
-                  <div className="relative">
-                    <Input type="text" placeholder="21 Dec 2024" className="bg-gray-800 border-gray-700 text-white" />
-                    <Calendar className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">ADULT</label>
-                  <div className="relative">
-                    <select className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white appearance-none">
-                      <option>Adult (1)</option>
-                      <option>Adult (2)</option>
-                      <option>Adult (3)</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm mb-1">CHILDREN</label>
-                  <div className="relative">
-                    <select className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white appearance-none">
-                      <option>Children (0)</option>
-                      <option>Children (1)</option>
-                      <option>Children (2)</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-
-                <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium">
-                  CHECK AVAILABILITY
-                </Button>
-              </div>
-            </div>
-
-            {/* Excellence Section */}
-            <div className="flex flex-col justify-center">
-              <div className="uppercase text-amber-500 text-sm font-medium mb-2">BOOKING ROOM</div>
-              <h2 className="text-3xl font-serif mb-6">
-                Excellence In Every
-                <br />
-                Moment Of Your Stay
-              </h2>
-
-              <div className="flex space-x-4 mb-8">
-                <Image
-                  src="/placeholder.svg?height=80&width=80"
-                  alt="Award"
-                  width={80}
-                  height={80}
-                  className="h-16 w-16"
-                />
-                <Image
-                  src="/placeholder.svg?height=80&width=80"
-                  alt="Award"
-                  width={80}
-                  height={80}
-                  className="h-16 w-16"
-                />
-                <Image
-                  src="/placeholder.svg?height=80&width=80"
-                  alt="Award"
-                  width={80}
-                  height={80}
-                  className="h-16 w-16"
-                />
-              </div>
-
-              <div className="flex items-center mb-4">
-                <div className="bg-amber-500 rounded-full p-3 mr-4">
-                  <Phone className="h-6 w-6 text-black" />
-                </div>
-                <div>
-                  <div className="text-sm text-amber-500">Booking Now</div>
-                  <div className="text-xl font-medium">+00123 456 789</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    
-    </div>
-  )
+interface IRoom {
+  _id: string;
+  title: string;
+  type: string;
+  roomNumber: string;
+  price: number;
+  status: "Available" | "Occupied" | "Maintenance";
+  images: string[];
+  features: string[];
+  rating?: number;
+  maxGuests?: number;
 }
 
+const sliderStyles = `
+  .slider-thumb::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f59e0b, #eab308);
+    cursor: pointer;
+    border: 2px solid #1e293b;
+    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+  }
+  .slider-thumb::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f59e0b, #eab308);
+    cursor: pointer;
+    border: 2px solid #1e293b;
+    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+  }
+`;
+
+function debounce<F extends (...args: any[]) => void>(func: F, delay: number): F {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  } as F;
+}
+
+export default function RoomsPage() {
+  const [tab, setTab] = useState("all");
+  const [searchTerm, setSearchTerm] = useState(""); // ✅ for input value
+  const [debouncedSearch, setDebouncedSearch] = useState(""); // ✅ used in query
+  const [page, setPage] = useState(1);
+
+  const debouncedSetSearch = useCallback(
+    debounce((value: string) => {
+      setDebouncedSearch(value);
+      setPage(1);
+    }, 500),
+    []
+  );
+
+  const { data, isLoading } = useFilterAllRoomsQuery({
+    searchTerm: debouncedSearch,
+    type: tab === "all" ? undefined : tab,
+    limit: 6,
+    page,
+  });
+
+  const displayRooms = data?.data?.data || [];
+  const totalPages = data?.meta?.totalPages || 5;
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);           // update input instantly
+    debouncedSetSearch(value);      // debounce the query
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading rooms...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen container mx-auto py-12">
+      <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
+
+      {/* HEADER */}
+      <div className="text-center py-16">
+        <h1 className="text-5xl font-bold text-amber-400">Luxury Accommodations</h1>
+        <p className="text-slate-300 mt-4">Find rooms that match your taste and comfort</p>
+      </div>
+
+      {/* FILTER SECTION */}
+      <div className="px-4 space-y-6">
+        <div className="flex flex-col md:flex-row lg:justify-between gap-6">
+          <Tabs value={tab} onValueChange={(val) => { setTab(val); setPage(1); }}>
+            <TabsList>
+              {["all", "luxury", "suite", "deluxe", "twine"].map((t) => (
+                <TabsTrigger key={t} value={t} className="capitalize">{t}</TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+
+          <Input
+            placeholder="Search rooms..."
+            value={searchTerm} // ✅ input controlled here
+            onChange={handleSearchChange}
+            className="md:w-80"
+          />
+        </div>
+
+        {/* ROOM GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayRooms.map((room: IRoom) => (
+            <Card
+              key={room._id}
+              className="group relative w-full max-w-md overflow-hidden bg-black rounded-none p-0 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20"
+            >
+              <div className="relative h-96 overflow-hidden">
+                <Image
+                  src={room.images[0] || "/placeholder.svg"}
+                  alt="Luxury hotel room"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/40 transition-all duration-500 group-hover:bg-black/70" />
+                <div className="absolute top-4 left-4 px-2">
+                  <div className="text-3xl font-light text-white">{room.roomNumber}</div>
+                </div>
+                <div className="absolute top-4 right-4 transform transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-1">
+                  <div className="relative">
+                    <div className="bg-[#bf9310] text-white px-4 py-2 font-semibold text-sm">
+                      ${room.price}/night
+                    </div>
+                    <div className="absolute right-0 top-full w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-[#bf9310]" />
+                  </div>
+                </div>
+                <div className="absolute bottom-6 left-6 text-white space-y-4 z-10 group-hover:translate-y-[-8px]">
+                  <div>
+                    <div className="text-xl font-light py-2">{room.title}</div>
+                    <div className="flex gap-1 mt-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-4 h-4 fill-amber-400 text-amber-400 transition-all duration-300 group-hover:scale-125 group-hover:rotate-12"
+                          style={{ transitionDelay: `${i * 50}ms` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex gap-4 text-sm mt-2">
+                    <div className="flex items-center gap-2"><Bed className="w-4 h-4 text-[#bf9310]" /><span>King Bed</span></div>
+                    <div className="flex items-center gap-2"><Users className="w-4 h-4 text-[#bf9310]" /><span>2 Person</span></div>
+                    <div className="flex items-center gap-2"><Home className="w-4 h-4 text-[#bf9310]" /><span>1500 sqft</span></div>
+                  </div>
+                  <Link href={`/rooms/${room._id}`}>
+                    <Button
+                      variant="outline"
+                      className="mt-2 w-fit bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
+                    >
+                      <span className="flex items-center gap-2">VIEW DETAILS <ArrowRight className="w-4 h-4 group-hover:translate-x-1" /></span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-full" />
+                    </Button>
+                  </Link>
+                </div>
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-yellow-500 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-yellow-500 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* PAGINATION */}
+        <div className="flex justify-center gap-2 mt-8">
+          <Button onClick={() => setPage((prev) => Math.max(1, prev - 1))} disabled={page === 1}>
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+          {[...Array(totalPages)].map((_, i) => (
+            <Button
+              key={i}
+              variant={page === i + 1 ? "default" : "outline"}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </Button>
+          ))}
+          <Button onClick={() => setPage((prev) => prev + 1)} disabled={page === totalPages}>
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

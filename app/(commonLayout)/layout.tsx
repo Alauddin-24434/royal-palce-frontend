@@ -1,10 +1,11 @@
 import Footer from "@/components/shared/Footer";
-import Navbar from "@/components/shared/Navbar";
+import { Header } from "@/components/shared/header";
+
 
 const layout = ({children}:{children:React.ReactNode})=>{
     return (
-        <div>
-            <Navbar/>
+        <div className="bg-[#0b0b0d]">
+            <Header/>
             <main>{children}</main>
             <Footer/>
         </div>

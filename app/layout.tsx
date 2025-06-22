@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import {  Noto_Serif } from "next/font/google";
+import { Noto_Serif } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import ReduxProvider from "./reduxProvider";
 
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
   subsets: ["latin"],
- 
 });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,11 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${notoSerif.variable}  antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${notoSerif.variable}  antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        ><ReduxProvider>
+            {children}
+          </ReduxProvider>
+
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,0 +1,187 @@
+// --- RoomsPage.tsx ---
+"use client"
+
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Plus, Search, Bed, Users } from "lucide-react"
+import RoomFormModal from "@/components/modal/room-form-modal"
+import { useDeleteRoomMutation, useFindAllRoomsQuery } from "@/redux/features/room/room.api"
+import toast, { Toaster } from "react-hot-toast"
+import { IRoom } from "@/app/types/room.interface"
+
+
+export default function RoomsPage() {
+
+  const {data:roomsData, isLoading}= useFindAllRoomsQuery(undefined)
+
+  const [deleteRoom]=  useDeleteRoomMutation();
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedRoom, setSelectedRoom] = useState<IRoom | undefined>(undefined)
+
+  const handleOpenCreateModal = () => {
+    setSelectedRoom(undefined)
+    setIsModalOpen(true)
+  }
+
+  const handleOpenEditModal = (room: IRoom) => {
+    setSelectedRoom(room)
+    setIsModalOpen(true)
+  }
+
+ const handleDeleteRoom = async (id: string) => {
+  try {
+    await deleteRoom(id);
+    toast.success('Room deleted successfully!');
+  } catch {
+    toast.error('Failed to delete room.');
+  }
+};
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Room Management</h1>
+          <p className="text-slate-400">Manage hotel rooms and availability</p>
+        </div>
+        <Button
+          className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-medium"
+          onClick={handleOpenCreateModal}
+        >
+          <Plus className="h-4 w-4 mr-2" /> Add Room
+        </Button>
+      </div>
+
+      {/* Filters */}
+      <Card className="bg-slate-800/50 border-slate-700">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Input placeholder="Search rooms..." className="pl-10 bg-slate-700/50 border-slate-600 text-white" />
+            </div>
+            <Select>
+              <SelectTrigger className="w-full sm:w-48 bg-slate-700/50 border-slate-600 text-white">
+                <SelectValue placeholder="Room Type" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="luxury">Luxury</SelectItem>
+                <SelectItem value="suite">Suite</SelectItem>
+                <SelectItem value="deluxe">Deluxe</SelectItem>
+                <SelectItem value="twin">Twin</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger className="w-full sm:w-48 bg-slate-700/50 border-slate-600 text-white">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="available">Available</SelectItem>
+                <SelectItem value="occupied">Occupied</SelectItem>
+                <SelectItem value="maintenance">Maintenance</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Room Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {roomsData?.data?.map((room:IRoom) => (
+          <Card key={room?._id} className="bg-slate-800/50 border-slate-700 overflow-hidden p-0">
+            <div className="aspect-video bg-slate-700 relative ">
+              <img src={room.images?.[0] || "/placeholder.svg"} alt={room?.title} className="w-full h-full object-cover " />
+              
+            </div>
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="text-white text-lg">{room.title}</CardTitle>
+                  <p className="text-slate-400 text-sm">
+                    {room.type} • Room {room.roomNumber}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-amber-400">${room.price}</p>
+                  <p className="text-xs text-slate-400">per night</p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-4 text-slate-400">
+                
+                <div className="flex items-center gap-1">
+                  <Bed className="h-4 w-4" />
+                  <span className="text-sm">{room?.type}</span>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {room.features.slice(0, 3).map((feature) => (
+                  <Badge key={feature} variant="secondary" className="bg-slate-700 text-slate-300">
+                    {feature}
+                  </Badge>
+                ))}
+                {room.features.length > 3 && (
+                  <Badge variant="secondary" className="bg-slate-700 text-slate-300">
+                    +{room.features.length - 3} more
+                  </Badge>
+                )}
+              </div>
+              <div className="flex gap-2 p-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
+                  onClick={() => handleOpenEditModal(room)}
+                >
+                  Edit
+                </Button>
+                <Button variant="outline" size="sm" className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700">
+                  View Details
+                </Button>
+                <Button onClick={()=>handleDeleteRoom(room?._id)} variant="outline" size="sm" className="flex-1 ">
+                 Delete
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+       
+      </div>
+
+      <RoomFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} room={selectedRoom} />
+         <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toastOptions={{
+                  // Define default options
+                  className: '',
+                  duration: 5000,
+                  removeDelay: 1000,
+                  style: {
+                    background: '#363636',
+                    color: '#fff',
+                  },
+        
+                  // Default options for specific types
+                  success: {
+                    duration: 3000,
+                    iconTheme: {
+                      primary: 'green',
+                      secondary: 'black',
+                    },
+                  },
+                }}
+              />
+    </div>
+  )
+}

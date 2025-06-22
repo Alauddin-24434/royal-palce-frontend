@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, Phone, MapPin } from "lucide-react"
+import { Menu, Phone, MapPin, Crown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
@@ -19,7 +19,7 @@ export function Header() {
   ]
 
   return (
-    <header className="bg-black/90 backdrop-blur-sm border-b border-yellow-500/20 sticky top-0 z-50">
+    <header className="bg-[#191a1e] backdrop-blur-sm  sticky top-0 z-50">
       {/* Top Bar */}
       <div className="border-b border-yellow-500/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,7 +27,7 @@ export function Header() {
             <div className="flex items-center space-x-6 text-gray-300">
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4" />
-                <span>45 New Eskaton Road, Austria</span>
+                <span>8200 Sadar Road, Barisal</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
@@ -48,6 +48,7 @@ export function Header() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center">
+          <Crown className="h-8 w-8 text-[#bf9310] mr-2" />
             <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
           </Link>
 
