@@ -107,11 +107,19 @@ export default function RoomsPage() {
     <div className="min-h-screen container mx-auto py-12">
       <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
 
-      {/* HEADER */}
-      <div className="text-center py-16">
-        <h1 className="text-5xl font-bold text-amber-400">Luxury Accommodations</h1>
-        <p className="text-slate-300 mt-4">Find rooms that match your taste and comfort</p>
-      </div>
+ 
+         {/* Title */}
+            <div className="flex items-center justify-center">
+              <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6" />
+              <div className="flex items-center">
+                <Bed className="w-6 h-6 text-[#bf9310] mr-3" />
+                <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
+                 Luxury Accommodations
+                </h2>
+                <Bed className="w-6 h-6 text-[#bf9310] ml-3" />
+              </div>
+              <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6" />
+            </div>
 
       {/* FILTER SECTION */}
       <div className="px-4 space-y-6">
@@ -179,7 +187,7 @@ export default function RoomsPage() {
                   <Link href={`/rooms/${room._id}`}>
                     <Button
                       variant="outline"
-                      className="mt-2 w-fit bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
+                      className="mt-2 w-fit cursor-pointer bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
                     >
                       <span className="flex items-center gap-2">VIEW DETAILS <ArrowRight className="w-4 h-4 group-hover:translate-x-1" /></span>
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-full" />

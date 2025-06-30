@@ -13,13 +13,16 @@ import {
     Crown,
     Sparkles,
     Filter,
+    Trash,
 } from "lucide-react"
 import {
     useCreateTestimonialMutation,
+    useDeleteTestimonialMutation,
     useFindTestimonialsByRoomIdQuery,
 } from "@/redux/features/testimonial/testimonialApi"
 import { useSelector } from "react-redux"
 import { selectCurrentUser } from "@/redux/features/auth/authSlice"
+import toast from "react-hot-toast";
 
 interface Review {
     _id: string
@@ -45,17 +48,17 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
     const [newReview, setNewReview] = useState({
         rating: 5,
         text: "",
-       
+
     })
 
     const { data, refetch } = useFindTestimonialsByRoomIdQuery(roomId)
     const reviewsData: Review[] = data?.data || []
-
+    const [deleteTestimonial] = useDeleteTestimonialMutation();
     const [createTestimonial, { isLoading: isSubmitting }] =
         useCreateTestimonialMutation()
 
     const submitReviewHandler = async () => {
-        if ( !newReview.text || !newReview.rating || !roomId) {
+        if (!newReview.text || !newReview.rating || !roomId) {
             alert("Please fill in all fields.")
             return
         }
@@ -68,7 +71,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                 roomId,
                 rating: newReview.rating,
                 reviewText: newReview.text,
-                reviewDate: new Date().toISOString(), 
+                reviewDate: new Date().toISOString(),
             }
 
             console.log(payload)
@@ -82,6 +85,21 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
             alert("Something went wrong. Please try again.")
         }
     }
+
+    const handleDeleteReview = async (id: string) => {
+
+        try {
+            await deleteTestimonial(id).unwrap();
+            toast.success("Review deleted successfully!");
+            refetch();
+        } catch (error) {
+          
+            toast.error("Failed to delete review. Please try again.");
+        }
+
+    };
+
+
 
     return (
         <section className="relative py-20">
@@ -161,58 +179,58 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                             <h3 className="text-2xl font-semibold text-white mb-6">
                                 Share Your Experience
                             </h3>
-                          
-                                <div>
-                                    <label className="block text-slate-400 mb-2">Rating</label>
-                                    <div className="flex gap-2">
-                                        {[1, 2, 3, 4, 5].map((rating) => (
-                                            <button
-                                                key={rating}
-                                                onClick={() =>
-                                                    setNewReview({ ...newReview, rating })
-                                                }
-                                                className="p-1"
-                                            >
-                                                <Star
-                                                    className={`w-8 h-8 ${rating <= newReview.rating
-                                                            ? "text-amber-400 fill-amber-400"
-                                                            : "text-slate-600"
-                                                        }`}
-                                                />
-                                            </button>
-                                        ))}
-                                    </div>
+
+                            <div>
+                                <label className="block text-slate-400 mb-2">Rating</label>
+                                <div className="flex gap-2">
+                                    {[1, 2, 3, 4, 5].map((rating) => (
+                                        <button
+                                            key={rating}
+                                            onClick={() =>
+                                                setNewReview({ ...newReview, rating })
+                                            }
+                                            className="p-1"
+                                        >
+                                            <Star
+                                                className={`w-8 h-8 ${rating <= newReview.rating
+                                                    ? "text-amber-400 fill-amber-400"
+                                                    : "text-slate-600"
+                                                    }`}
+                                            />
+                                        </button>
+                                    ))}
                                 </div>
-                                <div>
-                                    <label className="block text-slate-400 mb-2">
-                                        Your Review
-                                    </label>
-                                    <Textarea
-                                        value={newReview.text}
-                                        onChange={(e) =>
-                                            setNewReview({ ...newReview, text: e.target.value })
-                                        }
-                                        placeholder="Share your experience with this room..."
-                                        rows={4}
-                                        className="bg-slate-700/50 border-slate-600 text-white"
-                                    />
-                                </div>
-                                <div className="flex gap-4">
-                                    <Button
-                                        onClick={submitReviewHandler}
-                                        disabled={isSubmitting}
-                                        className="bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900"
-                                    >
-                                        {isSubmitting ? "Submitting..." : "Submit Review"}
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => setShowWriteReview(false)}
-                                        className="border-slate-600 text-slate-400"
-                                    >
-                                        Cancel
-                                    </Button>
-                                
+                            </div>
+                            <div>
+                                <label className="block text-slate-400 mb-2">
+                                    Your Review
+                                </label>
+                                <Textarea
+                                    value={newReview.text}
+                                    onChange={(e) =>
+                                        setNewReview({ ...newReview, text: e.target.value })
+                                    }
+                                    placeholder="Share your experience with this room..."
+                                    rows={4}
+                                    className="bg-slate-700/50 my-6 border-slate-600 text-white"
+                                />
+                            </div>
+                            <div className="flex gap-4">
+                                <Button
+                                    onClick={submitReviewHandler}
+                                    disabled={isSubmitting}
+                                    className="bg-gradient-to-r from-amber-400 cursor-pointer to-amber-600 text-slate-900"
+                                >
+                                    {isSubmitting ? "Submitting..." : "Submit Review"}
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setShowWriteReview(false)}
+                                    className="border-slate-600 text-slate-400"
+                                >
+                                    Cancel
+                                </Button>
+
                             </div>
                         </CardContent>
                     </Card>
@@ -239,16 +257,30 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                                             className="rounded-full object-cover"
                                         />
                                         <div className="flex-1">
-                                            <h4 className="text-white text-lg font-semibold">
-                                                {review.userName}
-                                            </h4>
+                                            <div className="flex items-center justify-between">
+                                                <h4 className="text-white text-lg font-semibold">
+                                                    {review.userName}
+                                                </h4>
+
+                                                {/* 🔥 Show Delete icon only if user is owner */}
+                                                {user?._id === review.userId && (
+                                                    <button
+                                                        onClick={() => handleDeleteReview(review._id)}
+                                                        className="text-red-500 cursor-pointer hover:text-red-600"
+                                                        title="Delete review"
+                                                    >
+                                                        <Trash className="w-5 h-5" />
+                                                    </button>
+                                                )}
+                                            </div>
+
                                             <div className="flex items-center gap-1 mt-1">
                                                 {[1, 2, 3, 4, 5].map((star) => (
                                                     <Star
                                                         key={star}
                                                         className={`w-4 h-4 ${star <= review.rating
-                                                                ? "text-amber-400 fill-amber-400"
-                                                                : "text-slate-600"
+                                                            ? "text-amber-400 fill-amber-400"
+                                                            : "text-slate-600"
                                                             }`}
                                                     />
                                                 ))}
@@ -264,6 +296,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                                     </div>
                                 </CardContent>
                             </Card>
+
                         ))}
                 </div>
             </div>

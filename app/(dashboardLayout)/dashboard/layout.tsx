@@ -8,7 +8,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <PrivateRoute>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="flex min-h-screen w-full ">
           <AppSidebar />
           <SidebarInset className="flex-1">
             <DashboardHeader />

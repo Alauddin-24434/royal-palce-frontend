@@ -34,6 +34,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useCreateServiceMutation, useFindAllServiceQuery, useUpdateServiceMutation } from "@/redux/features/service/serviceApi"
 import { useFindAllRoomsQuery } from "@/redux/features/room/room.api"
 import { IRoom } from "@/app/types/room.interface"
+import toast from "react-hot-toast"
 
 // Validation schema
 const serviceSchema = z.object({
@@ -65,7 +66,7 @@ interface Room {
 export default function ServicesPage() {
 
     const [createService]= useCreateServiceMutation();
-    const [updateService]= useUpdateServiceMutation();
+    const [updateService,{isLoading:updateLoading, }]= useUpdateServiceMutation();
 
     const {data:roomsData}= useFindAllRoomsQuery(undefined)
     const {data: servicesData,isLoading}=useFindAllServiceQuery(undefined)
@@ -178,9 +179,9 @@ export default function ServicesPage() {
                 setShowAddModal(false)
                 addForm.reset()
                 handleRemoveImage()
-                alert("Service added successfully!")
+                toast.success("Service added successfully!")
             } else {
-                alert("Failed to add service")
+                toast.error("Failed to add service")
             }
         } catch (error) {
             console.error("Error adding service:", error)
@@ -214,9 +215,9 @@ const onEditSubmit = async (data: ServiceFormData) => {
             editForm.reset();
             handleRemoveImage();
             setSelectedService(null);
-            alert("Service updated successfully!");
+            toast.success("Service updated sucessfully")
         } else {
-            alert("Failed to update service");
+            toast.error("Failed to update service");
         }
     } catch (error) {
         console.error("Error updating service:", error);
@@ -296,16 +297,16 @@ const onEditSubmit = async (data: ServiceFormData) => {
     const freeServices = servicesData?.data?.filter((s: { isServiceFree: boolean }) => s.isServiceFree).length
     const paidServices = servicesData?.data?.filter((s: { isServiceFree: any }) => !s.isServiceFree).length
     const totalRevenue = servicesData?.data?.reduce((sum: any, s: { isServiceFree: any; pricePerDay: any }) => sum + (s.isServiceFree ? 0 : s.pricePerDay), 0)
-console.log(filteredServices)
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+        <div className="min-h-screen ">
             {/* Background decorative elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
             </div>
 
-            <div className="relative max-w-7xl mx-auto">
+            <div className="relative ">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
                     <div>
@@ -409,7 +410,7 @@ console.log(filteredServices)
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
-                            <Select value={selectedRoom} onValueChange={setSelectedRoom}>
+                            {/* <Select value={selectedRoom} onValueChange={setSelectedRoom}>
                                 <SelectTrigger className="w-full md:w-48 bg-slate-700/50 border-slate-600 text-white focus:border-orange-500 focus:ring-orange-500/20">
                                     <SelectValue placeholder="Filter by room" />
                                 </SelectTrigger>
@@ -423,7 +424,7 @@ console.log(filteredServices)
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
-                            </Select>
+                            </Select> */}
                         </div>
                     </CardContent>
                 </Card>
@@ -799,11 +800,11 @@ console.log(filteredServices)
                                 </Button>
                                 <Button
                                     type="submit"
-                                    disabled={uploading}
+                                    disabled={updateLoading}
                                     className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
                                 >
                                     <Save className="w-4 h-4 mr-2" />
-                                    {uploading ? "Uploading..." : "Update Service"}
+                                    {updateLoading ? "Uploading..." : "Update Service"}
                                 </Button>
                             </div>
                         </form>

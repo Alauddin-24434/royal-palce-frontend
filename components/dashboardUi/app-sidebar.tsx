@@ -37,8 +37,9 @@ import {
   UserCheck,
 } from "lucide-react"
 import Link from "next/link"
-import { useSelector } from "react-redux"
-import { selectCurrentUser } from "@/redux/features/auth/authSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useRouter } from "next/navigation"
 
 const menuItems = [
   {
@@ -71,18 +72,18 @@ const menuItems = [
     icon: Calendar,
     roles: ["admin", "receptionist"],
   },
-  {
-    title: "Payments Management",
-    url: "/dashboard/payments",
-    icon: CreditCard,
-    roles: ["admin", "receptionist"],
-  },
-  {
-    title: "Testimonials",
-    url: "/dashboard/testimonials",
-    icon: Star,
-    roles: ["admin", "receptionist"],
-  },
+  // {
+  //   title: "Payments Management",
+  //   url: "/dashboard/payments",
+  //   icon: CreditCard,
+  //   roles: ["admin", "receptionist"],
+  // },
+  // {
+  //   title: "Testimonials",
+  //   url: "/dashboard/testimonials",
+  //   icon: Star,
+  //   roles: ["admin", "receptionist"],
+  // },
   {
     title: "Users Management",
     url: "/dashboard/users",
@@ -110,10 +111,20 @@ const roleColors = {
 }
 
 export function AppSidebar() {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const handleLogout = () => {
+    dispatch(logout())
+    router.push("/")
+  }
   const user = useSelector(selectCurrentUser);
   console.log(user)
-  const [currentRole, setCurrentRole] = useState<"admin" | "receptionist" | "user">("user")
-  const CurrentRoleIcon = roleIcons[currentRole]
+  const role = (user?.role === "admin" || user?.role === "receptionist" || user?.role === "user")
+    ? user.role
+    : "user";
+
+  const [currentRole, setCurrentRole] = useState<"admin" | "receptionist" | "user">(role);
+
 
   const filteredMenuItems = menuItems.filter((item) => item.roles.includes(currentRole))
 
@@ -123,13 +134,11 @@ export function AppSidebar() {
     <Sidebar className="border-r border-slate-700">
       <SidebarHeader className="border-b border-slate-700 p-4">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-            <Building className="h-6 w-6 text-slate-900" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-white">Luxury Hotel</h2>
-            <p className="text-xs text-slate-400">Management System</p>
-          </div>
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Crown className="h-8 w-8 text-[#bf9310] mr-2" />
+            <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
+          </Link>
         </div>
       </SidebarHeader>
 
@@ -207,7 +216,10 @@ export function AppSidebar() {
             <DropdownMenuSeparator className="bg-slate-700" />
             <DropdownMenuItem className="hover:bg-slate-700 text-red-400">
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Logout</span>
+              <button onClick={handleLogout}>
+                <span>Logout</span>
+              </button>
+
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

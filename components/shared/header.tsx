@@ -2,99 +2,162 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Menu, Phone, MapPin, Crown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import Image from "next/image"
+import { useSelector, useDispatch } from "react-redux"
+import { selectCurrentUser, logout} from "@/redux/features/auth/authSlice"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const user = useSelector(selectCurrentUser)
+  const dispatch = useDispatch()
+  const router = useRouter()
 
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Rooms & Suites", href: "/rooms" },
-    { name: "Services", href: "/services" },
-    { name: "Gallery", href: "/gallery" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: "Amenities", href: "/amenities" },
+    // { name: "Gallery", href: "/gallery" },
+    // { name: "About", href: "/about" },
+    // { name: "Contact", href: "/contact" },
   ]
 
+  const handleLogout = () => {
+    dispatch(logout())
+    router.push("/")
+  }
+
   return (
-    <header className="bg-[#191a1e] backdrop-blur-sm  sticky top-0 z-50">
-      {/* Top Bar */}
-      <div className="border-b border-yellow-500/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-2 text-sm">
-            <div className="flex items-center space-x-6 text-gray-300">
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-4 h-4" />
-                <span>8200 Sadar Road, Barisal</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4" />
-                <span>Sun to Friday: 8:00 am - 7:00 pm</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4 text-gray-300">
-              <span>Local Time: 01:10PM</span>
-              <span>FAQ</span>
-              <span>Support</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation */}
+    <header className="bg-[#191a1e] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-          <Crown className="h-8 w-8 text-[#bf9310] mr-2" />
-            <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
-          </Link>
+        <div className="flex items-center justify-between h-16">
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          {/* Logo - Left */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="flex items-center">
+              <Crown className="h-4 w-4 lg:h-8 lg:w-8 text-[#bf9310] mr-2" />
+              <span className=" text-lg lg:text-2xl font-bold text-yellow-500">ROYAL PALACE</span>
+            </Link>
+          </div>
+
+          {/* Navigation Links - Center */}
+          <nav className="hidden md:flex space-x-10 mx-auto">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-white hover:text-yellow-500 transition-colors duration-200 font-medium"
+                className="text-white hover:text-yellow-500 font-medium transition-colors duration-200"
               >
                 {item.name}
               </Link>
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">CHECK IN NOW</Button>
-          </div>
+          {/* Right Side - Dashboard + Auth Buttons */}
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <>
+                {/* Dashboard Link with Avatar */}
+                <Link
+                  href="/dashboard"
+                  className="flex items-center space-x-2 border  rounded p-1 hover:text-yellow-500 transition-colors"
+                >
+                  <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-yellow-500">
+                    <Image
+                      src={user?.image || "/default-avatar.png"}
+                      alt={user?.name || "Profile"}
+                      width={36}
+                      height={36}
+                      className="object-cover"
+                    />
+                  </div>
+                  <span className="text-white font-medium hidden sm:inline">Dashboard</span>
+                </Link>
 
-          {/* Mobile Menu */}
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-white">
-                <Menu className="w-6 h-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-black border-yellow-500/20">
-              <div className="flex flex-col space-y-6 mt-8">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="text-white hover:text-yellow-500 transition-colors duration-200 font-medium text-lg"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold mt-6">
-                  CHECK IN NOW
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  className=" text-white bg-transparent border cursor-pointer font-semibold px-4 py-2 rounded"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link href="/login">
+                <Button className="bg-[#bf9310] hover:bg-yellow-600 text-black hidden lg:block font-semibold">
+                  Login
                 </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </Link>
+            )}
+
+            {/* Mobile Menu Button */}
+                   {/* Mobile Menu */}
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="icon" className="text-white">
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+
+              <SheetContent side="right" className="bg-[#1a1a1a] border-yellow-500/20 text-white">
+                <div className="flex flex-col space-y-6 mt-10 px-2">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="text-white hover:text-yellow-500 text-lg font-medium transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+
+                  <hr className="border-yellow-500/30" />
+
+                  {user ? (
+                    <>
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-3 p-3 border border-yellow-500 rounded hover:bg-yellow-500/10 transition-all"
+                      >
+                        <Image
+                          src={user.image || "/default-avatar.png"}
+                          alt="Profile"
+                          width={40}
+                          height={40}
+                          className="rounded-full border-2 border-yellow-500 object-cover"
+                        />
+                        <span className="font-semibold text-white">Dashboard</span>
+                      </Link>
+
+                      <Button
+                        onClick={() => {
+                          handleLogout()
+                          setIsOpen(false)
+                        }}
+                        className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded w-full"
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <Link href="/login" className="w-full">
+                      <Button
+                        onClick={() => setIsOpen(false)}
+                        className="bg-[#bf9310] hover:bg-yellow-600 text-black font-semibold w-full"
+                      >
+                        Login
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

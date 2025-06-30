@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import CustomCalendar, { DateRange } from "../../shared/CustomCalendar";
+import toast from "react-hot-toast";
 
 interface Room {
   _id: string;
@@ -70,15 +71,16 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
   };
 
   const handleAddToCart = () => {
-    if (!user) {
-      alert("Please login first!");
-      return;
-    }
-    if (!selectedRange.from || !selectedRange.to) {
-      alert("Please select both check-in and check-out dates.");
-      return;
-    }
+   if (!user) {
+    toast.error("Please login first!");
+    router.push("/login"); // অথবা "/auth/login" আপনার route অনুযায়ী
+    return;
+  }
 
+  if (!selectedRange.from || !selectedRange.to) {
+    toast.error("Please select both check-in and check-out dates.");
+    return;
+  }
     const formattedCheckIn = format(selectedRange.from, "yyyy-MM-dd");
     const formattedCheckOut = format(selectedRange.to, "yyyy-MM-dd");
 

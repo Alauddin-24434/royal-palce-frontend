@@ -15,7 +15,7 @@ import Image from "next/image";
 import { IAmineties } from "@/app/types/amineties.interface";
 
 
-const AmenitiesSection = () => {
+const Amenities = () => {
   const { data: servicesData, isLoading } = useFindAllServiceQuery(undefined);
   console.log(servicesData)
 
@@ -32,7 +32,7 @@ const AmenitiesSection = () => {
 
 
   return (
-    <section className="relative py-24 bg-[#191a1e] overflow-hidden">
+    <section className="relative py-12  overflow-hidden">
 
 
 
@@ -65,7 +65,7 @@ const AmenitiesSection = () => {
           {servicesData?.data?.map((amenity: IAmineties) => (
             <Card
               key={amenity?._id}
-              className="group relative overflow-hidden  border-transparent  transition-all duration-500 bg-[#0b0b0d] hover:-translate-y-2 h-[300px]"
+              className="group relative overflow-hidden   border-transparent  transition-all duration-500 bg-[#0b0b0d] hover:-translate-y-2 h-[300px]"
             >
               {/* Add relative container for Image */}
               <div className="absolute inset-0">
@@ -127,4 +127,4 @@ const AmenitiesSection = () => {
   )
 }
 
-export default AmenitiesSection
+export default Amenities;

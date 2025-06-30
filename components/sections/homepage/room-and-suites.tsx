@@ -5,6 +5,7 @@ import { Button } from "../../ui/button"
 import { useFindAllRoomsQuery } from "@/redux/features/room/room.api"
 import Image from "next/image"
 import type { IRoom } from "@/app/types/room.interface"
+import Link from "next/link";
 
 const RoomAndSuites = () => {
   const { data: roomsData } = useFindAllRoomsQuery(undefined)
@@ -107,18 +108,20 @@ const RoomAndSuites = () => {
                   </div>
 
                   {/* Enhanced Button with arrow animation */}
-                  <Button
-                    variant="outline"
-                    className="mt-2 w-fit bg-transparent text-white border-white cursor-pointer hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300  overflow-hidden relative"
-                  >
-                    <span className="flex items-center gap-2 transition-all duration-300">
-                      VIEW DETAILS
-                      <ArrowRight className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" />
-                    </span>
+                  <Link href={`/rooms/${room._id}`}>
+                    <Button
+                      variant="outline"
+                      className="mt-2 w-fit  bg-transparent text-white border-white cursor-pointer hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300  overflow-hidden relative"
+                    >
+                      <span className="flex items-center gap-2 transition-all duration-300">
+                        VIEW DETAILS
+                        <ArrowRight className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" />
+                      </span>
 
-                    {/* Button shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-full" />
-                  </Button>
+                      {/* Button shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-full" />
+                    </Button>
+                  </Link>
                 </div>
 
 

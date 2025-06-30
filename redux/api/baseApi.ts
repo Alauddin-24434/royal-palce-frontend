@@ -7,8 +7,8 @@ import { JwtPayload, RefreshTokenResponse } from '@/app/types/auth.interface';
 // Mutex to prevent multiple token refresh at once
 const mutex = new Mutex();
 
-
-
+// http://localhost:5000
+// https://royal-place-server.vercel.app
 // 🔶 Base fetch function
 const baseQuery = fetchBaseQuery({
     baseUrl: 'https://royal-place-server.vercel.app/api',
@@ -66,7 +66,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
 const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQueryWithReauth,
-    tagTypes: ['Room', 'Booking', 'User'],
+    tagTypes: ['Room', 'Booking', 'User','Testimonial'],
     endpoints: () => ({}),
 });
 
