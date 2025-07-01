@@ -23,7 +23,7 @@ import {
 } from "@/redux/features/cart/cartSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useBookingInitiateMutation } from "@/redux/features/booking/paymentApi";
+import { useBookingInitiateMutation } from "@/redux/features/booking/bookingApi";
 
 export default function RoyalCheckoutPage() {
   const  [bookingInitiate]=useBookingInitiateMutation();

@@ -5,24 +5,26 @@ import GuestDashboard from "@/components/dashboardUi/Guest/GuestDashboard"
 import ReceptionistDashboard from "@/components/dashboardUi/Receptionist/ReceptionistDashboard"
 import { selectCurrentUser } from "@/redux/features/auth/authSlice"
 import { useGetDashboardDataQuery } from "@/redux/features/dashboard/dashboardApi"
-import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
 // ... your other imports and state
 
 export default function DashboardPage() {
   const user = useSelector(selectCurrentUser)
-  const { data: dashboardData, error: dashboardError , isLoading} = useGetDashboardDataQuery(undefined)
-  console.log("Dashboard Data:", dashboardData) 
- 
-  const [recentBookings, setRecentBookings] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { data: dashboardData, isLoading } = useGetDashboardDataQuery(undefined)
+  
 
- 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading ...</p>
+        </div>
+      </div>
+    );
+  }
 
-  if (isLoading) return <div className="text-white text-center mt-10">Loading dashboard...</div>
-  if (dashboardError) return <div className="text-red-500 text-center mt-10">Error: {error}</div>
 
   if (!user) return <div className="text-white text-center mt-10">User not found</div>
 

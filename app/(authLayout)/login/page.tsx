@@ -32,6 +32,8 @@ export default function LoginPage() {
 
 
       const { accessToken, user } = response?.data;
+      console.log("accessToken:", accessToken );
+      console.log("user:", user);
 
       // Redux store এ user আর token সেট করুন
       dispatch(setUser({ user, token: accessToken }));

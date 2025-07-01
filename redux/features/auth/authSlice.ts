@@ -1,4 +1,4 @@
-// features/auth/authSlice.ts
+// src/redux/features/auth/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
@@ -6,13 +6,13 @@ import { RootState } from "../../store";
 export interface User {
   _id: string;
   name: string;
-  phone:string;
+  phone: string;
   email: string;
   image?: string;
   role: string;
 }
 
-// Redux auth state
+// Auth state interface
 interface AuthState {
   user: User | null;
   token: string | null;
@@ -35,12 +35,11 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // When API call starts
     authStart(state) {
       state.loading = true;
       state.error = null;
     },
-    // When login/signup is successful
+    // Login / Set user and token
     setUser(state, action: PayloadAction<{ user: User; token: string }>) {
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -48,7 +47,11 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
-    // When login/signup fails
+    // Update token only (for token refresh)
+    updateToken(state, action: PayloadAction<string>) {
+      state.token = action.payload;
+    },
+    // On auth failure
     authFailure(state, action: PayloadAction<string>) {
       state.error = action.payload;
       state.loading = false;
@@ -65,8 +68,8 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, authStart, authFailure, logout } = authSlice.actions;
-export default authSlice.reducer;
+// Actions export
+export const { authStart, setUser, updateToken, authFailure, logout } = authSlice.actions;
 
 // Selectors
 export const selectCurrentUser = (state: RootState) => state.auth.user;
@@ -74,3 +77,6 @@ export const selectCurrentToken = (state: RootState) => state.auth.token;
 export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
 export const selectAuthLoading = (state: RootState) => state.auth.loading;
 export const selectAuthError = (state: RootState) => state.auth.error;
+
+// Reducer export
+export default authSlice.reducer;
