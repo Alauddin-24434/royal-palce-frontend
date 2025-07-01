@@ -6,7 +6,7 @@ const authApi = baseApi.injectEndpoints({
     // ✅ Signup endpoint
     signUpUser: build.mutation({
       query: (body) => ({
-        url: '/signup',
+        url: '/users/signup',
         method: 'POST',
         body,
       }),
@@ -15,7 +15,7 @@ const authApi = baseApi.injectEndpoints({
     // ✅ Login endpoint
     loginUser: build.mutation({
       query: (body) => ({
-        url: '/login',
+        url: '/users/login',
         method: 'POST',
         body,
       }),
@@ -24,7 +24,7 @@ const authApi = baseApi.injectEndpoints({
     // ✅ Get current logged-in user
     getMe: build.query({
       query: () => ({
-        url: '/me',
+        url: '/users',
         method: 'GET',
       }),
       providesTags: ['User'],

@@ -32,14 +32,14 @@ export function Header() {
 
   return (
     <header className="bg-[#191a1e] sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto ">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo - Left */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <Crown className="h-4 w-4 lg:h-8 lg:w-8 text-[#bf9310] mr-2" />
-              <span className=" text-lg lg:text-2xl font-bold text-yellow-500">ROYAL PALACE</span>
+              <Crown className="h-4 w-4  lg:h-6 lg:w-6 text-[#bf9310] hover:text-yellow-600 mr-2" />
+              <span className=" text-sm  font-bold text-[#bf9310]  hover:text-yellow-600">ROYAL PALACE</span>
             </Link>
           </div>
 

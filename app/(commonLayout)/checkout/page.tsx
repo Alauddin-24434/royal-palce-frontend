@@ -23,8 +23,10 @@ import {
 } from "@/redux/features/cart/cartSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useBookingInitiateMutation } from "@/redux/features/booking/paymentApi";
 
 export default function RoyalCheckoutPage() {
+  const  [bookingInitiate]=useBookingInitiateMutation();
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
@@ -71,15 +73,11 @@ export default function RoyalCheckoutPage() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("https://royal-place-server.vercel.app/api/initiate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingData),
-      });
+      const response = await bookingInitiate(bookingData).unwrap();
 
-      const result = await response.json();
-      if (response.ok && result?.payment_url) {
-        window.location.href = result.payment_url;
+   
+      if (response?.success && response?.payment_url) {
+        window.location.href = response.payment_url;
       } else {
         alert("Payment initiation failed. Please try again.");
       }

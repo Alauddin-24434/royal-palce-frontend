@@ -33,7 +33,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
             const release = await mutex.acquire();
             try {
                 const refreshResult = await baseQuery(
-                    { url: '/refresh-token', method: 'POST' },
+                    { url: '/users/refresh-token', method: 'POST' },
                     api,
                     extraOptions
                 );
@@ -44,8 +44,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
                     const newToken = resultData.data.accessToken;
                     const decodedUser = jwtDecode<JwtPayload>(newToken);
 
-                    api.dispatch(setUser({ token: newToken, user: decodedUser }));
-
+                    api.dispatch(setUser({ user:decodedUser, token: newToken }));
                     result = await baseQuery(args, api, extraOptions);
                 } else {
                     api.dispatch(logout());
@@ -66,7 +65,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
 const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQueryWithReauth,
-    tagTypes: ['Room', 'Booking', 'User','Testimonial'],
+    tagTypes: ['Room', 'Booking', 'User','Testimonial','Dashboard','Payment'],
     endpoints: () => ({}),
 });
 

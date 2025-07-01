@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
               />
             </div>
             <div className="absolute -top-2 -right-2 bg-white rounded-full px-2 py-1 flex items-center space-x-1">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+              <Star className="w-3 h-3 fill-[#bf9310] text-[#bf9310]" />
               <span className="text-xs font-medium text-black">
                 {testimonial.rating}
               </span>
@@ -112,7 +112,7 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-        <Quote className="w-12 h-12 text-yellow-500 mb-6" />
+        <Quote className="w-12 h-12 text-[#bf9310] mb-6" />
         <p className="text-white text-lg leading-relaxed mb-6">
           "{testimonial?.reviewText}"
         </p>
@@ -149,7 +149,7 @@ const TestimonialsSection = () => {
             <button
               onClick={handleNext}
               disabled={testimonials.length < limit}
-              className={`w-12 h-12 rounded-full bg-yellow-500 text-black flex items-center justify-center transition-colors ${
+              className={`w-12 h-12 rounded-full bg-[#bf9310] text-black flex items-center justify-center transition-colors ${
                 testimonials.length < limit ? "opacity-30 cursor-not-allowed" : "hover:bg-yellow-600 cursor-pointer"
               }`}
             >

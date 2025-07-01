@@ -46,7 +46,7 @@ const menuItems = [
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
-    roles: ["admin", "receptionist"],
+    roles: ["admin", "receptionist","guest"],
   },
   {
     title: "Rooms Management",
@@ -58,13 +58,13 @@ const menuItems = [
     title: "Booked Room",
     url: "/dashboard/booked",
     icon: Bed,
-    roles: ["user"],
+    roles: ["guest"],
   },
   {
     title: "Payment",
     url: "/dashboard/payment",
     icon: Bed,
-    roles: ["user"],
+    roles: ["guest"],
   },
   {
     title: "Bookings Management",
@@ -72,12 +72,12 @@ const menuItems = [
     icon: Calendar,
     roles: ["admin", "receptionist"],
   },
-  // {
-  //   title: "Payments Management",
-  //   url: "/dashboard/payments",
-  //   icon: CreditCard,
-  //   roles: ["admin", "receptionist"],
-  // },
+  {
+    title: "Payments Management",
+    url: "/dashboard/payments",
+    icon: CreditCard,
+    roles: ["admin", "receptionist"],
+  },
   // {
   //   title: "Testimonials",
   //   url: "/dashboard/testimonials",
@@ -119,11 +119,11 @@ export function AppSidebar() {
   }
   const user = useSelector(selectCurrentUser);
   console.log(user)
-  const role = (user?.role === "admin" || user?.role === "receptionist" || user?.role === "user")
+  const role = (user?.role === "admin" || user?.role === "receptionist" || user?.role === "guest")
     ? user.role
-    : "user";
+    : "guest";
 
-  const [currentRole, setCurrentRole] = useState<"admin" | "receptionist" | "user">(role);
+  const [currentRole, setCurrentRole] = useState<"admin" | "receptionist" | "guest">(role);
 
 
   const filteredMenuItems = menuItems.filter((item) => item.roles.includes(currentRole))

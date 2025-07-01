@@ -107,19 +107,19 @@ export default function RoomsPage() {
     <div className="min-h-screen container mx-auto py-12">
       <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
 
- 
-         {/* Title */}
-            <div className="flex items-center justify-center">
-              <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6" />
-              <div className="flex items-center">
-                <Bed className="w-6 h-6 text-[#bf9310] mr-3" />
-                <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
-                 Luxury Accommodations
-                </h2>
-                <Bed className="w-6 h-6 text-[#bf9310] ml-3" />
-              </div>
-              <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6" />
-            </div>
+
+      {/* Title */}
+      <div className="flex items-center justify-center">
+        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6" />
+        <div className="flex items-center">
+          <Bed className="w-6 h-6 text-[#bf9310] mr-3" />
+          <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
+            Luxury Accommodations
+          </h2>
+          <Bed className="w-6 h-6 text-[#bf9310] ml-3" />
+        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6" />
+      </div>
 
       {/* FILTER SECTION */}
       <div className="px-4 space-y-6">
@@ -173,7 +173,7 @@ export default function RoomsPage() {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className="w-4 h-4 fill-amber-400 text-amber-400 transition-all duration-300 group-hover:scale-125 group-hover:rotate-12"
+                          className="w-4 h-4 fill-[#bf9310] text-[#bf9310] transition-all duration-300 group-hover:scale-125 group-hover:rotate-12"
                           style={{ transitionDelay: `${i * 50}ms` }}
                         />
                       ))}
@@ -194,8 +194,8 @@ export default function RoomsPage() {
                     </Button>
                   </Link>
                 </div>
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-yellow-500 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-yellow-500 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#bf9310] opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#bf9310] opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
               </div>
             </Card>
           ))}
@@ -203,22 +203,40 @@ export default function RoomsPage() {
 
         {/* PAGINATION */}
         <div className="flex justify-center gap-2 mt-8">
-          <Button onClick={() => setPage((prev) => Math.max(1, prev - 1))} disabled={page === 1}>
+          <Button
+            className="bg-[#bf9310] text-white hover:bg-[#a87e0d]  cursor-pointer"
+            onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+            disabled={page === 1}
+          >
             <ChevronLeft className="w-4 h-4" />
           </Button>
-          {[...Array(totalPages)].map((_, i) => (
-            <Button
-              key={i}
-              variant={page === i + 1 ? "default" : "outline"}
-              onClick={() => setPage(i + 1)}
-            >
-              {i + 1}
-            </Button>
-          ))}
-          <Button onClick={() => setPage((prev) => prev + 1)} disabled={page === totalPages}>
-            <ChevronRight className="w-4 h-4" />
+
+          {[...Array(totalPages)].map((_, i) => {
+            const isActive = page === i + 1;
+            return (
+              <Button
+                key={i}
+                onClick={() => setPage(i + 1)}
+                className={
+                  isActive
+                    ? "bg-[#bf9310] text-white hover:bg-[#a87e0d] "
+                    : "border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]  cursor-pointer"
+                }
+              >
+                {i + 1}
+              </Button>
+            );
+          })}
+
+          <Button
+            className="bg-[#bf9310] text-white hover:bg-[#a87e0d] cursor-pointer"
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={page === totalPages}
+          >
+            <ChevronRight className="w-4 h-4 " />
           </Button>
         </div>
+
       </div>
     </div>
   );

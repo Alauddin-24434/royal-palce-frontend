@@ -4,7 +4,7 @@ const serviceApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createService: build.mutation({
       query: (body) => ({
-        url: '/service',
+        url: '/services',
         method: 'POST',
         body,
       }),
@@ -18,14 +18,14 @@ const serviceApi = baseApi.injectEndpoints({
  
     updateService: build.mutation({
       query: ({ id ,formData}) => ({
-        url: `/service/${id}`,
+        url: `/services/${id}`,
         method: 'PATCH',  // or PUT, depending on your API
         body:formData,
       }),
     }),
     deleteService: build.mutation({
       query: (id) => ({
-        url: `/service/${id}`,
+        url: `/services/${id}`,
         method: 'DELETE',
       }),
     }),

@@ -84,7 +84,7 @@ const RoomAndSuites = () => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className="w-4 h-4 fill-amber-400 text-amber-400 transition-all duration-300 group-hover:scale-125 group-hover:rotate-12"
+                          className="w-4 h-4 fill-[#bf9310] text-[#bf9310] transition-all duration-300 group-hover:scale-125 group-hover:rotate-12"
                           style={{ transitionDelay: `${i * 50}ms` }}
                         />
                       ))}
@@ -127,8 +127,8 @@ const RoomAndSuites = () => {
 
 
                 {/* Corner decorative elements */}
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-yellow-500 opacity-0 transition-all duration-500 group-hover:opacity-100 transform scale-75 group-hover:scale-100" />
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-yellow-500 opacity-0 transition-all duration-500 group-hover:opacity-100 transform scale-75 group-hover:scale-100" />
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#bf9310] opacity-0 transition-all duration-500 group-hover:opacity-100 transform scale-75 group-hover:scale-100" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#bf9310] opacity-0 transition-all duration-500 group-hover:opacity-100 transform scale-75 group-hover:scale-100" />
               </div>
             </Card>
           ))}

@@ -4,7 +4,7 @@ const roomApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createRoom: build.mutation({
       query: (body) => ({
-        url: '/room',
+        url: '/rooms',
         method: 'POST',
         body,
       }),
@@ -27,7 +27,7 @@ const roomApi = baseApi.injectEndpoints({
     if (params?.page) queryParams.append("page", String(params.page));
 
     return {
-      url: `/filter/rooms?${queryParams.toString()}`,
+      url: `/rooms/filter?${queryParams.toString()}`,
       method: "GET",
     };
   },
@@ -36,20 +36,20 @@ const roomApi = baseApi.injectEndpoints({
 
     findSingleRoom: build.query({
       query: (id) => ({
-        url: `/room/${id}`,
+        url: `/rooms/${id}`,
         method: 'GET',
       }),
     }),
     updateRoom: build.mutation({
       query: ({ id, ...formData }) => ({
-        url: `/room/${id}`,
+        url: `/rooms/${id}`,
         method: 'PATCH',  // or PUT, depending on your API
         body: formData,
       }),
     }),
     deleteRoom: build.mutation({
       query: (id) => ({
-        url: `/room/${id}`,
+        url: `/rooms/${id}`,
         method: 'DELETE',
       }),
     }),

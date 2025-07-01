@@ -4,7 +4,7 @@ const testimonialApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     createTestimonial: build.mutation({
       query: (body) => ({
-        url: '/testimonial',
+        url: '/testimonials',
         method: 'POST',
         body,
       }),
@@ -20,14 +20,14 @@ const testimonialApi = baseApi.injectEndpoints({
 
     findTestimonialsByRoomId: build.query({
       query: (id) => ({
-        url: `/testimonial/${id}`,
+        url: `/testimonials/${id}`,
         method: 'GET',
       }),
       providesTags: ["Testimonial"],
     }),
     deleteTestimonial: build.mutation({
       query: (id) => ({
-        url: `/testimonial/${id}`,
+        url: `/testimonials/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ["Testimonial"],

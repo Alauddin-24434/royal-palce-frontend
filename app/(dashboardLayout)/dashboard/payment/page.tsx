@@ -80,7 +80,7 @@ export default function Payments() {
                   <TableHead className="text-slate-300">Method</TableHead>
                   <TableHead className="text-slate-300">Date</TableHead>
                   <TableHead className="text-slate-300">Status</TableHead>
-                  <TableHead className="text-slate-300">Actions</TableHead>
+               
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -105,14 +105,7 @@ export default function Payments() {
                         {payment.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>
-                      <Button
-                        size="sm"
-                        className="bg-transparent hover:bg-red-400 text-white border cursor-pointer"
-                      >
-                        Refund
-                      </Button>
-                    </TableCell>
+                 
                   </TableRow>
                 ))}
               </TableBody>
