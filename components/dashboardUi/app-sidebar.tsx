@@ -1,6 +1,10 @@
 "use client"
 
+import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
+import Link from "next/link"
+import { useDispatch, useSelector } from "react-redux"
+
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +18,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,32 +26,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import { Button } from "@/components/ui/button"
 import {
   LayoutDashboard,
   Bed,
   Calendar,
   CreditCard,
-  Star,
   Users,
   Building,
   ChevronDown,
   LogOut,
   User,
   Crown,
-  UserCheck,
 } from "lucide-react"
-import Link from "next/link"
-import { useDispatch, useSelector } from "react-redux"
-import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useRouter } from "next/navigation"
+
+import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice"
 
 const menuItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
-    roles: ["admin", "receptionist","guest"],
+    roles: ["admin", "receptionist", "guest"],
+  },
+  {
+    title: "Payments Management",
+    url: "/dashboard/payments",
+    icon: CreditCard,
+    roles: ["admin", "receptionist"],
   },
   {
     title: "Rooms Management",
@@ -61,29 +69,12 @@ const menuItems = [
     roles: ["guest"],
   },
   {
-    title: "Payment",
-    url: "/dashboard/payment",
-    icon: Bed,
-    roles: ["guest"],
-  },
-  {
     title: "Bookings Management",
     url: "/dashboard/bookings",
     icon: Calendar,
     roles: ["admin", "receptionist"],
   },
-  {
-    title: "Payments Management",
-    url: "/dashboard/payments",
-    icon: CreditCard,
-    roles: ["admin", "receptionist"],
-  },
-  // {
-  //   title: "Testimonials",
-  //   url: "/dashboard/testimonials",
-  //   icon: Star,
-  //   roles: ["admin", "receptionist"],
-  // },
+
   {
     title: "Users Management",
     url: "/dashboard/users",
@@ -98,90 +89,70 @@ const menuItems = [
   },
 ]
 
-const roleIcons = {
-  admin: Crown,
-  receptionist: UserCheck,
-  user: User,
-}
-
-const roleColors = {
-  admin: "bg-gradient-to-r from-amber-400 to-amber-600",
-  receptionist: "bg-gradient-to-r from-blue-400 to-blue-600",
-  user: "bg-gradient-to-r from-emerald-400 to-emerald-600",
-}
-
 export function AppSidebar() {
+  const pathname = usePathname()
   const dispatch = useDispatch()
   const router = useRouter()
+  const user = useSelector(selectCurrentUser)
+
+  const role = (user?.role === "admin" || user?.role === "receptionist" || user?.role === "guest")
+    ? user.role
+    : "guest"
+
+  const [currentRole] = useState<"admin" | "receptionist" | "guest">(role)
+
   const handleLogout = () => {
     dispatch(logout())
     router.push("/")
   }
-  const user = useSelector(selectCurrentUser);
-  console.log(user)
-  const role = (user?.role === "admin" || user?.role === "receptionist" || user?.role === "guest")
-    ? user.role
-    : "guest";
-
-  const [currentRole, setCurrentRole] = useState<"admin" | "receptionist" | "guest">(role);
-
 
   const filteredMenuItems = menuItems.filter((item) => item.roles.includes(currentRole))
-
-
 
   return (
     <Sidebar className="border-r border-slate-700">
       <SidebarHeader className="border-b border-slate-700 p-4">
-        <div className="flex items-center space-x-3">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Crown className="h-8 w-8 text-[#bf9310] mr-2" />
-            <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
-          </Link>
-        </div>
+        <Link href="/" className="flex items-center space-x-2">
+          <Crown className="h-8 w-8 text-[#bf9310]" />
+          <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-4">
-        {/* Role Switcher */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 text-xs uppercase tracking-wider">
-            Current Role
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="w-full  h-12 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600"
-                > <User />
-                  <div className="flex items-center justify-center space-x-3">
-
-                    <span className="text-white capitalize font-medium">{currentRole}</span>
-                  </div>
-
-                </Button>
-              </DropdownMenuTrigger>
-
-            </DropdownMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
         {/* Navigation Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 text-xs uppercase tracking-wider">Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-400 text-xs uppercase tracking-wider">
+            Navigation
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {filteredMenuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className="hover:bg-slate-700/50">
-                    <Link href={item.url} className="flex items-center space-x-3 text-slate-300 hover:text-white">
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {filteredMenuItems.map((item) => {
+                let isActive = false;
+
+                if (item.url === "/dashboard") {
+                  isActive = pathname === "/dashboard";
+                } else {
+                  isActive = pathname.startsWith(item.url);
+                }
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      className={`hover:bg-slate-700/50 ${isActive ? "bg-slate-700 text-white font-semibold" : ""
+                        }`}
+                    >
+                      <Link
+                        href={item.url}
+                        className="flex items-center space-x-3 text-slate-300 hover:text-white"
+                      >
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -207,19 +178,16 @@ export function AppSidebar() {
             <Link href="/dashboard/profile">
               <DropdownMenuItem className="hover:bg-slate-700">
                 <User className="mr-2 h-4 w-4 text-slate-400" />
-
-
                 <span className="text-white">Profile</span>
-
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator className="bg-slate-700" />
-            <DropdownMenuItem className="hover:bg-slate-700 text-red-400">
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="hover:bg-slate-700 text-red-400 cursor-pointer"
+            >
               <LogOut className="mr-2 h-4 w-4" />
-              <button onClick={handleLogout}>
-                <span>Logout</span>
-              </button>
-
+              <span>Logout</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

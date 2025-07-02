@@ -47,6 +47,15 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ['User'],
     }),
+    // update user by patch
+    updateUser: build.mutation({
+      query: ({ id, body }) => ({
+        url: `/users/${id}`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
@@ -56,6 +65,7 @@ export const {
   useGetMeQuery,
   useGetAllUsersQuery,
   useGetSingleUserQuery,
+  useUpdateUserMutation
 } = authApi;
 
 export default authApi;

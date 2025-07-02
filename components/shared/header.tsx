@@ -2,27 +2,25 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Menu, Phone, MapPin, Crown } from "lucide-react"
+import { useRouter, usePathname } from "next/navigation"
+import { Crown, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Image from "next/image"
 import { useSelector, useDispatch } from "react-redux"
-import { selectCurrentUser, logout} from "@/redux/features/auth/authSlice"
+import { selectCurrentUser, logout } from "@/redux/features/auth/authSlice"
 
 export function Header() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const user = useSelector(selectCurrentUser)
   const dispatch = useDispatch()
   const router = useRouter()
+  const pathname = usePathname()
 
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Rooms & Suites", href: "/rooms" },
     { name: "Amenities", href: "/amenities" },
-    // { name: "Gallery", href: "/gallery" },
-    // { name: "About", href: "/about" },
-    // { name: "Contact", href: "/contact" },
+    { name: "Checkout", href: "/checkout" },
   ]
 
   const handleLogout = () => {
@@ -31,135 +29,163 @@ export function Header() {
   }
 
   return (
-    <header className="bg-[#191a1e] sticky top-0 z-50">
-      <div className="container mx-auto ">
-        <div className="flex items-center justify-between h-16">
+    <>
+      {/* Header */}
+      <header className="bg-[#191a1e] sticky top-0 z-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center">
+                <Crown className="h-5 w-5 text-[#bf9310] mr-2" />
+                <span className="font-bold text-[#bf9310] text-sm lg:text-base">
+                  ROYAL PALACE
+                </span>
+              </Link>
+            </div>
 
-          {/* Logo - Left */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <Crown className="h-4 w-4  lg:h-6 lg:w-6 text-[#bf9310] hover:text-yellow-600 mr-2" />
-              <span className=" text-sm  font-bold text-[#bf9310]  hover:text-yellow-600">ROYAL PALACE</span>
-            </Link>
+            {/* Center Nav (desktop) */}
+            <nav className="hidden md:flex space-x-10 mx-auto">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`font-medium transition-colors duration-200 ${pathname === item.href
+                      ? "text-yellow-500"
+                      : "text-white hover:text-yellow-500"
+                    }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Right Side */}
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center space-x-2 border rounded p-1 hover:text-yellow-500 transition-colors"
+                  >
+                    <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-yellow-500">
+                      <Image
+                        src={user?.image || "/default-avatar.png"}
+                        alt={user?.name || "Profile"}
+                        width={36}
+                        height={36}
+                        className="object-cover"
+                      />
+                    </div>
+                    <span className="text-white font-medium hidden sm:inline">
+                      Dashboard
+                    </span>
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="text-white bg-transparent border cursor-pointer font-semibold px-4 py-2 rounded"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link href="/login">
+                  <Button className="bg-[#bf9310] hover:bg-yellow-600 text-black hidden lg:block font-semibold">
+                    Login
+                  </Button>
+                </Link>
+              )}
+
+              {/* Sidebar Toggle */}
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="md:hidden text-white"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            </div>
           </div>
+        </div>
+      </header>
 
-          {/* Navigation Links - Center */}
-          <nav className="hidden md:flex space-x-10 mx-auto">
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          {/* Sidebar */}
+          <div className="w-64 bg-[#191a1e] text-white p-4 shadow-lg space-y-4">
+            {/* Close button */}
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="text-white hover:text-yellow-500 mb-4"
+            >
+              <X />
+            </button>
+
+            {/* Nav links */}
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-white hover:text-yellow-500 font-medium transition-colors duration-200"
+                onClick={() => setIsSidebarOpen(false)}
+                className={`block px-4 py-2 rounded font-medium ${pathname === item.href
+                    ? "bg-yellow-600 text-black"
+                    : "hover:bg-yellow-700"
+                  }`}
               >
                 {item.name}
               </Link>
             ))}
-          </nav>
 
-          {/* Right Side - Dashboard + Auth Buttons */}
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <>
-                {/* Dashboard Link with Avatar */}
-                <Link
-                  href="/dashboard"
-                  className="flex items-center space-x-2 border  rounded p-1 hover:text-yellow-500 transition-colors"
-                >
-                  <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-yellow-500">
-                    <Image
-                      src={user?.image || "/default-avatar.png"}
-                      alt={user?.name || "Profile"}
-                      width={36}
-                      height={36}
-                      className="object-cover"
-                    />
-                  </div>
-                  <span className="text-white font-medium hidden sm:inline">Dashboard</span>
+            <div className="border-t border-gray-700 pt-4">
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center space-x-2"
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-full overflow-hidden border border-yellow-500">
+                      <Image
+                        src={user?.image || "/default-avatar.png"}
+                        alt="Profile"
+                        width={32}
+                        height={32}
+                        className="object-cover"
+                      />
+                    </div>
+                    <span className="text-white">Dashboard</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout()
+                      setIsSidebarOpen(false)
+                    }}
+                    className="mt-3 w-full text-left text-white border border-yellow-600 px-3 py-2 rounded hover:bg-yellow-600 hover:text-black"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link href="/login">
+                  <Button
+                    onClick={() => setIsSidebarOpen(false)}
+                    className="w-full bg-[#bf9310] hover:bg-yellow-600 text-black font-semibold mt-2"
+                  >
+                    Login
+                  </Button>
                 </Link>
-
-                {/* Logout Button */}
-                <button
-                  onClick={handleLogout}
-                  className=" text-white bg-transparent border cursor-pointer font-semibold px-4 py-2 rounded"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link href="/login">
-                <Button className="bg-[#bf9310] hover:bg-yellow-600 text-black hidden lg:block font-semibold">
-                  Login
-                </Button>
-              </Link>
-            )}
-
-            {/* Mobile Menu Button */}
-                   {/* Mobile Menu */}
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon" className="text-white">
-                  <Menu className="w-6 h-6" />
-                </Button>
-              </SheetTrigger>
-
-              <SheetContent side="right" className="bg-[#1a1a1a] border-yellow-500/20 text-white">
-                <div className="flex flex-col space-y-6 mt-10 px-2">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="text-white hover:text-yellow-500 text-lg font-medium transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-
-                  <hr className="border-yellow-500/30" />
-
-                  {user ? (
-                    <>
-                      <Link
-                        href="/dashboard"
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-3 p-3 border border-yellow-500 rounded hover:bg-yellow-500/10 transition-all"
-                      >
-                        <Image
-                          src={user.image || "/default-avatar.png"}
-                          alt="Profile"
-                          width={40}
-                          height={40}
-                          className="rounded-full border-2 border-yellow-500 object-cover"
-                        />
-                        <span className="font-semibold text-white">Dashboard</span>
-                      </Link>
-
-                      <Button
-                        onClick={() => {
-                          handleLogout()
-                          setIsOpen(false)
-                        }}
-                        className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded w-full"
-                      >
-                        Logout
-                      </Button>
-                    </>
-                  ) : (
-                    <Link href="/login" className="w-full">
-                      <Button
-                        onClick={() => setIsOpen(false)}
-                        className="bg-[#bf9310] hover:bg-yellow-600 text-black font-semibold w-full"
-                      >
-                        Login
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-              </SheetContent>
-            </Sheet>
+              )}
+            </div>
           </div>
+
+          {/* Background overlay */}
+          <div
+            className="flex-1 bg-black bg-opacity-50"
+            onClick={() => setIsSidebarOpen(false)}
+          />
         </div>
-      </div>
-    </header>
+      )}
+    </>
   )
 }

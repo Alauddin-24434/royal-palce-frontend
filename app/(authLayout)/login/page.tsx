@@ -1,14 +1,14 @@
 "use client";
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useForm } from "react-hook-form"
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
 import { useLoginUserMutation } from "@/redux/features/auth/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useRouter, useSearchParams } from "next/navigation";
-
 
 interface LoginFormData {
   email: string;
@@ -19,36 +19,43 @@ export default function LoginPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // URL থেকে redirect প্যারামিটার নিন, না থাকলে ডিফল্ট "/" পেজে যাবে
   const redirect = searchParams.get("redirect") || "/";
 
   const [login, { isLoading, error }] = useLoginUserMutation();
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<LoginFormData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-
+      // Login API কল
       const response = await login(data).unwrap();
 
-
       const { accessToken, user } = response?.data;
-      console.log("accessToken:", accessToken );
-      console.log("user:", user);
 
-      // Redux store এ user আর token সেট করুন
+      // Redux স্টোরে user & token সেট করুন
       dispatch(setUser({ user, token: accessToken }));
-      reset()
+
+      // ফর্ম রিসেট করুন
+      reset();
+
+      // সফল লগিনের পরে redirect পেজে নেভিগেট করুন
       router.replace(redirect);
-
     } catch (err) {
-      console.error("login failed:", err);
-
+      console.error("Login failed:", err);
+      // এখানে তোমার মতো এরর হ্যান্ডলিং যোগ করতে পারো
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      {/* Background overlay with resort imagery */}
+      {/* Background overlay */}
       <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-10"></div>
 
       <div className="relative w-full max-w-md">
@@ -73,12 +80,10 @@ export default function LoginPage() {
                   pattern: {
                     value: /^\S+@\S+$/i,
                     message: "Invalid email address",
-                  }
+                  },
                 })}
-
                 placeholder="Enter your email"
                 className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
-
               />
               {errors.email && <p className="text-red-400 text-sm">{errors.email.message}</p>}
             </div>
@@ -88,32 +93,26 @@ export default function LoginPage() {
                 <Label htmlFor="password" className="text-slate-200 font-medium">
                   Password
                 </Label>
-
               </div>
               <Input
                 id="password"
                 type="password"
                 {...register("password", {
                   required: "Password is Required",
-                  minLength: { value: 6, message: "Minimum 6 characters required" }
-                },
-
-                )}
+                  minLength: { value: 6, message: "Minimum 6 characters required" },
+                })}
                 placeholder="Enter your password"
                 className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
-
               />
               {errors.password && <p className="text-red-400 text-sm">{errors.password.message}</p>}
             </div>
-
-
 
             <Button
               type="submit"
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50"
             >
-              {isLoading ? "Loding..." : "Sign In"}
+              {isLoading ? "Loading..." : "Sign In"}
             </Button>
 
             {error && (
@@ -122,8 +121,6 @@ export default function LoginPage() {
               </p>
             )}
           </form>
-
-
 
           {/* Signup Link */}
           <div className="text-center mt-6">
@@ -135,9 +132,7 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
-
-
       </div>
     </div>
-  )
+  );
 }

@@ -95,7 +95,7 @@ const chartData = [
         </div>
       </div>
 
-    <Card className="bg-slate-800/50 border-slate-700">
+    <Card className="bg-[#191a1e]">
   <CardHeader>
     <CardTitle className="text-white">Payment Status Chart</CardTitle>
   </CardHeader>
@@ -137,7 +137,7 @@ const chartData = [
 
 
       {/* Table */}
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-[#191a1e]">
         <CardHeader>
           <CardTitle className="text-white">Recent Payments</CardTitle>
         </CardHeader>
@@ -158,7 +158,7 @@ const chartData = [
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-slate-700">
+                  <TableRow className="border-[#191a1e]">
                     <TableHead className="text-slate-300">Transaction ID</TableHead>
 
 

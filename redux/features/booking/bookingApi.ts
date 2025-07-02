@@ -1,5 +1,3 @@
-// redux/api/bookingApi.ts
-
 import baseApi from "@/redux/api/baseApi";
 
 const bookingApi = baseApi.injectEndpoints({
@@ -23,7 +21,7 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ["Booking"],
     }),
 
-    // ✅ Get All Bookings with filter (query param based)
+    // ✅ Get All Bookings (with optional filters)
     getAllBookings: build.query({
       query: (params?: Record<string, any>) => ({
         url: "/bookings",
@@ -33,12 +31,27 @@ const bookingApi = baseApi.injectEndpoints({
       providesTags: ["Booking"],
     }),
 
-    // ✅ Get Booking by ID (or check availability)
+    // ✅ Get Booking By ID
     getBookingById: build.query({
       query: (id: string) => ({
         url: `/bookings/${id}`,
         method: "GET",
       }),
+      providesTags: ["Booking"],
+    }),
+
+    // ✅ Get Booked Dates for a Room
+    getBookedDates: build.query<string[], string>({
+      query: (id) => ({
+        url: `/bookings/check/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (response: any) => {
+        if (response?.success && Array.isArray(response?.data?.bookedDates)) {
+          return response.data.bookedDates.filter((d: any) => typeof d === "string" && d.trim());
+        }
+        return [];
+      },
       providesTags: ["Booking"],
     }),
   }),
@@ -49,6 +62,7 @@ export const {
   useCancelBookingMutation,
   useGetAllBookingsQuery,
   useGetBookingByIdQuery,
+  useGetBookedDatesQuery, // ✅ Export new query hook
 } = bookingApi;
 
 export default bookingApi;

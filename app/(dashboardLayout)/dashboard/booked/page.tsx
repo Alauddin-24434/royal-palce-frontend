@@ -71,7 +71,7 @@ export default function BookedRooms() {
 
 
             {/* Bookings Table */}
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
                 <CardHeader>
                     <CardTitle className="text-white">Recent Bookings</CardTitle>
                 </CardHeader>
@@ -79,7 +79,7 @@ export default function BookedRooms() {
                     <div className="overflow-x-auto">
                         <Table>
                             <TableHeader>
-                                <TableRow className="border-slate-700">
+                                <TableRow className="bg-[#2a2d38] text-slate-300">
 
 
                                     <TableHead className="text-slate-300">Room Title</TableHead>
@@ -88,7 +88,7 @@ export default function BookedRooms() {
                                     <TableHead className="text-slate-300">Nights</TableHead>
                                     <TableHead className="text-slate-300">Amount</TableHead>
                                     <TableHead className="text-slate-300">Status</TableHead>
-                                    <TableHead className="text-slate-300">Actions</TableHead>
+                                    {/* <TableHead className="text-slate-300">Actions</TableHead> */}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -121,7 +121,7 @@ export default function BookedRooms() {
                                                 {booking.status}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell>
+                                        {/* <TableCell>
                                             <div className="flex items-center gap-2">
                                              
                                               
@@ -133,7 +133,7 @@ export default function BookedRooms() {
                                                     Cancel
                                                 </Button>
                                             </div>
-                                        </TableCell>
+                                        </TableCell> */}
                                     </TableRow>
                                 ))}
                             </TableBody>

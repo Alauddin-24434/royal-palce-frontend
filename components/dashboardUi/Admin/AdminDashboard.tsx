@@ -17,7 +17,7 @@ export default function AdminDashboard({ stats, bookings }: any) {
         {stats.map((stat: any, index: number) => {
           const Icon = require("lucide-react")[stat.icon] || UserCheck
           return (
-            <Card key={index} className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+            <Card key={index} className="bg-[#191a1e]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-slate-300">{stat.title}</CardTitle>
                 <Icon className={`h-4 w-4 ${stat.color}`} />
@@ -36,14 +36,14 @@ export default function AdminDashboard({ stats, bookings }: any) {
       </div>
 
       <div className="mt-6">
-        <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+        <Card className="bg-[#191a1e]">
           <CardHeader>
             <CardTitle className="text-white">Recent Bookings</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {bookings.map((booking: any) => (
-                <div key={booking._id} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg">
+                <div key={booking._id} className="flex items-center justify-between p-4 bg-[#191a1e] rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full flex items-center justify-center">
                       <UserCheck className="h-5 w-5 text-slate-900" />

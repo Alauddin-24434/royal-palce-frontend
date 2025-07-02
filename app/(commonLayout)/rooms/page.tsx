@@ -104,140 +104,165 @@ export default function RoomsPage() {
   }
 
   return (
-    <div className="min-h-screen container mx-auto py-12">
+    <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
       <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
 
-
       {/* Title */}
-      <div className="flex items-center justify-center">
-        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6" />
-        <div className="flex items-center">
-          <Bed className="w-6 h-6 text-[#bf9310] mr-3" />
-          <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
-            Luxury Accommodations
-          </h2>
-          <Bed className="w-6 h-6 text-[#bf9310] ml-3" />
+      <div className="flex flex-col items-center justify-center text-center space-y-3 mb-10">
+        <div className="flex items-center justify-center space-x-4">
+          <div className="h-px w-20 md:w-32 bg-gradient-to-r from-transparent via-[#bf9310] to-transparent" />
+          <div className="flex items-center space-x-2">
+            <Bed className="w-5 h-5 md:w-6 md:h-6 text-[#bf9310]" />
+            <h2 className="text-[#bf9310] text-sm md:text-base lg:text-lg font-medium tracking-widest uppercase">
+              Luxury Accommodations
+            </h2>
+            <Bed className="w-5 h-5 md:w-6 md:h-6 text-[#bf9310]" />
+          </div>
+          <div className="h-px w-20 md:w-32 bg-gradient-to-r from-transparent via-[#bf9310] to-transparent" />
         </div>
-        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6" />
       </div>
 
       {/* FILTER SECTION */}
-      <div className="px-4 space-y-6">
-        <div className="flex flex-col md:flex-row lg:justify-between gap-6">
+      <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-8">
+        {/* Show Select only on small screens */}
+        <div className="w-full block md:hidden"> 
+          <select
+            value={tab}
+            onChange={(e) => {
+              setTab(e.target.value);
+              setPage(1);
+            }}
+             className="appearance-none w-full border border-[#191a1e] rounded px-4 py-2 bg-[#191a1e] text-white text-sm focus:outline-none focus:ring-0 focus:border-[#191a1e]"
+          >
+
+            {["all", "luxury", "suite", "deluxe", "twine"].map((t) => (
+              <option key={t} value={t}>
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Show Tabs only on medium and above */}
+        <div className="hidden md:block">
           <Tabs value={tab} onValueChange={(val) => { setTab(val); setPage(1); }}>
-            <TabsList>
+            <TabsList className="flex-wrap justify-center md:justify-start">
               {["all", "luxury", "suite", "deluxe", "twine"].map((t) => (
-                <TabsTrigger key={t} value={t} className="capitalize">{t}</TabsTrigger>
+                <TabsTrigger key={t} value={t} className="capitalize text-sm md:text-base px-4 py-1">
+                  {t}
+                </TabsTrigger>
               ))}
             </TabsList>
           </Tabs>
+        </div>
 
+        {/* Search input field */}
+        <div className="w-full md:w-80">
           <Input
             placeholder="Search rooms..."
-            value={searchTerm} // ✅ input controlled here
+            value={searchTerm}
             onChange={handleSearchChange}
-            className="md:w-80"
+            className="w-full"
           />
         </div>
+      </div>
 
-        {/* ROOM GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {displayRooms.map((room: IRoom) => (
-            <Card
-              key={room._id}
-              className="group relative w-full max-w-md overflow-hidden bg-black rounded-none p-0 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20"
-            >
-              <div className="relative h-96 overflow-hidden">
-                <Image
-                  src={room.images[0] || "/placeholder.svg"}
-                  alt="Luxury hotel room"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/40 transition-all duration-500 group-hover:bg-black/70" />
-                <div className="absolute top-4 left-4 px-2">
-                  <div className="text-3xl font-light text-white">{room.roomNumber}</div>
+
+      {/* ROOM GRID */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {displayRooms.map((room: IRoom) => (
+          <Card
+            key={room._id}
+            className="group relative w-full overflow-hidden bg-black rounded-none p-0 transition-transform duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20"
+          >
+            <div className="relative h-80 sm:h-96 overflow-hidden">
+              <Image
+                src={room.images[0] || "/placeholder.svg"}
+                alt="Luxury hotel room"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-all duration-500" />
+
+              {/* Price Badge */}
+              <div className="absolute top-4 right-4">
+                <div className="bg-[#bf9310] text-white px-3 py-1 text-xs md:text-sm font-semibold">
+                  ${room.price}/night
                 </div>
-                <div className="absolute top-4 right-4 transform transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-1">
-                  <div className="relative">
-                    <div className="bg-[#bf9310] text-white px-4 py-2 font-semibold text-sm">
-                      ${room.price}/night
-                    </div>
-                    <div className="absolute right-0 top-full w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-[#bf9310]" />
-                  </div>
-                </div>
-                <div className="absolute bottom-6 left-6 text-white space-y-4 z-10 group-hover:translate-y-[-8px]">
-                  <div>
-                    <div className="text-xl font-light py-2">{room.title}</div>
-                    <div className="flex gap-1 mt-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-4 h-4 fill-[#bf9310] text-[#bf9310] transition-all duration-300 group-hover:scale-125 group-hover:rotate-12"
-                          style={{ transitionDelay: `${i * 50}ms` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex gap-4 text-sm mt-2">
-                    <div className="flex items-center gap-2"><Bed className="w-4 h-4 text-[#bf9310]" /><span>King Bed</span></div>
-                    <div className="flex items-center gap-2"><Users className="w-4 h-4 text-[#bf9310]" /><span>2 Person</span></div>
-                    <div className="flex items-center gap-2"><Home className="w-4 h-4 text-[#bf9310]" /><span>1500 sqft</span></div>
-                  </div>
-                  <Link href={`/rooms/${room._id}`}>
-                    <Button
-                      variant="outline"
-                      className="mt-2 w-fit cursor-pointer bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
-                    >
-                      <span className="flex items-center gap-2">VIEW DETAILS <ArrowRight className="w-4 h-4 group-hover:translate-x-1" /></span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-full" />
-                    </Button>
-                  </Link>
-                </div>
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#bf9310] opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#bf9310] opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100" />
+                <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-t-[#bf9310] border-l-transparent border-r-transparent mx-auto" />
               </div>
-            </Card>
-          ))}
-        </div>
 
-        {/* PAGINATION */}
-        <div className="flex justify-center gap-2 mt-8">
-          <Button
-            className="bg-[#bf9310] text-white hover:bg-[#a87e0d]  cursor-pointer"
-            onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-            disabled={page === 1}
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
+              {/* Room Info */}
+              <div className="absolute bottom-6 left-6 text-white space-y-2 text-sm md:text-base">
+                <div className="font-light text-lg md:text-xl">{room.title}</div>
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-[#bf9310] text-[#bf9310] transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12"
+                      style={{ transitionDelay: `${i * 50}ms` }}
+                    />
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-3 text-xs md:text-sm mt-2">
+                  <span className="flex items-center gap-1"><Bed className="w-4 h-4 text-[#bf9310]" /> King Bed</span>
+                  <span className="flex items-center gap-1"><Users className="w-4 h-4 text-[#bf9310]" /> 2 Person</span>
+                  <span className="flex items-center gap-1"><Home className="w-4 h-4 text-[#bf9310]" /> 1500 sqft</span>
+                </div>
 
-          {[...Array(totalPages)].map((_, i) => {
-            const isActive = page === i + 1;
-            return (
-              <Button
-                key={i}
-                onClick={() => setPage(i + 1)}
-                className={
-                  isActive
-                    ? "bg-[#bf9310] text-white hover:bg-[#a87e0d] "
-                    : "border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]  cursor-pointer"
-                }
-              >
-                {i + 1}
-              </Button>
-            );
-          })}
+                <Link href={`/rooms/${room._id}`}>
+                  <Button
+                    variant="outline"
+                    className="mt-2 text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer transition duration-300 relative"
+                  >
+                    <span className="flex items-center gap-2 text-xs md:text-sm">
+                      VIEW DETAILS <ArrowRight className="w-4 h-4" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-full" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
 
-          <Button
-            className="bg-[#bf9310] text-white hover:bg-[#a87e0d] cursor-pointer"
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page === totalPages}
-          >
-            <ChevronRight className="w-4 h-4 " />
-          </Button>
-        </div>
+      {/* PAGINATION */}
+      <div className="flex justify-center flex-wrap gap-2 mt-10">
+        <Button
+          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+          disabled={page === 1}
+          className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </Button>
 
+        {[...Array(totalPages)].map((_, i) => {
+          const isActive = page === i + 1
+          return (
+            <Button
+              key={i}
+              onClick={() => setPage(i + 1)}
+              className={
+                isActive
+                  ? "bg-[#bf9310] text-white hover:bg-[#a87e0d]"
+                  : "border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]"
+              }
+            >
+              {i + 1}
+            </Button>
+          )
+        })}
+
+        <Button
+          onClick={() => setPage((prev) => prev + 1)}
+          disabled={page === totalPages}
+          className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </Button>
       </div>
     </div>
-  );
+  )
+
 }

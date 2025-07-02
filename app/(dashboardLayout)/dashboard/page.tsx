@@ -5,14 +5,31 @@ import GuestDashboard from "@/components/dashboardUi/Guest/GuestDashboard"
 import ReceptionistDashboard from "@/components/dashboardUi/Receptionist/ReceptionistDashboard"
 import { selectCurrentUser } from "@/redux/features/auth/authSlice"
 import { useGetDashboardDataQuery } from "@/redux/features/dashboard/dashboardApi"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 
 // ... your other imports and state
 
 export default function DashboardPage() {
   const user = useSelector(selectCurrentUser)
-  const { data: dashboardData, isLoading } = useGetDashboardDataQuery(undefined)
-  
+
+  const {
+    data: dashboardData,
+    isLoading,
+    refetch,
+  } = useGetDashboardDataQuery(undefined, {
+    skip: !user,
+    refetchOnMountOrArgChange: true,
+  })
+
+  // ✅ Ensure refetch when user changes
+  useEffect(() => {
+    if (user) {
+      refetch()
+    }
+  }, [user, refetch])
+
+  console.log("Dashboard Data:", dashboardData)
 
   if (isLoading) {
     return (

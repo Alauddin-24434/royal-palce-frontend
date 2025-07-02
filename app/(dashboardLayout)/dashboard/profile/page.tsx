@@ -5,28 +5,32 @@ import { useState } from "react"
 import {
   Pencil, User, Mail, Phone, Shield, Camera, Save, X
 } from "lucide-react"
-import { selectCurrentUser } from "@/redux/features/auth/authSlice"
+import { selectCurrentUser, setUser } from "@/redux/features/auth/authSlice"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { useUpdateUserMutation } from "@/redux/features/auth/authApi"
+
+import { useAppDispatch } from "@/redux/hooks"
 
 const ProfilePage = () => {
-  const user = useSelector(selectCurrentUser)
+  const userInfo = useSelector(selectCurrentUser)
+  const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false)
   const [profileImage, setProfileImage] = useState<File | null>(null)
+  const [updateUser] = useUpdateUserMutation()
 
   const [editedUser, setEditedUser] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
+    name: userInfo?.name || "",
+    phone: userInfo?.phone || "",
   })
 
-  if (!user) {
+  if (!userInfo) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#1e1f25] border border-slate-700 shadow-md flex items-center justify-center">
         <p className="text-center text-red-400 text-xl">User not found</p>
       </div>
     )
@@ -34,34 +38,43 @@ const ProfilePage = () => {
 
   const handleInfoUpdate = async () => {
     try {
-      console.log("🔄 Updating user info:", editedUser)
-      // TODO: Dispatch Redux or API call here
-      setIsEditing(false)
+      const result = await updateUser({ id: userInfo._id, body: editedUser }).unwrap();
+      const { accessToken, user } = result?.data;
+      if ("data" in result) {
+        dispatch(setUser({ user, token: accessToken }));
+      }
+
+      setIsEditing(false);
     } catch (error) {
-      console.error("❌ Failed to update user info", error)
+      // console.error("❌ Failed to update user info", error);
     }
-  }
+  };
+
 
   const handleImageUpdate = async () => {
-    if (!profileImage) return
+    if (!profileImage) return;
 
-    const formData = new FormData()
-    formData.append("image", profileImage)
+    const formData = new FormData();
+    formData.append("image", profileImage);
 
     try {
-      console.log("📤 Uploading profile image:", profileImage)
-      // TODO: Dispatch Redux or API call here
-      setProfileImage(null)
+      const result = await updateUser({ id: userInfo._id, body: formData }).unwrap();
+      const { accessToken, user } = result?.data;
+      if ("data" in result) {
+        dispatch(setUser({ user, token: accessToken }));
+      }
+
+      setProfileImage(null);
     } catch (error) {
-      console.error("❌ Failed to upload image", error)
+      console.error("❌ Failed to upload image", error);
     }
-  }
+  };
+
 
   const handleCancel = () => {
     setEditedUser({
-      name: user.name || "",
-      email: user.email || "",
-      phone: user.phone || "",
+      name: userInfo.name || "",
+      phone: userInfo.phone || "",
     })
     setIsEditing(false)
   }
@@ -78,7 +91,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
+    <div className="min-h-screen p-4">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
@@ -91,19 +104,18 @@ const ProfilePage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Profile Card */}
           <div className="lg:col-span-1">
-            <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+            <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
               <CardContent className="p-6">
                 <div className="text-center">
                   <div className="relative inline-block mb-4">
                     <Avatar className="w-32 h-32 border-4 border-orange-500/30">
                       <AvatarImage
-                        src="/placeholder.svg?height=128&width=128"
-                        alt={user.name}
+                        src={userInfo.image || "/placeholder.svg?height=128&width=128"}
+                        alt={userInfo.name}
                       />
                       <AvatarFallback className="bg-slate-700 text-white text-2xl">
-                        {user.name?.charAt(0).toUpperCase()}
+                        {userInfo.name?.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
 
@@ -140,21 +152,21 @@ const ProfilePage = () => {
                   )}
 
                   <h2 className="text-2xl font-bold text-white mb-2">
-                    {user.name}
+                    {userInfo.name}
                   </h2>
-                  <Badge className={`mb-4 ${getRoleBadgeColor(user.role)}`}>
-                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                  <Badge className={`mb-4 ${getRoleBadgeColor(userInfo.role)}`}>
+                    {userInfo.role.charAt(0).toUpperCase() + userInfo.role.slice(1)}
                   </Badge>
 
                   <div className="space-y-2 text-slate-300">
                     <div className="flex items-center justify-center gap-2">
                       <Mail className="w-4 h-4" />
-                      <span className="text-sm">{user.email}</span>
+                      <span className="text-sm">{userInfo.email}</span>
                     </div>
-                    {user.phone && (
+                    {userInfo.phone && (
                       <div className="flex items-center justify-center gap-2">
                         <Phone className="w-4 h-4" />
-                        <span className="text-sm">{user.phone}</span>
+                        <span className="text-sm">{userInfo.phone}</span>
                       </div>
                     )}
                   </div>
@@ -163,9 +175,8 @@ const ProfilePage = () => {
             </Card>
           </div>
 
-          {/* Profile Info */}
           <div className="lg:col-span-2">
-            <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+            <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-white">Profile Information</CardTitle>
                 {!isEditing ? (
@@ -201,7 +212,6 @@ const ProfilePage = () => {
                 )}
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Name Field */}
                 <div className="space-y-2">
                   <Label className="text-slate-200 font-medium">Full Name</Label>
                   {isEditing ? (
@@ -215,32 +225,11 @@ const ProfilePage = () => {
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
                       <User className="w-5 h-5 text-slate-400" />
-                      <span className="text-white">{user.name}</span>
+                      <span className="text-white">{userInfo.name}</span>
                     </div>
                   )}
                 </div>
 
-                {/* Email Field */}
-                <div className="space-y-2">
-                  <Label className="text-slate-200 font-medium">Email Address</Label>
-                  {isEditing ? (
-                    <Input
-                      type="email"
-                      value={editedUser.email}
-                      onChange={(e) =>
-                        setEditedUser({ ...editedUser, email: e.target.value })
-                      }
-                      className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
-                    />
-                  ) : (
-                    <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
-                      <Mail className="w-5 h-5 text-slate-400" />
-                      <span className="text-white">{user.email}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Phone Field */}
                 <div className="space-y-2">
                   <Label className="text-slate-200 font-medium">Phone Number</Label>
                   {isEditing ? (
@@ -256,21 +245,20 @@ const ProfilePage = () => {
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
                       <Phone className="w-5 h-5 text-slate-400" />
-                      <span className="text-white">{user.phone || "Not provided"}</span>
+                      <span className="text-white">{userInfo.phone || "Not provided"}</span>
                     </div>
                   )}
                 </div>
 
-                {/* Role Field */}
                 <div className="space-y-2">
                   <Label className="text-slate-200 font-medium">Account Role</Label>
                   <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
                     <Shield className="w-5 h-5 text-slate-400" />
-                    <span className="text-white capitalize">{user.role}</span>
-                    <Badge className={`ml-auto ${getRoleBadgeColor(user.role)}`}>
-                      {user.role === "admin"
+                    <span className="text-white capitalize">{userInfo.role}</span>
+                    <Badge className={`ml-auto ${getRoleBadgeColor(userInfo.role)}`}>
+                      {userInfo.role === "admin"
                         ? "Administrator"
-                        : user.role === "receptionist"
+                        : userInfo.role === "receptionist"
                           ? "Receptionist"
                           : "Guest"}
                     </Badge>
