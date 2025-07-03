@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { format, differenceInCalendarDays } from "date-fns";
 import { CalendarDays, Clock, Moon, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useSelector } from "react-redux";
 import { addCartItem } from "@/redux/features/cart/cartSlice";

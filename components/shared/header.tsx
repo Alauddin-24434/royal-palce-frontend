@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useSelector, useDispatch } from "react-redux"
 import { selectCurrentUser, logout } from "@/redux/features/auth/authSlice"
+import { DropdownMenuInNav } from "./dropdown-menu"
 
 export function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -51,8 +52,8 @@ export function Header() {
                   key={item.name}
                   href={item.href}
                   className={`font-medium transition-colors duration-200 ${pathname === item.href
-                      ? "text-yellow-500"
-                      : "text-white hover:text-yellow-500"
+                    ? "text-yellow-500"
+                    : "text-white hover:text-yellow-500"
                     }`}
                 >
                   {item.name}
@@ -60,51 +61,9 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Right Side */}
-            <div className="flex items-center space-x-4">
-              {user ? (
-                <>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center space-x-2 border rounded p-1 hover:text-yellow-500 transition-colors"
-                  >
-                    <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-yellow-500">
-                      <Image
-                        src={user?.image || "/default-avatar.png"}
-                        alt={user?.name || "Profile"}
-                        width={36}
-                        height={36}
-                        className="object-cover"
-                      />
-                    </div>
-                    <span className="text-white font-medium hidden sm:inline">
-                      Dashboard
-                    </span>
-                  </Link>
+         
 
-                  <button
-                    onClick={handleLogout}
-                    className="text-white bg-transparent border cursor-pointer font-semibold px-4 py-2 rounded"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <Link href="/login">
-                  <Button className="bg-[#bf9310] hover:bg-yellow-600 text-black hidden lg:block font-semibold">
-                    Login
-                  </Button>
-                </Link>
-              )}
-
-              {/* Sidebar Toggle */}
-              <button
-                onClick={() => setIsSidebarOpen(true)}
-                className="md:hidden text-white"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
-            </div>
+            <DropdownMenuInNav      onClick={handleLogout}  />
           </div>
         </div>
       </header>
@@ -129,8 +88,8 @@ export function Header() {
                 href={item.href}
                 onClick={() => setIsSidebarOpen(false)}
                 className={`block px-4 py-2 rounded font-medium ${pathname === item.href
-                    ? "bg-yellow-600 text-black"
-                    : "hover:bg-yellow-700"
+                  ? "bg-yellow-600 text-black"
+                  : "hover:bg-yellow-700"
                   }`}
               >
                 {item.name}

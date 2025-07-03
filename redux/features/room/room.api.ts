@@ -19,6 +19,10 @@ const roomApi = baseApi.injectEndpoints({
   query: (params) => {
     const queryParams = new URLSearchParams();
 
+    if (params?.checkInDate) queryParams.append("checkInDate", params.checkInDate);
+    if (params?.checkOutDate) queryParams.append("checkOutDate", params.checkOutDate);
+    if (params?.adults) queryParams.append("adults", params.adults);
+    if (params?.children) queryParams.append("children", params.children);
     if (params?.searchTerm) queryParams.append("searchTerm", params.searchTerm);
     if (params?.type) queryParams.append("type", params.type);
     if (params?.priceMin) queryParams.append("priceMin", String(params.priceMin));

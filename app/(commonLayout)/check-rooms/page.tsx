@@ -1,11 +1,19 @@
 "use client";
 
-import React, { useState,} from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {  Star,  ChevronLeft, ChevronRight,ArrowRight } from "lucide-react";
+import {
+  Bed,
+  Star,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  ArrowRight,
+} from "lucide-react";
 import { useFilterAllRoomsQuery } from "@/redux/features/room/room.api";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,32 +28,45 @@ interface IRoom {
 
 const roomTypes = ["all", "luxury", "suite", "deluxe", "twine"];
 
-function useDebounce<T>(value: T, delay: number): T {
-  const [debounced, setDebounced] = useState(value);
-  React.useEffect(() => {
-    const handler = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debounced;
-}
-
-export default function RoomsPage() {
+export default function CheckRooms() {
   const [tab, setTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
 
-  // Debounced searchTerm to reduce API calls
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
-;
-
-  const { data, isLoading } = useFilterAllRoomsQuery({
-   
-    searchTerm: debouncedSearchTerm,
-    type: tab === "all" ? undefined : tab,
-    limit: 6,
-    page,
+  // Handle search params from URL
+  const [queryParams, setQueryParams] = useState({
+    checkInDate: "",
+    checkOutDate: "",
+    adults: 1,
+    children: 0,
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setQueryParams({
+        checkInDate: params.get("checkInDate") || "",
+        checkOutDate: params.get("checkOutDate") || "",
+        adults: Number(params.get("adults") || 1),
+        children: Number(params.get("children") || 0),
+      });
+    }
+  }, []);
+
+  const { data, isLoading } = useFilterAllRoomsQuery(
+    {
+      checkInDate: queryParams.checkInDate,
+      checkOutDate: queryParams.checkOutDate,
+      adults: queryParams.adults,
+      children: queryParams.children,
+      type: tab === "all" ? undefined : tab,
+      limit: 6,
+      page,
+    },
+    {
+      skip: !queryParams.checkInDate || !queryParams.checkOutDate, // Prevent early call
+    }
+  );
 
   const rooms = data?.data?.data || [];
   const totalPages = data?.meta?.totalPages || 1;
@@ -72,40 +93,50 @@ export default function RoomsPage() {
     <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
       {/* Filter controls */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+        {/* Mobile Dropdown */}
         <select
           value={tab}
-          onChange={e => onTabChange(e.target.value)}
+          onChange={(e) => onTabChange(e.target.value)}
           className="block md:hidden w-full border rounded px-4 py-2 bg-[#191a1e] text-white text-sm"
         >
-          {roomTypes.map(t => (
+          {roomTypes.map((t) => (
             <option key={t} value={t}>
               {t.charAt(0).toUpperCase() + t.slice(1)}
             </option>
           ))}
         </select>
 
+        {/* Desktop Tabs */}
         <Tabs value={tab} onValueChange={onTabChange} className="hidden md:block">
           <TabsList className="flex-wrap justify-center md:justify-start">
-            {roomTypes.map(t => (
-              <TabsTrigger key={t} value={t} className="capitalize text-sm md:text-base px-4 py-1">
+            {roomTypes.map((t) => (
+              <TabsTrigger
+                key={t}
+                value={t}
+                className="capitalize text-sm md:text-base px-4 py-1"
+              >
                 {t}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
 
-        <Input
+        {/* Search (if you implement later) */}
+        {/* <Input
           placeholder="Search rooms..."
           value={searchTerm}
           onChange={onSearchChange}
           className="w-full md:w-80"
-        />
+        /> */}
       </div>
 
       {/* Rooms grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {rooms.map((room:IRoom)=> (
-          <Card key={room._id} className="group relative p-0 bg-black rounded-none overflow-hidden hover:scale-105 transition-transform duration-500">
+        {rooms.map((room: IRoom) => (
+          <Card
+            key={room._id}
+            className="group relative p-0 bg-black rounded-none overflow-hidden hover:scale-105 transition-transform duration-500"
+          >
             <div className="relative h-80 sm:h-96 overflow-hidden">
               <Image
                 src={room.images[0] || "/placeholder.svg"}
@@ -122,7 +153,10 @@ export default function RoomsPage() {
                 <div className="font-light text-lg md:text-xl">{room.title}</div>
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#bf9310] text-[#bf9310]" />
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-[#bf9310] text-[#bf9310]"
+                    />
                   ))}
                 </div>
 
@@ -143,7 +177,7 @@ export default function RoomsPage() {
       {/* Pagination */}
       <div className="flex justify-center flex-wrap gap-2 mt-10">
         <Button
-          onClick={() => setPage(prev => Math.max(1, prev - 1))}
+          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
           disabled={page === 1}
           className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
         >
@@ -169,7 +203,7 @@ export default function RoomsPage() {
         })}
 
         <Button
-          onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
+          onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
           disabled={page === totalPages}
           className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
         >

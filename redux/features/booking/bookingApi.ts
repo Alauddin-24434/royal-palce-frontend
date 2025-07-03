@@ -40,10 +40,19 @@ const bookingApi = baseApi.injectEndpoints({
       providesTags: ["Booking"],
     }),
 
+    // ✅ Get Bookings by User ID
+    getBookingsByUserId: build.query({
+      query: (id: string) => ({
+        url: `/bookings/userId/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Booking"],
+    }),
+
     // ✅ Get Booked Dates for a Room
     getBookedDates: build.query<string[], string>({
-      query: (id) => ({
-        url: `/bookings/check/${id}`,
+      query: (userId) => ({
+        url: `/bookings/${userId}`,
         method: "GET",
       }),
       transformResponse: (response: any) => {
@@ -62,7 +71,8 @@ export const {
   useCancelBookingMutation,
   useGetAllBookingsQuery,
   useGetBookingByIdQuery,
-  useGetBookedDatesQuery, // ✅ Export new query hook
+  useGetBookedDatesQuery, 
+  useGetBookingsByUserIdQuery,
 } = bookingApi;
 
 export default bookingApi;

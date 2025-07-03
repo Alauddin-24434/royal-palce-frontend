@@ -3,14 +3,17 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { CalendarDays } from "lucide-react";
 
+import { useRouter } from "next/navigation"; // or "next/router" for older version
+
 const HeroSection = () => {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
 
+  const router = useRouter();
+
   const handleSearch = () => {
-    // Simple validation example
     if (!checkIn || !checkOut) {
       alert("Please select check-in and check-out dates.");
       return;
@@ -19,9 +22,13 @@ const HeroSection = () => {
       alert("Check-out date must be after check-in date.");
       return;
     }
-    alert(`Searching for rooms from ${checkIn} to ${checkOut} for ${adults} adult(s) and ${children} child(ren).`);
-    // Here you can add your search/filter logic
+
+    // ✅ Redirect to /rooms with query params
+    router.push(
+      `/check-rooms?checkInDate=${checkIn}&checkOutDate=${checkOut}&adults=${adults}&children=${children}`
+    );
   };
+
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">

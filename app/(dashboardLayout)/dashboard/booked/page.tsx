@@ -1,146 +1,158 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useGetBookingsByUserIdQuery } from "@/redux/features/booking/bookingApi";
 
+// --- Types & Interfaces ---
+
+interface Room {
+  _id: string;
+  roomNumber?: string;
+  floor?: number;
+  title?: string;
+  images?: string[];
+  features?: string[];
+  description?: string;
+  type?: string;
+  price?: number;
+  adults?: number;
+  children?: number;
+  bed?: {
+    type: string;
+    count: number;
+  };
+  roomStatus?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
+  maxOccupancy?: number;
+}
+
+interface BookingRoom {
+  _id: string;
+  roomId: Room | {}; // populated room or empty object if not populated
+  checkInDate: string;
+  checkOutDate: string;
+}
+
+type BookingStatus = "pending" | "booked" | "cancelled" | string;
+
+interface Booking {
+  _id: string;
+  userId: string;
+  rooms: BookingRoom[];
+  totalAmount: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  transactionId: string;
+  bookingStatus: BookingStatus;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+
+
+// --- Component ---
 
 export default function BookedRooms() {
-    const bookings = [
-        {
-            id: "BK001",
-            guest: "John Smith",
-            email: "john@email.com",
-            room: "Deluxe Suite",
-            checkIn: "2024-01-15",
-            checkOut: "2024-01-18",
-            nights: 3,
-            amount: 1350,
-            status: "Confirmed",
-            phone: "+1 234 567 8900",
-        },
-        {
-            id: "BK002",
-            guest: "Sarah Johnson",
-            email: "sarah@email.com",
-            room: "Ocean View Room",
-            checkIn: "2024-01-16",
-            checkOut: "2024-01-19",
-            nights: 3,
-            amount: 960,
-            status: "Pending",
-            phone: "+1 234 567 8901",
-        },
-        {
-            id: "BK003",
-            guest: "Mike Davis",
-            email: "mike@email.com",
-            room: "Presidential Suite",
-            checkIn: "2024-01-17",
-            checkOut: "2024-01-20",
-            nights: 3,
-            amount: 2550,
-            status: "Confirmed",
-            phone: "+1 234 567 8902",
-        },
-        {
-            id: "BK004",
-            guest: "Emma Wilson",
-            email: "emma@email.com",
-            room: "Standard Room",
-            checkIn: "2024-01-18",
-            checkOut: "2024-01-21",
-            nights: 3,
-            amount: 540,
-            status: "Check-in",
-            phone: "+1 234 567 8903",
-        },
-    ]
+  const user = useSelector(selectCurrentUser);
+  const { data: bookingData } = useGetBookingsByUserIdQuery(user?._id ?? "");
 
-    return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-white">Booked Rooms</h1>
+  if (!bookingData) return <div>Loading...</div>;
+  if (!bookingData.success) return <div>Error loading bookings</div>;
 
-                </div>
-
-            </div>
-
-
-
-            {/* Bookings Table */}
-            <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
-                <CardHeader>
-                    <CardTitle className="text-white">Recent Bookings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="overflow-x-auto">
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="bg-[#2a2d38] text-slate-300">
-
-
-                                    <TableHead className="text-slate-300">Room Title</TableHead>
-                                    <TableHead className="text-slate-300">Check-in</TableHead>
-                                    <TableHead className="text-slate-300">Check-out</TableHead>
-                                    <TableHead className="text-slate-300">Nights</TableHead>
-                                    <TableHead className="text-slate-300">Amount</TableHead>
-                                    <TableHead className="text-slate-300">Status</TableHead>
-                                    {/* <TableHead className="text-slate-300">Actions</TableHead> */}
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {bookings.map((booking) => (
-                                    <TableRow key={booking.id} className="border-slate-700">
-
-
-                                        <TableCell className="text-slate-300">{booking.room}</TableCell>
-                                        <TableCell className="text-slate-300">{booking.checkIn}</TableCell>
-                                        <TableCell className="text-slate-300">{booking.checkOut}</TableCell>
-                                        <TableCell className="text-slate-300">{booking.nights}</TableCell>
-                                        <TableCell className="font-semibold text-amber-400">${booking.amount}</TableCell>
-                                        <TableCell>
-                                            <Badge
-                                                variant={
-                                                    booking.status === "Confirmed"
-                                                        ? "default"
-                                                        : booking.status === "Pending"
-                                                            ? "secondary"
-                                                            : "outline"
-                                                }
-                                                className={
-                                                    booking.status === "Confirmed"
-                                                        ? "bg-emerald-600 hover:bg-emerald-700"
-                                                        : booking.status === "Pending"
-                                                            ? "bg-amber-600 hover:bg-amber-700"
-                                                            : "bg-blue-600 hover:bg-blue-700"
-                                                }
-                                            >
-                                                {booking.status}
-                                            </Badge>
-                                        </TableCell>
-                                        {/* <TableCell>
-                                            <div className="flex items-center gap-2">
-                                             
-                                              
-                                                <Button
-                                                    
-                                                    size="sm"
-                                                    className="bg-transparent hover:bg-red-400 text-white border cursor-pointer"
-                                                >
-                                                    Cancel
-                                                </Button>
-                                            </div>
-                                        </TableCell> */}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </CardContent>
-            </Card>
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Booked Rooms</h1>
         </div>
-    )
+      </div>
+
+      {/* Bookings Table */}
+      <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
+        <CardHeader>
+          <CardTitle className="text-white">Recent Bookings</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-[#2a2d38] text-slate-300">
+                  <TableHead className="text-slate-300">Room Title</TableHead>
+                  <TableHead className="text-slate-300">Room Count</TableHead>
+                  <TableHead className="text-slate-300">Check-in</TableHead>
+                  <TableHead className="text-slate-300">Check-out</TableHead>
+                  <TableHead className="text-slate-300">Amount</TableHead>
+                  <TableHead className="text-slate-300">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {bookingData.data.map((booking: Booking) => (
+                  <TableRow key={booking._id} className="border-slate-700">
+                    {/* রুম গুলোর title comma separated দেখাবে */}
+                    <TableCell className="text-slate-300">
+                      {booking.rooms
+                        ?.map((r) => (r.roomId && "title" in r.roomId ? r.roomId.title : "Untitled Room"))
+                        .join(", ")}
+                    </TableCell>
+                    <TableCell className="text-slate-300">{booking.rooms.length}</TableCell>
+
+                    <TableCell className="text-slate-300">
+                      {booking.rooms[0]?.checkInDate}
+                    </TableCell>
+
+                    <TableCell className="text-slate-300">
+                      {booking.rooms[0]?.checkOutDate}
+                    </TableCell>
+
+                    <TableCell className="font-semibold text-amber-400">
+                      ${booking.totalAmount}
+                    </TableCell>
+
+                    <TableCell>
+                      <Badge
+                        variant={
+                          booking.bookingStatus === "booked"
+                            ? "default"
+                            : booking.bookingStatus === "pending"
+                            ? "secondary"
+                            : "outline"
+                        }
+                        className={
+                          booking.bookingStatus === "booked"
+                            ? "bg-emerald-600 hover:bg-emerald-700"
+                            : booking.bookingStatus === "pending"
+                            ? "bg-amber-600 hover:bg-amber-700"
+                            : "bg-blue-600 hover:bg-blue-700"
+                        }
+                      >
+                        {booking.bookingStatus}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
