@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 import {
   format,
   isSameDay,
@@ -12,8 +12,8 @@ import {
   subMonths,
   eachDayOfInterval,
   isValid,
-} from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+} from 'date-fns';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export type DateRange = {
   from?: Date;
@@ -35,7 +35,7 @@ export default function CustomCalendar({
 
   const isDateBooked = (date: Date) => {
     if (!isValid(date)) return false;
-    const formatted = format(date, "yyyy-MM-dd");
+    const formatted = format(date, 'yyyy-MM-dd');
     return bookedDates.includes(formatted);
   };
 
@@ -46,7 +46,8 @@ export default function CustomCalendar({
   const isInRange = (date: Date) => {
     if (!selectedRange.from || !selectedRange.to) return false;
     return (
-      (isAfter(date, selectedRange.from) || isSameDay(date, selectedRange.from)) &&
+      (isAfter(date, selectedRange.from) ||
+        isSameDay(date, selectedRange.from)) &&
       (isBefore(date, selectedRange.to) || isSameDay(date, selectedRange.to))
     );
   };
@@ -70,7 +71,9 @@ export default function CustomCalendar({
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <div className="text-lg font-semibold">{format(currentMonth, "MMMM yyyy")}</div>
+        <div className="text-lg font-semibold">
+          {format(currentMonth, 'MMMM yyyy')}
+        </div>
         <button
           aria-label="Next month"
           onClick={nextMonth}
@@ -82,7 +85,7 @@ export default function CustomCalendar({
       </div>
 
       <div className="grid grid-cols-7 gap-1 text-xs text-slate-400 select-none border-b border-slate-700 pb-1">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div
             key={day}
             className="text-center font-medium border border-slate-700 rounded-sm"
@@ -114,7 +117,7 @@ export default function CustomCalendar({
               type="button"
               onClick={() => !isDisabled && onSelectDate(date)}
               disabled={isDisabled}
-              aria-label={format(date, "PPP")}
+              aria-label={format(date, 'PPP')}
               className={`
                 w-10 h-10 
                 flex items-center justify-center
@@ -122,14 +125,14 @@ export default function CustomCalendar({
                 border border-slate-700
                 ${
                   isDisabled
-                    ? "bg-red-600 text-white cursor-not-allowed border-red-700"
+                    ? 'bg-red-600 text-white cursor-not-allowed border-red-700'
                     : isSelected
-                    ? "bg-[#bf9310] text-black font-bold border-yellow-400"
-                    : inRange
-                    ? "bg-yellow-600 text-black border-yellow-300"
-                    : "hover:bg-yellow-400 hover:text-black hover:cursor-pointer text-white border-slate-700"
+                      ? 'bg-[#bf9310] text-black font-bold border-yellow-400'
+                      : inRange
+                        ? 'bg-yellow-600 text-black border-yellow-300'
+                        : 'hover:bg-yellow-400 hover:text-black hover:cursor-pointer text-white border-slate-700'
                 }
-                ${isToday ? "border-2 border-slate-400" : ""}
+                ${isToday ? 'border-2 border-slate-400' : ''}
               `}
             >
               {date.getDate()}

@@ -1,5 +1,5 @@
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
 
 const TopTitle = () => {
   return (
@@ -23,7 +23,7 @@ const TopTitle = () => {
 
         <nav className="flex items-center space-x-2 text-sm uppercase tracking-wider">
           <span className="text-white/80">HOME</span>
-          <span className="text-yellow-400">{">"}</span>
+          <span className="text-yellow-400">{'>'}</span>
           <span className="text-yellow-400 font-medium">SERVICES</span>
         </nav>
       </div>

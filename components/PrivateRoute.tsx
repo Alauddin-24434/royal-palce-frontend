@@ -1,12 +1,16 @@
 // components/PrivateRoute.tsx
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useSelector } from "react-redux";
-import { selectIsAuthenticated } from "@/redux/features/auth/authSlice";
+import { useEffect } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '@/redux/features/auth/authSlice';
 
-export default function PrivateRoute({ children }: { children: React.ReactNode }) {
+export default function PrivateRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -15,7 +19,9 @@ export default function PrivateRoute({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (!isAuthenticated) {
       // Login page এ redirect কর, সাথে redirect করার জন্য current path query হিসেবে পাঠাও
-      router.replace(`/login?redirect=${pathname}${searchParams ? `?${searchParams.toString()}` : ''}`);
+      router.replace(
+        `/login?redirect=${pathname}${searchParams ? `?${searchParams.toString()}` : ''}`,
+      );
     }
   }, [isAuthenticated, pathname, searchParams, router]);
 

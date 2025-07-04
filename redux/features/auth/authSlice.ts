@@ -1,6 +1,6 @@
 // src/redux/features/auth/authSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../store';
 
 // User interface
 export interface User {
@@ -32,7 +32,7 @@ const initialState: AuthState = {
 
 // Slice
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     authStart(state) {
@@ -69,12 +69,14 @@ const authSlice = createSlice({
 });
 
 // Actions export
-export const { authStart, setUser, updateToken, authFailure, logout } = authSlice.actions;
+export const { authStart, setUser, updateToken, authFailure, logout } =
+  authSlice.actions;
 
 // Selectors
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const selectCurrentToken = (state: RootState) => state.auth.token;
-export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
+export const selectIsAuthenticated = (state: RootState) =>
+  state.auth.isAuthenticated;
 export const selectAuthLoading = (state: RootState) => state.auth.loading;
 export const selectAuthError = (state: RootState) => state.auth.error;
 

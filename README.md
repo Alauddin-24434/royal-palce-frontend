@@ -1,7 +1,6 @@
 # 🏨 Royal Place — Hotel Management Frontend
 
-Welcome to the frontend of Royal Place, a modern and responsive hotel management website built with Next.js, TypeScript, and Tailwind CSS. This application provides users with seamless access to essential features like browsing rooms, booking stays, managing profiles, making payments, and exploring hotel amenities — all with a clean and intuitive interface.
----
+## Welcome to the frontend of Royal Place, a modern and responsive hotel management website built with Next.js, TypeScript, and Tailwind CSS. This application provides users with seamless access to essential features like browsing rooms, booking stays, managing profiles, making payments, and exploring hotel amenities — all with a clean and intuitive interface.
 
 ## 🚀 Features
 
@@ -11,8 +10,6 @@ Welcome to the frontend of Royal Place, a modern and responsive hotel management
 - **Hotel Amenities & Services**
 - **Customer Testimonials**
 - **Refund & Cancellation Prediction Endpoint**
-
-
 
 ---
 
@@ -38,13 +35,13 @@ pnpm install
 #### Using npm:
 
 1. **Delete the pnpm lockfile first:**
-    ```bash
-    rm -rf pnpm-lock.yaml
-    ```
+   ```bash
+   rm -rf pnpm-lock.yaml
+   ```
 2. **Then install dependencies:**
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 > **Warning:** Do **not** mix pnpm and npm in the same project.
 
@@ -67,7 +64,6 @@ pnpm run build && pnpm start
 # or
 npm run build && npm start
 ```
-
 
 ---
 

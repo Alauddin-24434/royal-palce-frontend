@@ -1,42 +1,48 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import Image from "next/image";
-import { differenceInDays } from "date-fns";
-import { Crown, Check, Award, Bed } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useMemo, useState } from 'react';
+import Image from 'next/image';
+import { differenceInDays } from 'date-fns';
+import { Crown, Check, Award, Bed } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   clearCart,
   makeSelectCartItemsByUser,
   removeCartItem,
-} from "@/redux/features/cart/cartSlice";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useBookingInitiateMutation } from "@/redux/features/booking/bookingApi";
-import toast, { Toaster } from "react-hot-toast";
-import PrivateRoute from "@/components/PrivateRoute";
+} from '@/redux/features/cart/cartSlice';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/redux/features/auth/authSlice';
+import { useBookingInitiateMutation } from '@/redux/features/booking/bookingApi';
+import toast, { Toaster } from 'react-hot-toast';
+import PrivateRoute from '@/components/PrivateRoute';
 
 export default function RoyalCheckoutPage() {
   const [bookingInitiate] = useBookingInitiateMutation();
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
 
-  const selectCartByUser = useMemo(() => makeSelectCartItemsByUser(user?._id || ""), [user?._id]);
+  const selectCartByUser = useMemo(
+    () => makeSelectCartItemsByUser(user?._id || ''),
+    [user?._id],
+  );
   const cartItems = useAppSelector(selectCartByUser);
 
   const cartSummary = cartItems.map((item) => {
-    const nights = differenceInDays(new Date(item.room.checkOutDate), new Date(item.room.checkInDate));
+    const nights = differenceInDays(
+      new Date(item.room.checkOutDate),
+      new Date(item.room.checkInDate),
+    );
     const price = item?.room?.price ?? 0;
     const subtotal = price * nights;
     return { ...item, nights, subtotal };
@@ -69,7 +75,7 @@ export default function RoyalCheckoutPage() {
               onClick={() => {
                 dispatch(clearCart());
                 toast.dismiss(t.id);
-                toast.success("Cart cleared!");
+                toast.success('Cart cleared!');
               }}
               className="bg-red-600 text-foreground px-3 py-1 rounded"
             >
@@ -87,20 +93,20 @@ export default function RoyalCheckoutPage() {
       {
         duration: 8000,
         style: {
-          minWidth: "250px",
+          minWidth: '250px',
         },
-      }
+      },
     );
   };
 
   const handleSubmit = async () => {
     if (!name || !email || !phone || !address || !city) {
-      toast.error("Please fill in all required fields.");
+      toast.error('Please fill in all required fields.');
       return;
     }
 
     if (cartItems.length === 0) {
-      toast.error("Your cart is empty.");
+      toast.error('Your cart is empty.');
       return;
     }
 
@@ -110,11 +116,11 @@ export default function RoyalCheckoutPage() {
       if (response?.success && response?.payment_url) {
         window.location.href = response.payment_url;
       } else {
-        toast.error("Payment initiation failed. Please try again.");
+        toast.error('Payment initiation failed. Please try again.');
       }
     } catch (error) {
-      console.error("Payment initiation error:", error);
-      toast.error("Unexpected error during payment.");
+      console.error('Payment initiation error:', error);
+      toast.error('Unexpected error during payment.');
     }
   };
 
@@ -149,27 +155,40 @@ export default function RoyalCheckoutPage() {
                   <CardContent className="pt-6 space-y-4">
                     <div className="flex flex-col sm:flex-row gap-4">
                       <div className="relative w-full sm:w-28 h-28 rounded-xl overflow-hidden border-2 border-yellow-400/30 flex-shrink-0">
-                        <Image src={cart?.room.image} alt="Room" fill className="object-cover" />
+                        <Image
+                          src={cart?.room.image}
+                          alt="Room"
+                          fill
+                          className="object-cover"
+                        />
                         <div className="absolute top-2 right-2">
                           <Crown className="w-4 h-4 text-foreground" />
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-xl text-foreground">{cart?.room?.name}</h3>
+                        <h3 className="font-bold text-xl text-foreground">
+                          {cart?.room?.name}
+                        </h3>
                         <p className="text-sm text-foreground">
-                          ${cart.room.price} × {cart.nights} nights ={" "}
-                          <span className="text-yellow-400 font-bold">${cart.subtotal.toFixed(2)}</span>
+                          ${cart.room.price} × {cart.nights} nights ={' '}
+                          <span className="text-yellow-400 font-bold">
+                            ${cart.subtotal.toFixed(2)}
+                          </span>
                         </p>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
                       <div>
                         <span className="text-foreground">Check-in</span>
-                        <p className="font-semibold text-yellow-400">{cart?.room?.checkInDate}</p>
+                        <p className="font-semibold text-yellow-400">
+                          {cart?.room?.checkInDate}
+                        </p>
                       </div>
                       <div>
                         <span className="text-foreground">Check-out</span>
-                        <p className="font-semibold text-yellow-400">{cart?.room?.checkOutDate}</p>
+                        <p className="font-semibold text-yellow-400">
+                          {cart?.room?.checkOutDate}
+                        </p>
                       </div>
                       <Button
                         onClick={() => handleRemove(cart?.room.roomId)}
@@ -219,7 +238,8 @@ export default function RoyalCheckoutPage() {
                   </div>
                   <div>
                     <Label htmlFor="email" className="text-foreground">
-                      Royal Email Address <span className="text-red-500">*</span>
+                      Royal Email Address{' '}
+                      <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="email"
@@ -231,7 +251,8 @@ export default function RoyalCheckoutPage() {
                   </div>
                   <div>
                     <Label htmlFor="phone" className="text-foreground">
-                      Royal Contact Number <span className="text-red-500">*</span>
+                      Royal Contact Number{' '}
+                      <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="phone"
@@ -259,9 +280,7 @@ export default function RoyalCheckoutPage() {
 
             {/* RIGHT SIDE */}
             <div className="lg:col-span-1">
-              <Card
-                className="bg-main sticky top-24 lg:top-24 md:top-20 sm:static sm:mt-8"
-              >
+              <Card className="bg-main sticky top-24 lg:top-24 md:top-20 sm:static sm:mt-8">
                 <CardHeader>
                   <CardTitle className="text-foreground flex items-center gap-2">
                     <Crown className="w-5 h-5" />
@@ -272,13 +291,16 @@ export default function RoyalCheckoutPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center border-b">
                       <span className="text-foreground">Room Charges</span>
-                      <span className="font-semibold">${totalAmount.toFixed(2)}</span>
+                      <span className="font-semibold">
+                        ${totalAmount.toFixed(2)}
+                      </span>
                     </div>
-              
-                 
+
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total</span>
-                      <span className="text-foreground">${totalAmount.toFixed(2)}</span>
+                      <span className="text-foreground">
+                        ${totalAmount.toFixed(2)}
+                      </span>
                     </div>
                   </div>
 
@@ -316,7 +338,6 @@ export default function RoyalCheckoutPage() {
                     className="w-full bg-[#bf9310]  cursor-pointer text-black hover:bg-[#a87e0d] font-bold py-4 text-xs md:text-lg rounded-lg shadow-lg hover:scale-105 transition-transform"
                     size="lg"
                   >
-                  
                     Confirm Booking
                   </Button>
                 </CardContent>

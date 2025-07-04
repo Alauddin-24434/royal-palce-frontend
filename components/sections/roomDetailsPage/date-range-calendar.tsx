@@ -1,20 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { format, differenceInCalendarDays } from "date-fns";
-import { CalendarDays, Clock, Moon, ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useSelector } from "react-redux";
-import { addCartItem } from "@/redux/features/cart/cartSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useRouter } from "next/navigation";
-import CustomCalendar, { DateRange } from "../../shared/CustomCalendar";
-import toast, { Toaster } from "react-hot-toast";
-import { useGetBookedDatesQuery } from "@/redux/features/booking/bookingApi";
-import SimpleCalendar from "./simpleCalendar";
-
+import React, { useState } from 'react';
+import { format, differenceInCalendarDays } from 'date-fns';
+import { CalendarDays, Clock, Moon, ShoppingCart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { useSelector } from 'react-redux';
+import { addCartItem } from '@/redux/features/cart/cartSlice';
+import { useAppDispatch } from '@/redux/hooks';
+import { selectCurrentUser } from '@/redux/features/auth/authSlice';
+import { useRouter } from 'next/navigation';
+import CustomCalendar, { DateRange } from '../../shared/CustomCalendar';
+import toast, { Toaster } from 'react-hot-toast';
+import { useGetBookedDatesQuery } from '@/redux/features/booking/bookingApi';
+import SimpleCalendar from './simpleCalendar';
 
 // Room interface
 interface Room {
@@ -32,7 +31,9 @@ interface DateRangeCalendarProps {
 }
 
 export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
-  const [mainImage, setMainImage] = useState(room?.images?.[0] || "/placeholder.svg");
+  const [mainImage] = useState(
+    room?.images?.[0] || '/placeholder.svg',
+  );
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [selectedRange, setSelectedRange] = useState<DateRange>({});
@@ -41,9 +42,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
   // ✅ Load and filter booked dates
   const { data: bookingData, isLoading } = useGetBookedDatesQuery(room._id);
   const bookedDates =
-    bookingData?.filter(
-      (d: any) => typeof d === "string" && d.trim()
-    ) || [];
+    bookingData?.filter((d: any) => typeof d === 'string' && d.trim()) || [];
 
   // 📅 Date selection handler
   const handleSelectDate = (date: Date) => {
@@ -61,7 +60,8 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
   const isSameDay = () =>
     selectedRange.from &&
     selectedRange.to &&
-    format(selectedRange.from, "yyyy-MM-dd") === format(selectedRange.to, "yyyy-MM-dd");
+    format(selectedRange.from, 'yyyy-MM-dd') ===
+      format(selectedRange.to, 'yyyy-MM-dd');
 
   const numberOfNights =
     selectedRange.from && selectedRange.to
@@ -71,11 +71,11 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
   // ➕ Add to Cart
   const handleAddToCart = () => {
     if (!selectedRange.from || !selectedRange.to) {
-      toast.error("Please select both check-in and check-out dates.");
+      toast.error('Please select both check-in and check-out dates.');
       return;
     }
     if (isSameDay()) {
-      toast.error("Check-in and check-out cannot be on the same day.");
+      toast.error('Check-in and check-out cannot be on the same day.');
       return;
     }
 
@@ -85,24 +85,24 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
         room: {
           roomId: room._id,
           name: room.name,
-          checkInDate: format(selectedRange.from, "yyyy-MM-dd"),
-          checkOutDate: format(selectedRange.to, "yyyy-MM-dd"),
+          checkInDate: format(selectedRange.from, 'yyyy-MM-dd'),
+          checkOutDate: format(selectedRange.to, 'yyyy-MM-dd'),
           image: mainImage,
           price: room?.price,
         },
-      })
+      }),
     );
-    toast.success("Added to cart!");
+    toast.success('Added to cart!');
   };
 
   // ✅ Book Now
   const handleBookNow = () => {
     if (!selectedRange.from || !selectedRange.to) {
-      toast.error("Please select both check-in and check-out dates.");
+      toast.error('Please select both check-in and check-out dates.');
       return;
     }
     if (isSameDay()) {
-      toast.error("Check-in and check-out cannot be on the same day.");
+      toast.error('Check-in and check-out cannot be on the same day.');
       return;
     }
 
@@ -112,14 +112,14 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
         room: {
           roomId: room._id,
           name: room.name,
-          checkInDate: format(selectedRange.from, "yyyy-MM-dd"),
-          checkOutDate: format(selectedRange.to, "yyyy-MM-dd"),
+          checkInDate: format(selectedRange.from, 'yyyy-MM-dd'),
+          checkOutDate: format(selectedRange.to, 'yyyy-MM-dd'),
           image: mainImage,
           price: room?.price,
         },
-      })
+      }),
     );
-    router.push("/checkout");
+    router.push('/checkout');
   };
 
   return (
@@ -147,12 +147,10 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
                   onSelectDate={handleSelectDate}
                 />
               </div>
-
             </>
           )}
         </CardContent>
       </Card>
-
 
       {/* Mobile: SimpleCalendar (show on small screens) */}
       <div className="block sm:hidden">
@@ -160,7 +158,10 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
           selectedRange={selectedRange}
           bookedDates={bookedDates}
           onSelectDate={(date) => {
-            if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
+            if (
+              !selectedRange.from ||
+              (selectedRange.from && selectedRange.to)
+            ) {
               setSelectedRange({ from: date, to: undefined });
             } else {
               if (date < selectedRange.from) {
@@ -172,23 +173,21 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
           }}
         />
 
-
         {selectedRange.from && (
           <p className="mt-2 text-sm text-white">
-            Selected date: {format(selectedRange.from, "PPP")}
+            Selected date: {format(selectedRange.from, 'PPP')}
           </p>
         )}
       </div>
-
 
       {/* Booking Summary */}
       <Card className="bg-[#191a1e] flex flex-col h-full">
         <CardHeader className="flex flex-col md:flex-row items-center justify-between">
           <CardTitle className="text-white">Summary</CardTitle>
           <p className="text-sm text-center text-slate-300 flex justify-center items-center gap-2">
-            <Moon className="text-[#bf9310]" />{" "}
+            <Moon className="text-[#bf9310]" />{' '}
             <span className="text-white font-semibold">
-              {numberOfNights} night{numberOfNights > 1 ? "s" : ""}
+              {numberOfNights} night{numberOfNights > 1 ? 's' : ''}
             </span>
           </p>
         </CardHeader>
@@ -201,7 +200,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
                   <div>
                     <label className="text-slate-400 text-sm">Check-in</label>
                     <div className="p-3 bg-slate-700/30 rounded-lg text-white">
-                      {format(selectedRange.from, "MMM dd, yyyy")}
+                      {format(selectedRange.from, 'MMM dd, yyyy')}
                       <div className="text-slate-400 text-xs flex items-center gap-1">
                         <Clock className="w-3 h-3" /> 3:00 PM
                       </div>
@@ -210,7 +209,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
                   <div>
                     <label className="text-slate-400 text-sm">Check-out</label>
                     <div className="p-3 bg-slate-700/30 rounded-lg text-white">
-                      {format(selectedRange.to, "MMM dd, yyyy")}
+                      {format(selectedRange.to, 'MMM dd, yyyy')}
                       <div className="text-slate-400 text-xs flex items-center gap-1">
                         <Clock className="w-3 h-3" /> 11:00 AM
                       </div>
@@ -221,7 +220,10 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
 
               {/* Buttons always at bottom */}
               <div className="flex flex-col sm:flex-row gap-3 pt-6">
-                <Button onClick={handleBookNow} className="flex-1 bg-[#bf9310]  text-white hover:bg-[#a87e0d] cursor-pointer">
+                <Button
+                  onClick={handleBookNow}
+                  className="flex-1 bg-[#bf9310]  text-white hover:bg-[#a87e0d] cursor-pointer"
+                >
                   Book Now
                 </Button>
                 <Button
@@ -243,7 +245,6 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
             </div>
           )}
         </CardContent>
-
       </Card>
       <Toaster position="top-right" reverseOrder={false} />
     </div>

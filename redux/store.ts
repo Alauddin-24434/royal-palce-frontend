@@ -13,19 +13,19 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import authReducer from '@/redux/features/auth/authSlice';
-import cartReducer from "@/redux/features/cart/cartSlice";
+import cartReducer from '@/redux/features/cart/cartSlice';
 import baseApi from './api/baseApi';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  cart:cartReducer,
+  cart: cartReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth','cart'], // ✅ only persist auth
+  whitelist: ['auth', 'cart'], // ✅ only persist auth
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

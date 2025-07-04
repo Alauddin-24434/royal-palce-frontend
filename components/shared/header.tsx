@@ -1,41 +1,41 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter, usePathname } from "next/navigation"
-import { Crown, Menu, X, Sun, Moon } from "lucide-react"  // আইকন আমদানি করো
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { useSelector, useDispatch } from "react-redux"
-import { selectCurrentUser, logout } from "@/redux/features/auth/authSlice"
-import { DropdownMenuInNav } from "./dropdown-menu"
-import { useTheme } from "next-themes"
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
+import { Crown,  X, Sun, Moon } from 'lucide-react'; // আইকন আমদানি করো
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, logout } from '@/redux/features/auth/authSlice';
+import { DropdownMenuInNav } from './dropdown-menu';
+import { useTheme } from 'next-themes';
 
 export function Header() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const user = useSelector(selectCurrentUser)
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const pathname = usePathname()
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Rooms & Suites", href: "/rooms" },
-    { name: "Amenities", href: "/amenities" },
-    { name: "Checkout", href: "/checkout" },
-  ]
+    { name: 'Home', href: '/' },
+    { name: 'Rooms & Suites', href: '/rooms' },
+    { name: 'Amenities', href: '/amenities' },
+    { name: 'Checkout', href: '/checkout' },
+  ];
 
   const handleLogout = () => {
-    dispatch(logout())
-    router.push("/")
-  }
+    dispatch(logout());
+    router.push('/');
+  };
 
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   // থিম টগল ফাংশন
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
-  }
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
     <>
@@ -61,8 +61,8 @@ export function Header() {
                   href={item.href}
                   className={`font-medium transition-colors duration-200 ${
                     pathname === item.href
-                      ? "title"
-                      : "text-foreground hover:title"
+                      ? 'title'
+                      : 'text-foreground hover:title'
                   }`}
                 >
                   {item.name}
@@ -77,7 +77,7 @@ export function Header() {
                 aria-label="Toggle Dark Mode"
                 className="p-2 rounded hover:title hover:text-foreground transition"
               >
-                {theme === "dark" ? (
+                {theme === 'dark' ? (
                   <Sun className="w-5 h-5" />
                 ) : (
                   <Moon className="w-5 h-5" />
@@ -111,8 +111,8 @@ export function Header() {
                 onClick={() => setIsSidebarOpen(false)}
                 className={`block px-4 py-2 rounded font-medium ${
                   pathname === item.href
-                    ? "bg-yellow-600 text-black"
-                    : "hover:bg-yellow-700"
+                    ? 'bg-yellow-600 text-black'
+                    : 'hover:bg-yellow-700'
                 }`}
               >
                 {item.name}
@@ -129,7 +129,7 @@ export function Header() {
                   >
                     <div className="w-8 h-8 rounded-full overflow-hidden border border-yellow-500">
                       <Image
-                        src={user?.image || "/default-avatar.png"}
+                        src={user?.image || '/default-avatar.png'}
                         alt="Profile"
                         width={32}
                         height={32}
@@ -140,8 +140,8 @@ export function Header() {
                   </Link>
                   <button
                     onClick={() => {
-                      handleLogout()
-                      setIsSidebarOpen(false)
+                      handleLogout();
+                      setIsSidebarOpen(false);
                     }}
                     className="mt-3 w-full text-left text-white border border-yellow-600 px-3 py-2 rounded hover:bg-yellow-600 hover:text-black"
                   >
@@ -169,5 +169,5 @@ export function Header() {
         </div>
       )}
     </>
-  )
+  );
 }

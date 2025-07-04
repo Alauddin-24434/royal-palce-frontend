@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from 'react';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   Bed,
   Star,
@@ -13,10 +13,10 @@ import {
   ChevronRight,
   Home,
   ArrowRight,
-} from "lucide-react";
-import { useFilterAllRoomsQuery } from "@/redux/features/room/room.api";
-import Image from "next/image";
-import Link from "next/link";
+} from 'lucide-react';
+import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface IRoom {
   _id: string;
@@ -26,29 +26,29 @@ interface IRoom {
   images: string[];
 }
 
-const roomTypes = ["all", "luxury", "suite", "deluxe", "twine"];
+const roomTypes = ['all', 'luxury', 'suite', 'deluxe', 'twine'];
 
 export default function CheckRooms() {
-  const [tab, setTab] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [tab, setTab] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
   // Handle search params from URL
   const [queryParams, setQueryParams] = useState({
-    checkInDate: "",
-    checkOutDate: "",
+    checkInDate: '',
+    checkOutDate: '',
     adults: 1,
     children: 0,
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       setQueryParams({
-        checkInDate: params.get("checkInDate") || "",
-        checkOutDate: params.get("checkOutDate") || "",
-        adults: Number(params.get("adults") || 1),
-        children: Number(params.get("children") || 0),
+        checkInDate: params.get('checkInDate') || '',
+        checkOutDate: params.get('checkOutDate') || '',
+        adults: Number(params.get('adults') || 1),
+        children: Number(params.get('children') || 0),
       });
     }
   }, []);
@@ -59,13 +59,13 @@ export default function CheckRooms() {
       checkOutDate: queryParams.checkOutDate,
       adults: queryParams.adults,
       children: queryParams.children,
-      type: tab === "all" ? undefined : tab,
+      type: tab === 'all' ? undefined : tab,
       limit: 6,
       page,
     },
     {
       skip: !queryParams.checkInDate || !queryParams.checkOutDate, // Prevent early call
-    }
+    },
   );
 
   const rooms = data?.data?.data || [];
@@ -107,7 +107,11 @@ export default function CheckRooms() {
         </select>
 
         {/* Desktop Tabs */}
-        <Tabs value={tab} onValueChange={onTabChange} className="hidden md:block">
+        <Tabs
+          value={tab}
+          onValueChange={onTabChange}
+          className="hidden md:block"
+        >
           <TabsList className="flex-wrap justify-center md:justify-start">
             {roomTypes.map((t) => (
               <TabsTrigger
@@ -139,7 +143,7 @@ export default function CheckRooms() {
           >
             <div className="relative h-80 sm:h-96 overflow-hidden">
               <Image
-                src={room.images[0] || "/placeholder.svg"}
+                src={room.images[0] || '/placeholder.svg'}
                 alt={room.title}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -150,7 +154,9 @@ export default function CheckRooms() {
               </div>
 
               <div className="absolute bottom-6 left-6 text-white space-y-2 text-sm md:text-base">
-                <div className="font-light text-lg md:text-xl">{room.title}</div>
+                <div className="font-light text-lg md:text-xl">
+                  {room.title}
+                </div>
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
@@ -193,8 +199,8 @@ export default function CheckRooms() {
               onClick={() => setPage(pageNumber)}
               className={
                 isActive
-                  ? "bg-[#bf9310] text-white hover:bg-[#a87e0d]"
-                  : "border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]"
+                  ? 'bg-[#bf9310] text-white hover:bg-[#a87e0d]'
+                  : 'border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]'
               }
             >
               {pageNumber}

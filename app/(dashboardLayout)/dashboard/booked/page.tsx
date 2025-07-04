@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   Table,
   TableBody,
@@ -10,10 +10,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useGetBookingsByUserIdQuery } from "@/redux/features/booking/bookingApi";
+} from '@/components/ui/table';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '@/redux/features/auth/authSlice';
+import { useGetBookingsByUserIdQuery } from '@/redux/features/booking/bookingApi';
 
 // --- Types & Interfaces ---
 
@@ -47,7 +47,7 @@ interface BookingRoom {
   checkOutDate: string;
 }
 
-type BookingStatus = "pending" | "booked" | "cancelled" | string;
+type BookingStatus = 'pending' | 'booked' | 'cancelled' | string;
 
 interface Booking {
   _id: string;
@@ -66,15 +66,13 @@ interface Booking {
   __v: number;
 }
 
-
-
 // --- Component ---
 
 export default function BookedRooms() {
   const user = useSelector(selectCurrentUser);
-  const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(user?._id ?? "");
-
-
+  const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(
+    user?._id ?? '',
+  );
 
   if (isLoading) {
     return (
@@ -107,32 +105,35 @@ export default function BookedRooms() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-[#2a2d38] text-foreground">
-                  <TableHead >Room Title</TableHead>
-                  <TableHead >Room Count</TableHead>
-                  <TableHead >Check-in</TableHead>
-                  <TableHead >Check-out</TableHead>
-                  <TableHead >Amount</TableHead>
-                  <TableHead >Status</TableHead>
+                  <TableHead>Room Title</TableHead>
+                  <TableHead>Room Count</TableHead>
+                  <TableHead>Check-in</TableHead>
+                  <TableHead>Check-out</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {bookingData.data.map((booking: Booking) => (
-                  <TableRow key={booking._id} className="border-slate-700  text-foreground">
+                  <TableRow
+                    key={booking._id}
+                    className="border-slate-700  text-foreground"
+                  >
                     {/* রুম গুলোর title comma separated দেখাবে */}
-                    <TableCell >
+                    <TableCell>
                       {booking.rooms
-                        ?.map((r) => (r.roomId && "title" in r.roomId ? r.roomId.title : "Untitled Room"))
-                        .join(", ")}
+                        ?.map((r) =>
+                          r.roomId && 'title' in r.roomId
+                            ? r.roomId.title
+                            : 'Untitled Room',
+                        )
+                        .join(', ')}
                     </TableCell>
-                    <TableCell >{booking.rooms.length}</TableCell>
+                    <TableCell>{booking.rooms.length}</TableCell>
 
-                    <TableCell >
-                      {booking.rooms[0]?.checkInDate}
-                    </TableCell>
+                    <TableCell>{booking.rooms[0]?.checkInDate}</TableCell>
 
-                    <TableCell >
-                      {booking.rooms[0]?.checkOutDate}
-                    </TableCell>
+                    <TableCell>{booking.rooms[0]?.checkOutDate}</TableCell>
 
                     <TableCell className="font-semibold ">
                       ${booking.totalAmount}
@@ -141,18 +142,18 @@ export default function BookedRooms() {
                     <TableCell>
                       <Badge
                         variant={
-                          booking.bookingStatus === "booked"
-                            ? "default"
-                            : booking.bookingStatus === "pending"
-                              ? "secondary"
-                              : "outline"
+                          booking.bookingStatus === 'booked'
+                            ? 'default'
+                            : booking.bookingStatus === 'pending'
+                              ? 'secondary'
+                              : 'outline'
                         }
                         className={
-                          booking.bookingStatus === "booked"
-                            ? "bg-emerald-600 hover:bg-emerald-700"
-                            : booking.bookingStatus === "pending"
-                              ? "bg-amber-600 hover:bg-amber-700"
-                              : "bg-blue-600 hover:bg-blue-700"
+                          booking.bookingStatus === 'booked'
+                            ? 'bg-emerald-600 hover:bg-emerald-700'
+                            : booking.bookingStatus === 'pending'
+                              ? 'bg-amber-600 hover:bg-amber-700'
+                              : 'bg-blue-600 hover:bg-blue-700'
                         }
                       >
                         {booking.bookingStatus}

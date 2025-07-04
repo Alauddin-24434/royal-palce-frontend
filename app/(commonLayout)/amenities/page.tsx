@@ -1,40 +1,31 @@
-"use client";
+'use client';
 
-import {
-  Crown,
+import { Crown, Star, Clock } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
-  Star,
-
-  Clock,
-} from "lucide-react"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-
-import { useFindAllServiceQuery } from "@/redux/features/service/serviceApi"
-import Image from "next/image";
-import { IAmineties } from "@/app/types/amineties.interface";
-
+import { useFindAllServiceQuery } from '@/redux/features/service/serviceApi';
+import Image from 'next/image';
+import { IAmineties } from '@/app/types/amineties.interface';
 
 const Amenities = () => {
   const { data: servicesData, isLoading } = useFindAllServiceQuery(undefined);
- 
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[#bf9310] font-semibold text-lg">Loading rooms...</p>
+          <p className="text-[#bf9310] font-semibold text-lg">
+            Loading rooms...
+          </p>
         </div>
       </div>
     );
   }
 
-
   return (
     <section className="relative py-12  overflow-hidden">
-
-
-
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="mb-20">
@@ -79,7 +70,6 @@ const Amenities = () => {
                     />
                   </div>
                 )}
-
               </div>
 
               {/* Overlay Content */}
@@ -106,24 +96,18 @@ const Amenities = () => {
                   <div className="flex items-center justify-between pt-2 border-t border-slate-600 text-xs text-slate-300">
                     <div className="flex items-center">
                       <Clock className="w-3 h-3 mr-1" />
-                      {amenity.isServiceFree ? "24/7" : "Only Booking"}
+                      {amenity.isServiceFree ? '24/7' : 'Only Booking'}
                     </div>
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   </div>
                 </div>
               </div>
             </Card>
-
-
-
-
           ))}
         </div>
-
-
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default Amenities;

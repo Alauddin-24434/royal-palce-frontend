@@ -65,7 +65,7 @@ export const {
   useGetMeQuery,
   useGetAllUsersQuery,
   useGetSingleUserQuery,
-  useUpdateUserMutation
+  useUpdateUserMutation,
 } = authApi;
 
 export default authApi;

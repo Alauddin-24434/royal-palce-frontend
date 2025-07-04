@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Bed } from "lucide-react";
-import RoomImageGallery from "@/components/RoomImageGallery";
-import DateRangeCalendar from "@/components/sections/roomDetailsPage/date-range-calendar";
-import RoomReviewsSection from "@/components/sections/roomDetailsPage/room-reviews-section";
-import { useFindSingleRoomQuery } from "@/redux/features/room/room.api";
-import { useParams } from "next/navigation";
-import PrivateRoute from "@/components/PrivateRoute";
+import { Bed } from 'lucide-react';
+import RoomImageGallery from '@/components/RoomImageGallery';
+import DateRangeCalendar from '@/components/sections/roomDetailsPage/date-range-calendar';
+import RoomReviewsSection from '@/components/sections/roomDetailsPage/room-reviews-section';
+import { useFindSingleRoomQuery } from '@/redux/features/room/room.api';
+import { useParams } from 'next/navigation';
+import PrivateRoute from '@/components/PrivateRoute';
 
 export default function RoomDetailsPage() {
   // Get dynamic route param
@@ -47,7 +47,6 @@ export default function RoomDetailsPage() {
 
         {/* ====================== Main Content ====================== */}
         <div className="container mx-auto space-y-12 px-4 sm:px-6 lg:px-8">
-
           {/* ========== Room Image Gallery ========== */}
           <RoomImageGallery room={room} />
 
@@ -56,41 +55,53 @@ export default function RoomDetailsPage() {
             {/* === Room Description === */}
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-[#bf9310]">
-                About {room?.name || "The Royal Room"}
+                About {room?.name || 'The Royal Room'}
               </h2>
               <p className="text-slate-300 leading-relaxed mb-4 text-base sm:text-lg">
                 {room?.description ||
-                  "Every Signature Room is luxurious, with panoramic views, stunning original architecture and 24-hour personal concierge service."}
+                  'Every Signature Room is luxurious, with panoramic views, stunning original architecture and 24-hour personal concierge service.'}
               </p>
               <p className="text-slate-300 leading-relaxed text-base sm:text-lg">
-                Each room is individually designed with a private marble bathroom, luxury amenities, flat-screen TV, free Wi-Fi, and more.
+                Each room is individually designed with a private marble
+                bathroom, luxury amenities, flat-screen TV, free Wi-Fi, and
+                more.
               </p>
             </div>
 
             {/* === Room Features List === */}
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-[#bf9310]">Room Features</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-[#bf9310]">
+                Room Features
+              </h3>
               <div className="grid gap-3">
                 {room?.features?.length ? (
                   room.features.map((feature: string, index: number) => (
                     <div key={index} className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-[#bf9310] rounded-full" />
-                      <span className="text-slate-300 text-sm sm:text-base">{feature}</span>
+                      <span className="text-slate-300 text-sm sm:text-base">
+                        {feature}
+                      </span>
                     </div>
                   ))
                 ) : (
                   <>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-[#bf9310] rounded-full" />
-                      <span className="text-slate-300 text-sm sm:text-base">Free Wi-Fi</span>
+                      <span className="text-slate-300 text-sm sm:text-base">
+                        Free Wi-Fi
+                      </span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-[#bf9310] rounded-full" />
-                      <span className="text-slate-300 text-sm sm:text-base">Air Conditioning</span>
+                      <span className="text-slate-300 text-sm sm:text-base">
+                        Air Conditioning
+                      </span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-[#bf9310] rounded-full" />
-                      <span className="text-slate-300 text-sm sm:text-base">Room Service</span>
+                      <span className="text-slate-300 text-sm sm:text-base">
+                        Room Service
+                      </span>
                     </div>
                   </>
                 )}
@@ -104,6 +115,5 @@ export default function RoomDetailsPage() {
         </div>
       </div>
     </PrivateRoute>
-
   );
 }

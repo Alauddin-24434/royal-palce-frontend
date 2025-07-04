@@ -1,4 +1,13 @@
-import { Crown, Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube } from 'lucide-react';
+import {
+  Crown,
+  Facebook,
+  Instagram,
+  Mail,
+  MapPin,
+  Phone,
+  Twitter,
+  Youtube,
+} from 'lucide-react';
 import React from 'react';
 
 const Footer = () => {
@@ -45,10 +54,7 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-[#bf9310]transition-colors"
-                  >
+                  <a href="#" className="hover:text-[#bf9310]transition-colors">
                     Rooms & Suites
                   </a>
                 </li>
@@ -142,7 +148,9 @@ const Footer = () => {
             </div>
 
             <div>
-              <h3 className="font-bold mb-6 text-lg title">Contact Information</h3>
+              <h3 className="font-bold mb-6 text-lg title">
+                Contact Information
+              </h3>
               <div className="space-y-4 text-foreground">
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-5 h-5 mt-1   flex-shrink-0" />
@@ -159,7 +167,9 @@ const Footer = () => {
               </div>
 
               <div className="mt-8">
-                <h4 className="font-semibold mb-3 text-foreground">Resort Hours</h4>
+                <h4 className="font-semibold mb-3 text-foreground">
+                  Resort Hours
+                </h4>
                 <div className="text-foreground text-sm">
                   <div>Check-in: 3:00 PM</div>
                   <div>Check-out: 12:00 PM</div>
@@ -171,7 +181,10 @@ const Footer = () => {
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center text-foreground">
               <p className="text-sm">
-                &copy; 2025 Royal Palace. All rights reserved. <span className="block md:inline">Last updated: 04-07-2025</span>
+                &copy; 2025 Royal Palace. All rights reserved.{' '}
+                <span className="block md:inline">
+                  Last updated: 04-07-2025
+                </span>
               </p>
               <div className="flex space-x-6 mt-4 md:mt-0">
                 <a
@@ -195,7 +208,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-
         </div>
       </footer>
     </div>

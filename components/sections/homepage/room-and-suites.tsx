@@ -1,14 +1,14 @@
-"use client";
-import { Card } from "../../ui/card"
-import { Bed, Home, Star, Users, ArrowRight } from "lucide-react"
-import { Button } from "../../ui/button"
-import { useFindAllRoomsQuery } from "@/redux/features/room/room.api"
-import Image from "next/image"
-import type { IRoom } from "@/app/types/room.interface"
-import Link from "next/link";
+'use client';
+import { Card } from '../../ui/card';
+import { Bed, Home, Star, Users, ArrowRight } from 'lucide-react';
+import { Button } from '../../ui/button';
+import { useFindAllRoomsQuery } from '@/redux/features/room/room.api';
+import Image from 'next/image';
+import type { IRoom } from '@/app/types/room.interface';
+import Link from 'next/link';
 
 const RoomAndSuites = () => {
-  const { data: roomsData } = useFindAllRoomsQuery(undefined)
+  const { data: roomsData } = useFindAllRoomsQuery(undefined);
 
   return (
     <section className="py-24 ">
@@ -44,8 +44,11 @@ const RoomAndSuites = () => {
               {/* Background Image */}
               <div className="relative h-96 overflow-hidden">
                 <Image
-                  src={room && room.images && room.images[0] ? room.images[0] : "/placeholder.svg"}
-
+                  src={
+                    room && room.images && room.images[0]
+                      ? room.images[0]
+                      : '/placeholder.svg'
+                  }
                   alt="Luxury hotel room"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -53,7 +56,6 @@ const RoomAndSuites = () => {
 
                 {/* Dark Overlay with hover effect */}
                 <div className="absolute inset-0 bg-black/40 transition-all duration-500 group-hover:bg-black/70" />
-
 
                 {/* Room Number - top left with hover animation */}
                 <div className="absolute top-4 left-4 px-2 transform transition-all duration-500 ">
@@ -124,8 +126,6 @@ const RoomAndSuites = () => {
                   </Link>
                 </div>
 
-
-
                 {/* Corner decorative elements */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#bf9310] opacity-0 transition-all duration-500 group-hover:opacity-100 transform scale-75 group-hover:scale-100" />
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#bf9310] opacity-0 transition-all duration-500 group-hover:opacity-100 transform scale-75 group-hover:scale-100" />
@@ -135,7 +135,7 @@ const RoomAndSuites = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default RoomAndSuites
+export default RoomAndSuites;

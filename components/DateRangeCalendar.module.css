@@ -2,7 +2,7 @@
   background-color: #bf9310 !important;
   color: #1e293b !important; /* slate-900 */
   font-weight: 700 !important;
- 
+
   border: 2px solid #bf9310; /* border same color as bg */
   margin: 0 2px; /* horizontal gap */
   padding: 0.25rem;
@@ -37,7 +37,7 @@
 .rd-day {
   border: 1px solid #374151; /* slate-700 for subtle border */
   margin: 2px 1px; /* vertical and horizontal spacing */
-  
+
   padding: 0.25rem 0;
   box-sizing: border-box;
   width: 500px;
@@ -45,7 +45,7 @@
 }
 .weekdays {
   border: 1px solid #374151; /* same slate-700 border */
-  
+
   padding: 0.25rem 0;
   text-align: center;
   color: white;
@@ -58,7 +58,7 @@
 .monthCaption {
   font-weight: 700;
   font-size: 1.25rem;
-  color: #bf9310;  /* Your golden color */
+  color: #bf9310; /* Your golden color */
   text-align: center;
   margin-bottom: 0.75rem;
   user-select: none;

@@ -1,25 +1,26 @@
-"use client"
+'use client';
 
-import Image from "next/image"
-import { useState } from "react"
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface Room {
-  _id: string
-  name?: string
-  images?: string[]
-  price?: number
-  description?: string
-  features?: string[]
+  _id: string;
+  name?: string;
+  images?: string[];
+  price?: number;
+  description?: string;
+  features?: string[];
 }
 
 interface RoomImageGalleryProps {
-  room: Room
+  room: Room;
 }
 
 export default function RoomImageGallery({ room }: RoomImageGalleryProps) {
-
-  const [mainImage, setMainImage] = useState(room?.images?.[0] || "/placeholder.svg")
-  const [loading, setLoading] = useState(false)
+  const [mainImage, setMainImage] = useState(
+    room?.images?.[0] || '/placeholder.svg',
+  );
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="mb-8">
@@ -27,15 +28,14 @@ export default function RoomImageGallery({ room }: RoomImageGalleryProps) {
         {/* Main Image */}
         <Image
           src={mainImage}
-          alt={`${room?.name || "Room"} - Main Image`}
+          alt={`${room?.name || 'Room'} - Main Image`}
           width={800}
           height={400}
           className="w-full h-[80vh] object-cover rounded-lg"
-         priority={true}
+          priority={true}
           unoptimized // ⚠️ Optional, but has trade-offs (see below)
           onLoad={() => setLoading(false)} // ✅ Good UX for loading states
         />
-
 
         {/* Loading Overlay */}
         {loading && (
@@ -56,21 +56,24 @@ export default function RoomImageGallery({ room }: RoomImageGalleryProps) {
           {room.images.map((img, index) => (
             <Image
               key={index}
-              src={img || "/placeholder.svg?height=100&width=150"}
-              alt={`${room?.name || "Room"} - Image ${index + 1}`}
+              src={img || '/placeholder.svg?height=100&width=150'}
+              alt={`${room?.name || 'Room'} - Image ${index + 1}`}
               width={150}
               height={100}
               onClick={() => {
-                setLoading(true)
-                setMainImage(img)
+                setLoading(true);
+                setMainImage(img);
               }}
-              className={`w-full h-20 object-cover rounded cursor-pointer hover:opacity-80 transition-all border-2 ${mainImage === img ? "border-orange-400" : "border-transparent hover:border-orange-400"
-                }`}
+              className={`w-full h-20 object-cover rounded cursor-pointer hover:opacity-80 transition-all border-2 ${
+                mainImage === img
+                  ? 'border-orange-400'
+                  : 'border-transparent hover:border-orange-400'
+              }`}
               unoptimized
             />
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }

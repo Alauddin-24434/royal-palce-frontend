@@ -1,13 +1,13 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
-import { CalendarDays } from "lucide-react";
+'use client';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { CalendarDays } from 'lucide-react';
 
-import { useRouter } from "next/navigation"; // or "next/router" for older version
+import { useRouter } from 'next/navigation'; // or "next/router" for older version
 
 const HeroSection = () => {
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
 
@@ -15,20 +15,19 @@ const HeroSection = () => {
 
   const handleSearch = () => {
     if (!checkIn || !checkOut) {
-      alert("Please select check-in and check-out dates.");
+      alert('Please select check-in and check-out dates.');
       return;
     }
     if (new Date(checkOut) <= new Date(checkIn)) {
-      alert("Check-out date must be after check-in date.");
+      alert('Check-out date must be after check-in date.');
       return;
     }
 
     // ✅ Redirect to /rooms with query params
     router.push(
-      `/check-rooms?checkInDate=${checkIn}&checkOutDate=${checkOut}&adults=${adults}&children=${children}`
+      `/check-rooms?checkInDate=${checkIn}&checkOutDate=${checkOut}&adults=${adults}&children=${children}`,
     );
   };
-
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
@@ -65,7 +64,10 @@ const HeroSection = () => {
         >
           {/* Check-in */}
           <div className="flex flex-col">
-            <label htmlFor="checkIn" className="mb-1 font-semibold text-foreground">
+            <label
+              htmlFor="checkIn"
+              className="mb-1 font-semibold text-foreground"
+            >
               Check-in
             </label>
             <input
@@ -80,7 +82,10 @@ const HeroSection = () => {
 
           {/* Check-out */}
           <div className="flex flex-col">
-            <label htmlFor="checkOut" className="mb-1 font-semibold text-foreground">
+            <label
+              htmlFor="checkOut"
+              className="mb-1 font-semibold text-foreground"
+            >
               Check-out
             </label>
             <input
@@ -95,7 +100,10 @@ const HeroSection = () => {
 
           {/* Adults */}
           <div className="flex flex-col">
-            <label htmlFor="adults" className="mb-1 font-semibold text-foreground">
+            <label
+              htmlFor="adults"
+              className="mb-1 font-semibold text-foreground"
+            >
               Adults
             </label>
             <select
@@ -114,7 +122,10 @@ const HeroSection = () => {
 
           {/* Children */}
           <div className="flex flex-col">
-            <label htmlFor="children" className="mb-1 font-semibold text-foreground">
+            <label
+              htmlFor="children"
+              className="mb-1 font-semibold text-foreground"
+            >
               Children
             </label>
             <select
@@ -124,8 +135,8 @@ const HeroSection = () => {
               className="rounded-md bg-main text-foreground border p-2"
             >
               {[...Array(4).keys()].map((num) => (
-                <option key={num+1} value={num+1}>
-                  {num+1}
+                <option key={num + 1} value={num + 1}>
+                  {num + 1}
                 </option>
               ))}
             </select>

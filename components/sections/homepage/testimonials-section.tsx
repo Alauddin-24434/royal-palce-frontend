@@ -1,25 +1,24 @@
-"use client";
+'use client';
 import {
   ChevronLeft,
   ChevronRight,
   MessageCircle,
   Quote,
   Star,
-  
-} from "lucide-react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+} from 'lucide-react';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import React, { useState } from "react";
-import { Button } from "../../ui/button";
-import { useFindAllTestimonialsQuery } from "@/redux/features/testimonial/testimonialApi";
-import { ITestimonial } from "@/app/types/testimonial.interface";
+import React, { useState } from 'react';
+import { Button } from '../../ui/button';
+import { useFindAllTestimonialsQuery } from '@/redux/features/testimonial/testimonialApi';
+import { ITestimonial } from '@/app/types/testimonial.interface';
 
 const TestimonialsSection = () => {
   const [page, setPage] = useState(1);
   const limit = 2;
 
-  const { data: testimonialsData, isFetching } = useFindAllTestimonialsQuery({
+  const { data: testimonialsData,  } = useFindAllTestimonialsQuery({
     page,
     limit,
   });
@@ -76,57 +75,55 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Testimonials Grid */}
-      
-        <AnimatePresence mode="wait">
-  <motion.div
-    key={page}
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -30 }}
-    transition={{ duration: 0.4 }}
-    className="grid md:grid-cols-2 gap-8 mb-12"
-  >
-    {testimonials.map((testimonial:ITestimonial) => (
-      <div
-        key={testimonial._id}
-        className="bg-black/40  backdrop-blur-sm border  rounded-lg p-8"
-      >
-        {/* ... rest of the testimonial card ... */}
-        <div className="flex items-center mb-6">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white">
-              <Image
-                src={testimonial?.userImage || "/placeholder.svg"}
-                alt={testimonial?.userName}
-                width={64}
-                height={64}
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute -top-2 -right-2 bg-white rounded-full px-2 py-1 flex items-center space-x-1">
-              <Star className="w-3 h-3 fill-[#bf9310] text-[#bf9310]" />
-              <span className="text-xs font-medium text-black">
-                {testimonial.rating}
-              </span>
-            </div>
-          </div>
-        </div>
 
-        <Quote className="w-12 h-12 text-[#bf9310] mb-6" />
-        <p className="text-white text-lg leading-relaxed mb-6">
-          "{testimonial?.reviewText}"
-        </p>
-        <div>
-          <h4 className="text-white font-medium text-lg">
-            {testimonial?.userName}
-          </h4>
-        </div>
-      </div>
-    ))}
-  </motion.div>
-</AnimatePresence>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={page}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.4 }}
+              className="grid md:grid-cols-2 gap-8 mb-12"
+            >
+              {testimonials.map((testimonial: ITestimonial) => (
+                <div
+                  key={testimonial._id}
+                  className="bg-black/40  backdrop-blur-sm border  rounded-lg p-8"
+                >
+                  {/* ... rest of the testimonial card ... */}
+                  <div className="flex items-center mb-6">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white">
+                        <Image
+                          src={testimonial?.userImage || '/placeholder.svg'}
+                          alt={testimonial?.userName}
+                          width={64}
+                          height={64}
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="absolute -top-2 -right-2 bg-white rounded-full px-2 py-1 flex items-center space-x-1">
+                        <Star className="w-3 h-3 fill-[#bf9310] text-[#bf9310]" />
+                        <span className="text-xs font-medium text-black">
+                          {testimonial.rating}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-     
+                  <Quote className="w-12 h-12 text-[#bf9310] mb-6" />
+                  <p className="text-white text-lg leading-relaxed mb-6">
+                    "{testimonial?.reviewText}"
+                  </p>
+                  <div>
+                    <h4 className="text-white font-medium text-lg">
+                      {testimonial?.userName}
+                    </h4>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
 
           {/* Pagination Buttons */}
           <div className="flex items-center justify-center space-x-4">
@@ -135,8 +132,8 @@ const TestimonialsSection = () => {
               disabled={page === 1}
               className={`w-12 h-12 rounded-full border border-gray-600 text-white flex items-center justify-center transition-colors ${
                 page === 1
-                  ? "opacity-30 cursor-not-allowed"
-                  : "hover:bg-white hover:text-black cursor-pointer"
+                  ? 'opacity-30 cursor-not-allowed'
+                  : 'hover:bg-white hover:text-black cursor-pointer'
               }`}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -150,7 +147,9 @@ const TestimonialsSection = () => {
               onClick={handleNext}
               disabled={testimonials.length < limit}
               className={`w-12 h-12 rounded-full bg-[#bf9310] text-black flex items-center justify-center transition-colors ${
-                testimonials.length < limit ? "opacity-30 cursor-not-allowed" : "hover:bg-yellow-600 cursor-pointer"
+                testimonials.length < limit
+                  ? 'opacity-30 cursor-not-allowed'
+                  : 'hover:bg-yellow-600 cursor-pointer'
               }`}
             >
               <ChevronRight className="w-5 h-5" />

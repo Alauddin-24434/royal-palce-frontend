@@ -1,4 +1,4 @@
-import baseApi from "@/redux/api/baseApi";
+import baseApi from '@/redux/api/baseApi';
 
 const serviceApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -15,12 +15,12 @@ const serviceApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
- 
+
     updateService: build.mutation({
-      query: ({ id ,formData}) => ({
+      query: ({ id, formData }) => ({
         url: `/services/${id}`,
-        method: 'PATCH',  // or PUT, depending on your API
-        body:formData,
+        method: 'PATCH', // or PUT, depending on your API
+        body: formData,
       }),
     }),
     deleteService: build.mutation({
@@ -34,10 +34,10 @@ const serviceApi = baseApi.injectEndpoints({
 });
 
 export const {
-useCreateServiceMutation,
-useFindAllServiceQuery,
-useDeleteServiceMutation,
-useUpdateServiceMutation
+  useCreateServiceMutation,
+  useFindAllServiceQuery,
+  useDeleteServiceMutation,
+  useUpdateServiceMutation,
 } = serviceApi;
 
 export default serviceApi;

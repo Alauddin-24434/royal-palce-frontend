@@ -1,56 +1,41 @@
-"use client"
+'use client';
 
-import React from "react"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {
-  Calendar,
-  Users,
-  Bed,
-} from "lucide-react"
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-} from "recharts"
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Calendar, Users, Bed } from 'lucide-react';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 // Icon mapping
 const iconMap: any = {
   Calendar: <Calendar className="h-6 w-6" />,
   Users: <Users className="h-6 w-6" />,
   Bed: <Bed className="h-6 w-6" />,
-}
+};
 
 // Reusable pie colors
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658"]
+const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
 type ReceptionistDashboardProps = {
-  stats: any[]
-  bookings: any[]
-}
+  stats: any[];
+  bookings: any[];
+};
 
 export default function ReceptionistDashboard({
   stats,
   bookings,
 }: ReceptionistDashboardProps) {
-  const statusCount: Record<string, number> = {}
+  const statusCount: Record<string, number> = {};
 
   bookings.forEach((booking) => {
-    const status = booking.bookingStatus || "unknown"
-    statusCount[status] = (statusCount[status] || 0) + 1
-  })
+    const status = booking.bookingStatus || 'unknown';
+    statusCount[status] = (statusCount[status] || 0) + 1;
+  });
 
   const pieChartData = Object.entries(statusCount).map(([name, value]) => ({
     name,
     value,
-  }))
+  }));
 
   return (
     <div className="space-y-8 px-4 py-6">
@@ -58,16 +43,12 @@ export default function ReceptionistDashboard({
         <h2 className="text-3xl font-bold text-foreground mb-1">
           Receptionist Dashboard
         </h2>
-       
       </div>
 
       {/* === Stat Cards === */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {stats.map((stat, index) => (
-          <Card
-            key={index}
-            className="bg-main  backdrop-blur-sm"
-          >
+          <Card key={index} className="bg-main  backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-foreground">
                 {stat.title}
@@ -91,7 +72,9 @@ export default function ReceptionistDashboard({
       {/* === Pie Chart === */}
       <Card className="bg-main  backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-foreground">Booking Status Overview</CardTitle>
+          <CardTitle className="text-foreground">
+            Booking Status Overview
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <PieChart width={300} height={250}>
@@ -134,10 +117,7 @@ export default function ReceptionistDashboard({
             </thead>
             <tbody>
               {bookings.map((booking: any) => (
-                <tr
-                  key={booking._id}
-                  className="border-b "
-                >
+                <tr key={booking._id} className="border-b ">
                   <td className="py-2">{booking.userId?.name}</td>
                   <td>{booking.rooms?.[0]?.roomId}</td>
                   <td>${booking.totalAmount}</td>
@@ -153,5 +133,5 @@ export default function ReceptionistDashboard({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

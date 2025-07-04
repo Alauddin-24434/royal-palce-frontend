@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   format,
   addDays,
@@ -8,15 +8,15 @@ import {
   endOfWeek,
   isSameMonth,
   isSameDay,
-} from "date-fns";
+} from 'date-fns';
 
 interface SimpleCalendarProps {
   onSelectDate: (date: Date) => void;
-  selectedRange?: { from?: Date; to?: Date }; 
+  selectedRange?: { from?: Date; to?: Date };
   bookedDates?: string[];
 }
 
-const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
+const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export default function SimpleCalendar({
   onSelectDate,
@@ -53,7 +53,9 @@ export default function SimpleCalendar({
           &lt;
         </button>
 
-        <div className="text-sm font-bold">{format(currentMonth, "MMMM yyyy")}</div>
+        <div className="text-sm font-bold">
+          {format(currentMonth, 'MMMM yyyy')}
+        </div>
 
         <button
           onClick={nextMonth}
@@ -77,7 +79,7 @@ export default function SimpleCalendar({
       <div className="grid grid-cols-7 gap-1 text-center">
         {days.map((dayItem) => {
           const isCurrentMonth = isSameMonth(dayItem, currentMonth);
-          const formattedDay = format(dayItem, "yyyy-MM-dd");
+          const formattedDay = format(dayItem, 'yyyy-MM-dd');
           const isBooked = bookedDates.includes(formattedDay);
           const isPastDate = dayItem < new Date();
 
@@ -100,19 +102,21 @@ export default function SimpleCalendar({
               disabled={shouldDisable}
               className={`
                 py-2 rounded-md transition-colors
-                ${isSelected ? "bg-yellow-400 text-black font-bold shadow-md" : ""}
-                ${isInRange ? "bg-yellow-200 text-black" : ""}
-                ${shouldDisable ? "bg-red-600 text-white cursor-not-allowed" : ""}
+                ${isSelected ? 'bg-yellow-400 text-black font-bold shadow-md' : ''}
+                ${isInRange ? 'bg-yellow-200 text-black' : ''}
+                ${shouldDisable ? 'bg-red-600 text-white cursor-not-allowed' : ''}
                 ${
                   !shouldDisable && isCurrentMonth && !isSelected && !isInRange
-                    ? "hover:bg-yellow-600"
-                    : ""
+                    ? 'hover:bg-yellow-600'
+                    : ''
                 }
               `}
-              aria-label={format(dayItem, "eeee, MMMM do, yyyy")}
+              aria-label={format(dayItem, 'eeee, MMMM do, yyyy')}
               type="button"
             >
-              <div className="text-sm font-semibold">{format(dayItem, "d")}</div>
+              <div className="text-sm font-semibold">
+                {format(dayItem, 'd')}
+              </div>
             </button>
           );
         })}

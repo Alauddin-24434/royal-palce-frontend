@@ -1,4 +1,4 @@
-import baseApi from "@/redux/api/baseApi";
+import baseApi from '@/redux/api/baseApi';
 
 const testimonialApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -8,14 +8,14 @@ const testimonialApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ["Testimonial"],
+      invalidatesTags: ['Testimonial'],
     }),
     findAllTestimonials: build.query({
       query: ({ page = 1, limit = 10 }) => ({
         url: `/testimonials?page=${page}&limit=${limit}`,
         method: 'GET',
       }),
-      providesTags: ["Testimonial"],
+      providesTags: ['Testimonial'],
     }),
 
     findTestimonialsByRoomId: build.query({
@@ -23,16 +23,15 @@ const testimonialApi = baseApi.injectEndpoints({
         url: `/testimonials/${id}`,
         method: 'GET',
       }),
-      providesTags: ["Testimonial"],
+      providesTags: ['Testimonial'],
     }),
     deleteTestimonial: build.mutation({
       query: (id) => ({
         url: `/testimonials/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ["Testimonial"],
+      invalidatesTags: ['Testimonial'],
     }),
-
   }),
 
   overrideExisting: false,

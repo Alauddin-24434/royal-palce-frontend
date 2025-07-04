@@ -1,7 +1,7 @@
 // src/redux/api/baseApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
-import {  updateToken, logout } from '../features/auth/authSlice';
+import { updateToken, logout } from '../features/auth/authSlice';
 
 const mutex = new Mutex();
 // https://royal-place-server.vercel.app
@@ -18,7 +18,11 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) => {
+const baseQueryWithReauth: typeof baseQuery = async (
+  args,
+  api,
+  extraOptions,
+) => {
   await mutex.waitForUnlock();
 
   let result = await baseQuery(args, api, extraOptions);
@@ -32,7 +36,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
         const refreshResult = await baseQuery(
           { url: '/users/refresh-token', method: 'POST' },
           api,
-          extraOptions
+          extraOptions,
         );
 
         // console.log('🔄 Refresh token response:', refreshResult);
@@ -43,8 +47,7 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
 
         if (newToken) {
           console.log('✅ Got new access token:', newToken);
-        
-        
+
           // শুধু token আপডেট করো, user আগের মতো থাকবে
           api.dispatch(updateToken(newToken));
 
@@ -58,7 +61,6 @@ const baseQueryWithReauth: typeof baseQuery = async (args, api, extraOptions) =>
         release();
       }
     } else {
-   
       await mutex.waitForUnlock();
       result = await baseQuery(args, api, extraOptions);
     }

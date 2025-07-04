@@ -1,31 +1,41 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react"
-import { useForm, Controller } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { X, Upload, Trash2 } from "lucide-react"
+import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { X, Upload, Trash2 } from 'lucide-react';
 
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
-
-} from "../ui/dialog" // Adjust your imports as per your setup
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { Button } from "../ui/button"
-import { Badge } from "../ui/badge"
-import toast, { Toaster } from "react-hot-toast"
-import { useCreateRoomMutation, useUpdateRoomMutation } from "@/redux/features/room/room.api"
-import { IRoom, RoomType } from "@/app/types/room.interface"
-
-
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '../ui/dialog'; // Adjust your imports as per your setup
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import toast, { Toaster } from 'react-hot-toast';
+import {
+  useCreateRoomMutation,
+  useUpdateRoomMutation,
+} from '@/redux/features/room/room.api';
+import { IRoom, RoomType } from '@/app/types/room.interface';
 
 interface RoomFormModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 
-  room?: IRoom
+  room?: IRoom;
 }
 
 // ✅ Zod schema for validation
@@ -39,31 +49,28 @@ const roomSchema = z.object({
   features: z.array(z.string()),
   images: z.any().optional(), // Will handle as FileList
   bed: z.object({
-    type: z.string().min(1, "Bed type is required"),
-    count: z.number().min(1, "At least 1 bed required"),
+    type: z.string().min(1, 'Bed type is required'),
+    count: z.number().min(1, 'At least 1 bed required'),
   }),
 
   // 👨‍👩‍👧 Add adults and children
-  adults: z.number().min(1, "At least 1 adult"),
+  adults: z.number().min(1, 'At least 1 adult'),
   children: z.number().min(0),
-})
+});
 
-type RoomFormData = z.infer<typeof roomSchema>
+type RoomFormData = z.infer<typeof roomSchema>;
 
-export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalProps) {
-
-
-
+export default function RoomFormModal({
+  isOpen,
+  onClose,
+  room,
+}: RoomFormModalProps) {
   const [updateRoom] = useUpdateRoomMutation();
   const [createRoom] = useCreateRoomMutation();
-  const isEditMode = !!room
-  const [imageFiles, setImageFiles] = useState<File[]>([])
-  const [imagePreviews, setImagePreviews] = useState<string[]>([])
-  const [newFeature, setNewFeature] = useState("")
-
-
-
-
+  const isEditMode = !!room;
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [newFeature, setNewFeature] = useState('');
 
   const {
     register,
@@ -73,25 +80,26 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
     getValues,
     watch,
     reset,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm<RoomFormData>({
     resolver: zodResolver(roomSchema),
     defaultValues: {
-      roomNumber: "11",
+      roomNumber: '11',
       floor: 1,
-      title: "luxury Hotel",
-      description: "Deluxe Rooms are Spacious 400 square foot Rooms cater to your comfort to the fullest. It include elegant imported parquet floors, King size bed or twin bed, wall mounted LCD screen television, in room bathtub and a bathroom with high quality fittings comprising of a luxurious walk in glass shower cubicle. Large elegant wooden wardrobes with Electronic Safe assures safety of client’s valuables. A sleek work desk with a chair and Task Lamp, well stocked mini bar, and uninterrupted High speed Wi-Fi internet",
+      title: 'luxury Hotel',
+      description:
+        'Deluxe Rooms are Spacious 400 square foot Rooms cater to your comfort to the fullest. It include elegant imported parquet floors, King size bed or twin bed, wall mounted LCD screen television, in room bathtub and a bathroom with high quality fittings comprising of a luxurious walk in glass shower cubicle. Large elegant wooden wardrobes with Electronic Safe assures safety of client’s valuables. A sleek work desk with a chair and Task Lamp, well stocked mini bar, and uninterrupted High speed Wi-Fi internet',
       type: RoomType.Deluxe,
       price: 1,
       features: ['King/Queen bed', 'View balcony', 'Attached luxury bathroom'],
       bed: {
-        type: "king",
+        type: 'king',
         count: 1,
       },
       adults: 2,
       children: 2,
     },
-  })
+  });
 
   // ✅ Update form when editing
   useEffect(() => {
@@ -121,118 +129,137 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
 
   // ✅ Feature Add/Remove
   const handleAddFeature = () => {
-    const trimmed = newFeature.trim()
-    if (trimmed && !getValues("features").includes(trimmed)) {
-      setValue("features", [...getValues("features"), trimmed])
-      setNewFeature("")
+    const trimmed = newFeature.trim();
+    if (trimmed && !getValues('features').includes(trimmed)) {
+      setValue('features', [...getValues('features'), trimmed]);
+      setNewFeature('');
     }
-  }
+  };
 
   const handleRemoveFeature = (feature: string) => {
-    setValue("features", getValues("features").filter((f) => f !== feature))
-  }
+    setValue(
+      'features',
+      getValues('features').filter((f) => f !== feature),
+    );
+  };
 
   // ✅ Image upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
+    const files = e.target.files;
     if (files) {
-      const fileList = Array.from(files)
-      setImageFiles((prev) => [...prev, ...fileList])
-      setImagePreviews((prev) => [...prev, ...fileList.map((f) => URL.createObjectURL(f))])
+      const fileList = Array.from(files);
+      setImageFiles((prev) => [...prev, ...fileList]);
+      setImagePreviews((prev) => [
+        ...prev,
+        ...fileList.map((f) => URL.createObjectURL(f)),
+      ]);
     }
-  }
+  };
 
   const handleRemoveImage = (index: number) => {
-    const previews = [...imagePreviews]
-    previews.splice(index, 1)
-    setImagePreviews(previews)
+    const previews = [...imagePreviews];
+    previews.splice(index, 1);
+    setImagePreviews(previews);
 
     if (index < imageFiles.length) {
-      const files = [...imageFiles]
-      files.splice(index, 1)
-      setImageFiles(files)
+      const files = [...imageFiles];
+      files.splice(index, 1);
+      setImageFiles(files);
     }
-  }
-
-
+  };
 
   const handleSubmitRoom = async (data: RoomFormData) => {
     try {
       const formData = new FormData();
 
-      formData.append("roomNumber", data.roomNumber);
-      formData.append("floor", String(data.floor));
-      if (data.title) formData.append("title", data.title);
-      if (data.description) formData.append("description", data.description);
-      formData.append("type", data.type);
-      formData.append("price", data.price.toString());
+      formData.append('roomNumber', data.roomNumber);
+      formData.append('floor', String(data.floor));
+      if (data.title) formData.append('title', data.title);
+      if (data.description) formData.append('description', data.description);
+      formData.append('type', data.type);
+      formData.append('price', data.price.toString());
 
       // ✅ Append nested bed object properly
-      formData.append("bedType", data.bed.type);
-      formData.append("bedCount", data.bed.count.toString());
+      formData.append('bedType', data.bed.type);
+      formData.append('bedCount', data.bed.count.toString());
 
       // ✅ Adults & Children
-      formData.append("adults", data.adults.toString());
-      formData.append("children", data.children.toString());
+      formData.append('adults', data.adults.toString());
+      formData.append('children', data.children.toString());
 
       // ✅ Append features
-      data.features.forEach((feature) => formData.append("features", feature));
+      data.features.forEach((feature) => formData.append('features', feature));
 
       // ✅ Append images
-      imageFiles.forEach((file) => formData.append("images", file));
+      imageFiles.forEach((file) => formData.append('images', file));
 
-      console.log("FormData preview:");
+      console.log('FormData preview:');
       for (const pair of formData.entries()) {
         console.log(`${pair[0]}:`, pair[1]);
       }
 
       if (isEditMode) {
         await updateRoom({ id: room?._id, formData }).unwrap();
-        toast.success("✅ Room updated successfully!");
+        toast.success('✅ Room updated successfully!');
       } else {
         await createRoom(formData).unwrap();
-        toast.success("✅ Room created successfully!");
+        toast.success('✅ Room created successfully!');
       }
 
       reset();
       onClose();
       setImageFiles([]);
       setImagePreviews([]);
-
     } catch (err: any) {
-      console.error("❌ Error submitting room:", err);
-      toast.error(err?.data?.message || "🚨 Failed to submit room. Please try again.");
+      console.error('❌ Error submitting room:', err);
+      toast.error(
+        err?.data?.message || '🚨 Failed to submit room. Please try again.',
+      );
     }
   };
-
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-slate-800 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEditMode ? "Update Room" : "Create New Room"}</DialogTitle>
+          <DialogTitle>
+            {isEditMode ? 'Update Room' : 'Create New Room'}
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleSubmitRoom)} className="space-y-6 py-4">
+        <form
+          onSubmit={handleSubmit(handleSubmitRoom)}
+          className="space-y-6 py-4"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Room Number */}
             <div className="space-y-2">
               <Label>Room Number*</Label>
-              <Input {...register("roomNumber")} className="bg-slate-700" />
-              {errors.roomNumber && <p className="text-red-500 text-sm">{errors.roomNumber.message}</p>}
+              <Input {...register('roomNumber')} className="bg-slate-700" />
+              {errors.roomNumber && (
+                <p className="text-red-500 text-sm">
+                  {errors.roomNumber.message}
+                </p>
+              )}
             </div>
 
             {/* Floor */}
             <div className="space-y-2">
               <Label>Floor*</Label>
-              <Input type="number" {...register("floor", { valueAsNumber: true })} className="bg-slate-700" />
-              {errors.floor && <p className="text-red-500 text-sm">{errors.floor.message}</p>}
+              <Input
+                type="number"
+                {...register('floor', { valueAsNumber: true })}
+                className="bg-slate-700"
+              />
+              {errors.floor && (
+                <p className="text-red-500 text-sm">{errors.floor.message}</p>
+              )}
             </div>
 
             {/* Title */}
             <div className="space-y-2">
               <Label>Room Title</Label>
-              <Input {...register("title")} className="bg-slate-700" />
+              <Input {...register('title')} className="bg-slate-700" />
             </div>
 
             {/* Type */}
@@ -261,15 +288,24 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
             {/* Price */}
             <div className="space-y-2">
               <Label> Base Price ($)*</Label>
-              <Input type="number" {...register("price", { valueAsNumber: true })} className="bg-slate-700" />
-              {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
+              <Input
+                type="number"
+                {...register('price', { valueAsNumber: true })}
+                className="bg-slate-700"
+              />
+              {errors.price && (
+                <p className="text-red-500 text-sm">{errors.price.message}</p>
+              )}
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-2">
             <Label>Description</Label>
-            <textarea {...register("description")} className="bg-slate-700 w-full min-h-[100px]" />
+            <textarea
+              {...register('description')}
+              className="bg-slate-700 w-full min-h-[100px]"
+            />
           </div>
 
           {/* Features */}
@@ -279,7 +315,9 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
               <Input
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddFeature())}
+                onKeyDown={(e) =>
+                  e.key === 'Enter' && (e.preventDefault(), handleAddFeature())
+                }
                 placeholder="Add a feature"
                 className="bg-slate-700"
               />
@@ -292,7 +330,7 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
               <div className="w-1/2 space-y-2">
                 <Label>Bed Type*</Label>
                 <select
-                  {...register("bed.type")}
+                  {...register('bed.type')}
                   className="bg-slate-700 text-white w-full rounded-md p-2"
                 >
                   <option value="">Select</option>
@@ -313,16 +351,18 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
                 <Input
                   type="number"
                   min={1}
-                  {...register("bed.count", { valueAsNumber: true })}
+                  {...register('bed.count', { valueAsNumber: true })}
                   className="bg-slate-700"
                 />
                 {errors.bed?.count && (
-                  <p className="text-sm text-red-500">{errors.bed.count.message}</p>
+                  <p className="text-sm text-red-500">
+                    {errors.bed.count.message}
+                  </p>
                 )}
               </div>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
-              {watch("features").map((f, i) => (
+              {watch('features').map((f, i) => (
                 <Badge key={i} className="flex items-center gap-1 bg-slate-600">
                   {f}
                   <button type="button" onClick={() => handleRemoveFeature(f)}>
@@ -338,7 +378,7 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
             <Input
               type="number"
               min={1}
-              {...register("adults", { valueAsNumber: true })}
+              {...register('adults', { valueAsNumber: true })}
               className="bg-slate-700"
             />
             {errors.adults && (
@@ -352,7 +392,7 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
             <Input
               type="number"
               min={0}
-              {...register("children", { valueAsNumber: true })}
+              {...register('children', { valueAsNumber: true })}
               className="bg-slate-700"
             />
             {errors.children && (
@@ -360,19 +400,35 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
             )}
           </div>
 
-
           {/* Images */}
           <div className="space-y-2">
             <Label>Room Images</Label>
-            <Input type="file" accept="image/*" multiple className="hidden" id="images" onChange={handleImageChange} />
-            <Label htmlFor="images" className="cursor-pointer flex items-center gap-2 text-slate-400">
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              id="images"
+              onChange={handleImageChange}
+            />
+            <Label
+              htmlFor="images"
+              className="cursor-pointer flex items-center gap-2 text-slate-400"
+            >
               <Upload className="w-5 h-5" /> Click to upload images
             </Label>
             <div className="grid grid-cols-3 gap-2 mt-4">
               {imagePreviews.map((img, i) => (
                 <div key={i} className="relative">
-                  <img src={img} alt="roomImage" className="h-24 w-full object-cover rounded" />
-                  <button onClick={() => handleRemoveImage(i)} className="absolute top-1 right-1 bg-red-500 p-1 rounded-full">
+                  <img
+                    src={img}
+                    alt="roomImage"
+                    className="h-24 w-full object-cover rounded"
+                  />
+                  <button
+                    onClick={() => handleRemoveImage(i)}
+                    className="absolute top-1 right-1 bg-red-500 p-1 rounded-full"
+                  >
                     <Trash2 className="h-3 w-3 text-white" />
                   </button>
                 </div>
@@ -385,7 +441,11 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : isEditMode ? "Update Room" : "Create Room"}
+              {isSubmitting
+                ? 'Submitting...'
+                : isEditMode
+                  ? 'Update Room'
+                  : 'Create Room'}
             </Button>
           </DialogFooter>
         </form>
@@ -417,5 +477,5 @@ export default function RoomFormModal({ isOpen, onClose, room }: RoomFormModalPr
         }}
       />
     </Dialog>
-  )
+  );
 }
