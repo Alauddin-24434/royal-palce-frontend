@@ -62,12 +62,7 @@ const menuItems = [
     icon: Bed,
     roles: ["admin", "receptionist"],
   },
-  {
-    title: "Booked Room",
-    url: "/dashboard/booked",
-    icon: Bed,
-    roles: ["guest"],
-  },
+
   {
     title: "Bookings Management",
     url: "/dashboard/bookings",
@@ -80,6 +75,12 @@ const menuItems = [
     url: "/dashboard/users",
     icon: Users,
     roles: ["admin"],
+  },
+  {
+    title: "Booked Room",
+    url: "/dashboard/booked",
+    icon: Bed,
+    roles: ["guest"],
   },
   {
     title: "Service Management",
@@ -109,8 +110,8 @@ export function AppSidebar() {
   const filteredMenuItems = menuItems.filter((item) => item.roles.includes(currentRole))
 
   return (
-    <Sidebar className="border-r border-slate-700">
-      <SidebarHeader className="border-b border-slate-700 p-4">
+    <Sidebar className="border-r bg-main">
+      <SidebarHeader className="border-b  p-4">
         <Link href="/" className="flex items-center space-x-2">
           <Crown className="h-8 w-8 text-[#bf9310]" />
           <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
@@ -120,7 +121,7 @@ export function AppSidebar() {
       <SidebarContent className="px-2 py-4">
         {/* Navigation Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 text-xs uppercase tracking-wider">
+          <SidebarGroupLabel className="text-foreground text-xs uppercase tracking-wider">
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -138,12 +139,12 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      className={`hover:bg-slate-700/50 ${isActive ? "bg-slate-700 text-white font-semibold" : ""
+                      className={`hover:bg-slate-700/50 rounded-none ${isActive ? "bg-[#2a2d38] text-white font-semibold" : ""
                         }`}
                     >
                       <Link
                         href={item.url}
-                        className="flex items-center space-x-3 text-slate-300 hover:text-white"
+                        className="flex items-center space-x-3 text-foreground hover:text-white"
                       >
                         <item.icon className="h-5 w-5" />
                         <span>{item.title}</span>
@@ -164,21 +165,21 @@ export function AppSidebar() {
             <Button variant="ghost" className="w-full justify-start h-12 hover:bg-slate-700/50">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full flex items-center justify-center">
-                  <User className="h-4 w-4 text-slate-300" />
+                  <User className="h-4 w-4 text-foreground" />
                 </div>
                 <div className="text-left">
                   <p className="text-sm font-medium text-white">{user?.name}</p>
-                  <p className="text-xs text-slate-400">{user?.email}</p>
+                  <p className="text-xs text-foreground">{user?.email}</p>
                 </div>
               </div>
-              <ChevronDown className="h-4 w-4 text-slate-400 ml-auto" />
+              <ChevronDown className="h-4 w-4 text-foreground ml-auto" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-slate-800 border-slate-700" align="end">
+          <DropdownMenuContent className="w-56 bg-main " align="end">
             <Link href="/dashboard/profile">
               <DropdownMenuItem className="hover:bg-slate-700">
                 <User className="mr-2 h-4 w-4 text-slate-400" />
-                <span className="text-white">Profile</span>
+                <span className="text-foreground">Profile</span>
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator className="bg-slate-700" />

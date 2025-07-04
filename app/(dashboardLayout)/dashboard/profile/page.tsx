@@ -86,26 +86,23 @@ const ProfilePage = () => {
       case "receptionist":
         return "bg-blue-500/20 text-blue-300 border-blue-500/30"
       default:
-        return "bg-green-500/20 text-green-300 border-green-500/30"
+        return "bg-main text-foreground border-text-foreground"
     }
   }
 
   return (
     <div className="min-h-screen p-4">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
-      </div>
+    
 
       <div className="relative max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">My Profile</h1>
-          <p className="text-slate-300">Manage your account information</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">My Profile</h1>
+      
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
+            <Card className="bg-main border shadow-md">
               <CardContent className="p-6">
                 <div className="text-center">
                   <div className="relative inline-block mb-4">
@@ -114,7 +111,7 @@ const ProfilePage = () => {
                         src={userInfo.image || "/placeholder.svg?height=128&width=128"}
                         alt={userInfo.name}
                       />
-                      <AvatarFallback className="bg-slate-700 text-white text-2xl">
+                      <AvatarFallback className="bg-main text-foreground  text-2xl">
                         {userInfo.name?.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -151,14 +148,14 @@ const ProfilePage = () => {
                     </Button>
                   )}
 
-                  <h2 className="text-2xl font-bold text-white mb-2">
+                  <h2 className="text-2xl font-bold text-foreground mb-2">
                     {userInfo.name}
                   </h2>
                   <Badge className={`mb-4 ${getRoleBadgeColor(userInfo.role)}`}>
                     {userInfo.role.charAt(0).toUpperCase() + userInfo.role.slice(1)}
                   </Badge>
 
-                  <div className="space-y-2 text-slate-300">
+                  <div className="space-y-2 text-foreground">
                     <div className="flex items-center justify-center gap-2">
                       <Mail className="w-4 h-4" />
                       <span className="text-sm">{userInfo.email}</span>
@@ -176,15 +173,15 @@ const ProfilePage = () => {
           </div>
 
           <div className="lg:col-span-2">
-            <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
+            <Card className="bg-main border shadow-md">
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-white">Profile Information</CardTitle>
+                <CardTitle className="text-foreground">Profile Information</CardTitle>
                 {!isEditing ? (
                   <Button
                     onClick={() => setIsEditing(true)}
                     variant="outline"
                     size="sm"
-                    className="bg-slate-700/50 border-slate-600 text-white hover:bg-slate-700"
+                    className="bg-slate-700/50 border-slate-600 text-foreground hover:bg-slate-700"
                   >
                     <Pencil className="w-4 h-4 mr-2" />
                     Edit
@@ -203,7 +200,7 @@ const ProfilePage = () => {
                       onClick={handleCancel}
                       variant="outline"
                       size="sm"
-                      className="bg-slate-700/50 border-slate-600 text-white hover:bg-slate-700"
+                      className="bg-slate-700/50 border-slate-600 text-foreground hover:bg-slate-700"
                     >
                       <X className="w-4 h-4 mr-2" />
                       Cancel
@@ -213,25 +210,25 @@ const ProfilePage = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
-                  <Label className="text-slate-200 font-medium">Full Name</Label>
+                  <Label className="text-foreground font-medium">Full Name</Label>
                   {isEditing ? (
                     <Input
                       value={editedUser.name}
                       onChange={(e) =>
                         setEditedUser({ ...editedUser, name: e.target.value })
                       }
-                      className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                      className="bg-slate-700/50 border-slate-600 text-foreground placeholder:text-foreground focus:border-orange-500 focus:ring-orange-500/20"
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
-                      <User className="w-5 h-5 text-slate-400" />
-                      <span className="text-white">{userInfo.name}</span>
+                      <User className="w-5 h-5 text-foreground" />
+                      <span className="text-foreground">{userInfo.name}</span>
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-slate-200 font-medium">Phone Number</Label>
+                  <Label className="text-foreground font-medium">Phone Number</Label>
                   {isEditing ? (
                     <Input
                       type="tel"
@@ -240,21 +237,21 @@ const ProfilePage = () => {
                         setEditedUser({ ...editedUser, phone: e.target.value })
                       }
                       placeholder="Enter phone number"
-                      className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                      className="bg-slate-700/50 border-slate-600 text-foreground placeholder:text-foreground focus:border-orange-500 focus:ring-orange-500/20"
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
-                      <Phone className="w-5 h-5 text-slate-400" />
-                      <span className="text-white">{userInfo.phone || "Not provided"}</span>
+                      <Phone className="w-5 h-5 text-foreground" />
+                      <span className="text-foreground">{userInfo.phone || "Not provided"}</span>
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-slate-200 font-medium">Account Role</Label>
+                  <Label className="text-foreground font-medium">Account Role</Label>
                   <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
-                    <Shield className="w-5 h-5 text-slate-400" />
-                    <span className="text-white capitalize">{userInfo.role}</span>
+                    <Shield className="w-5 h-5 text-foreground" />
+                    <span className="text-foreground capitalize">{userInfo.role}</span>
                     <Badge className={`ml-auto ${getRoleBadgeColor(userInfo.role)}`}>
                       {userInfo.role === "admin"
                         ? "Administrator"

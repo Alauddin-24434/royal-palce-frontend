@@ -55,12 +55,10 @@ export default function ReceptionistDashboard({
   return (
     <div className="space-y-8 px-4 py-6">
       <div>
-        <h2 className="text-3xl font-bold text-white mb-1">
+        <h2 className="text-3xl font-bold text-foreground mb-1">
           Receptionist Dashboard
         </h2>
-        <p className="text-slate-400">
-          Focus on guest check-ins and bookings
-        </p>
+       
       </div>
 
       {/* === Stat Cards === */}
@@ -68,32 +66,32 @@ export default function ReceptionistDashboard({
         {stats.map((stat, index) => (
           <Card
             key={index}
-            className="bg-slate-800/50 border-slate-700 backdrop-blur-sm"
+            className="bg-main  backdrop-blur-sm"
           >
             <CardHeader>
-              <CardTitle className="text-sm font-medium text-slate-300">
+              <CardTitle className="text-sm font-medium text-foreground">
                 {stat.title}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-white">
+                <div className="text-2xl font-bold text-foreground">
                   {stat.value}
                 </div>
                 <p className={`text-xs ${stat.color}`}>
                   {stat.change} from yesterday
                 </p>
               </div>
-              <div className="text-white">{iconMap[stat.icon]}</div>
+              <div className="text-foreground">{iconMap[stat.icon]}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* === Pie Chart === */}
-      <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+      <Card className="bg-main  backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-white">Booking Status Overview</CardTitle>
+          <CardTitle className="text-foreground">Booking Status Overview</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <PieChart width={300} height={250}>
@@ -120,12 +118,12 @@ export default function ReceptionistDashboard({
       </Card>
 
       {/* === Recent Bookings Table === */}
-      <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+      <Card className="bg-main  backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-white">Recent Bookings</CardTitle>
+          <CardTitle className="text-foreground">Recent Bookings</CardTitle>
         </CardHeader>
         <CardContent className="overflow-x-auto">
-          <table className="min-w-full text-sm text-left text-white">
+          <table className="min-w-full text-sm text-left text-foreground">
             <thead>
               <tr className="border-b border-slate-600">
                 <th className="py-2">Guest</th>
@@ -138,7 +136,7 @@ export default function ReceptionistDashboard({
               {bookings.map((booking: any) => (
                 <tr
                   key={booking._id}
-                  className="border-b border-slate-700"
+                  className="border-b "
                 >
                   <td className="py-2">{booking.userId?.name}</td>
                   <td>{booking.rooms?.[0]?.roomId}</td>

@@ -163,7 +163,7 @@ export default function CheckRooms() {
                 <Link href={`/rooms/${room._id}`}>
                   <Button
                     variant="outline"
-                    className="mt-2 text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
+                    className="mt-2 bg-transparent  text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
                   >
                     VIEW DETAILS <ArrowRight className="w-4 h-4 inline" />
                   </Button>

@@ -30,8 +30,8 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
 
                     {/* Name and Role */}
                     <div className="flex flex-col">
-                        <span className="text-sm font-medium text-white">{user?.name || "User Name"}</span>
-                        <span className="text-xs text-gray-400">{user?.role || "User Role"}</span>
+                        <span className="text-sm font-medium text-foreground">{user?.name || "User Name"}</span>
+                        <span className="text-xs text-foreground">{user?.role || "User Role"}</span>
                     </div>
                 </div>
             </DropdownMenuTrigger>}

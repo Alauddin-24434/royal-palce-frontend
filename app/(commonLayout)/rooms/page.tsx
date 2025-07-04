@@ -59,14 +59,17 @@ export default function RoomsPage() {
     setTab(newTab);
     setPage(1);
   };
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-[#bf9310] font-semibold text-lg">Loading...</div>
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading rooms...</p>
+        </div>
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
@@ -129,7 +132,7 @@ export default function RoomsPage() {
                 <Link href={`/rooms/${room._id}`}>
                   <Button
                     variant="outline"
-                    className="mt-2 text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
+                    className="mt-2  bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
                   >
                     VIEW DETAILS <ArrowRight className="w-4 h-4 inline" />
                   </Button>

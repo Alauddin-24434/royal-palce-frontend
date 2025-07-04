@@ -72,57 +72,69 @@ interface Booking {
 
 export default function BookedRooms() {
   const user = useSelector(selectCurrentUser);
-  const { data: bookingData } = useGetBookingsByUserIdQuery(user?._id ?? "");
+  const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(user?._id ?? "");
 
-  if (!bookingData) return <div>Loading...</div>;
+
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading ...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!bookingData.success) return <div>Error loading bookings</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Booked Rooms</h1>
+          <h1 className="text-3xl font-bold text-foreground">Booked Rooms</h1>
         </div>
       </div>
 
       {/* Bookings Table */}
-      <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
+      <Card className="bg-main border border-slate-700 shadow-md">
         <CardHeader>
-          <CardTitle className="text-white">Recent Bookings</CardTitle>
+          <CardTitle className="text-foreground">Recent Bookings</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-[#2a2d38] text-slate-300">
-                  <TableHead className="text-slate-300">Room Title</TableHead>
-                  <TableHead className="text-slate-300">Room Count</TableHead>
-                  <TableHead className="text-slate-300">Check-in</TableHead>
-                  <TableHead className="text-slate-300">Check-out</TableHead>
-                  <TableHead className="text-slate-300">Amount</TableHead>
-                  <TableHead className="text-slate-300">Status</TableHead>
+                <TableRow className="bg-[#2a2d38] text-foreground">
+                  <TableHead >Room Title</TableHead>
+                  <TableHead >Room Count</TableHead>
+                  <TableHead >Check-in</TableHead>
+                  <TableHead >Check-out</TableHead>
+                  <TableHead >Amount</TableHead>
+                  <TableHead >Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {bookingData.data.map((booking: Booking) => (
-                  <TableRow key={booking._id} className="border-slate-700">
+                  <TableRow key={booking._id} className="border-slate-700  text-foreground">
                     {/* রুম গুলোর title comma separated দেখাবে */}
-                    <TableCell className="text-slate-300">
+                    <TableCell >
                       {booking.rooms
                         ?.map((r) => (r.roomId && "title" in r.roomId ? r.roomId.title : "Untitled Room"))
                         .join(", ")}
                     </TableCell>
-                    <TableCell className="text-slate-300">{booking.rooms.length}</TableCell>
+                    <TableCell >{booking.rooms.length}</TableCell>
 
-                    <TableCell className="text-slate-300">
+                    <TableCell >
                       {booking.rooms[0]?.checkInDate}
                     </TableCell>
 
-                    <TableCell className="text-slate-300">
+                    <TableCell >
                       {booking.rooms[0]?.checkOutDate}
                     </TableCell>
 
-                    <TableCell className="font-semibold text-amber-400">
+                    <TableCell className="font-semibold ">
                       ${booking.totalAmount}
                     </TableCell>
 
@@ -132,15 +144,15 @@ export default function BookedRooms() {
                           booking.bookingStatus === "booked"
                             ? "default"
                             : booking.bookingStatus === "pending"
-                            ? "secondary"
-                            : "outline"
+                              ? "secondary"
+                              : "outline"
                         }
                         className={
                           booking.bookingStatus === "booked"
                             ? "bg-emerald-600 hover:bg-emerald-700"
                             : booking.bookingStatus === "pending"
-                            ? "bg-amber-600 hover:bg-amber-700"
-                            : "bg-blue-600 hover:bg-blue-700"
+                              ? "bg-amber-600 hover:bg-amber-700"
+                              : "bg-blue-600 hover:bg-blue-700"
                         }
                       >
                         {booking.bookingStatus}

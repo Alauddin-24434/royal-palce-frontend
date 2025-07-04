@@ -73,19 +73,19 @@ const chartData = [
     <div className="space-y-6 p-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Payments</h1>
+          <h1 className="text-3xl font-bold text-foreground">Payments</h1>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <Input
             placeholder="Search by guest/email"
-            className="bg-slate-700 text-white border-slate-600"
+            className="bg-main text-foreground "
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select onValueChange={value => setStatus(value)} defaultValue="all">
-            <SelectTrigger className="w-[150px] bg-slate-700 text-white border-slate-600">
+            <SelectTrigger className="w-[150px] bg-main text-foreground ">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white">
+            <SelectContent className="bg-main  text-foreground">
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="completed">Paid</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
@@ -95,55 +95,71 @@ const chartData = [
         </div>
       </div>
 
-    <Card className="bg-[#191a1e]">
+    <Card className="bg-main">
   <CardHeader>
-    <CardTitle className="text-white">Payment Status Chart</CardTitle>
+    <CardTitle className="text-foreground">Payment Status Chart</CardTitle>
   </CardHeader>
-  <CardContent>
-    <ResponsiveContainer width="100%" height={250}>
-      <BarChart data={chartData}>
-        <XAxis dataKey="status" stroke="#ccc" />
-        <YAxis stroke="#ccc" />
-        <Tooltip />
-        <Bar dataKey="total">
-          {chartData.map((entry, index) => {
-            let color = "#facc15"; // default yellow
+  <CardContent >
+   <ResponsiveContainer width="100%" height={250}>
+  <BarChart data={chartData}>
+    <XAxis
+      dataKey="status"
+      stroke="#8884d8" // axis line color
+      tick={{ fill: "#eab308", fontWeight: 600 }} // label color and style (Paid, Pending...)
+      axisLine={{ stroke: "#6366f1" }} // X-axis line color
+      tickLine={{ stroke: "#6366f1" }} // tick line under label
+    />
+    <YAxis
+      stroke="#8884d8" // axis line color
+      tick={{ fill: "#facc15", fontWeight: 600 }} // left-side number color (0-5)
+      axisLine={{ stroke: "#6366f1" }} // Y-axis line color
+      tickLine={{ stroke: "#6366f1" }} // tick line for Y-axis
+    />
+    <Tooltip
+      contentStyle={{ backgroundColor: "#1f2937", border: "none", borderRadius: 8 }}
+      labelStyle={{ color: "#facc15" }}
+      itemStyle={{ color: "#fff" }}
+    />
+    <Bar dataKey="total">
+      {chartData.map((entry, index) => {
+        let color = "#facc15"; // yellow
 
-            switch (entry.status.toLowerCase()) {
-              case "paid":
-                color = "#10b981"; // green
-                break;
-              case "pending":
-                color = "#f59e0b"; // amber
-                break;
-              case "failed":
-                color = "#ef4444"; // red
-                break;
-              case "cancelled":
-                color = "#6b7280"; // gray
-                break;
-              case "refunded":
-                color = "#3b82f6"; // blue
-                break;
-            }
+        switch (entry.status.toLowerCase()) {
+          case "paid":
+            color = "#10b981"; // green
+            break;
+          case "pending":
+            color = "#f59e0b"; // amber
+            break;
+          case "failed":
+            color = "#ef4444"; // red
+            break;
+          case "cancelled":
+            color = "#6b7280"; // gray
+            break;
+          case "refunded":
+            color = "#3b82f6"; // blue
+            break;
+        }
 
-            return <Cell key={`cell-${index}`} fill={color} />;
-          })}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+        return <Cell key={`cell-${index}`} fill={color} />;
+      })}
+    </Bar>
+  </BarChart>
+</ResponsiveContainer>
+
   </CardContent>
 </Card>
 
 
       {/* Table */}
-      <Card className="bg-[#191a1e]">
+      <Card className="bg-main">
         <CardHeader>
-          <CardTitle className="text-white">Recent Payments</CardTitle>
+          <CardTitle className="text-foreground">Recent Payments</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <p className="text-white p-4">Loading payments...</p>
+            <p className="text-foreground p-4">Loading payments...</p>
           ) : error ? (
             <p className="text-red-500 p-4">
               Error: {typeof error === "string"
@@ -153,29 +169,29 @@ const chartData = [
                   : (error as any)?.message || "An error occurred"}
             </p>
           ) : payments.length === 0 ? (
-            <p className="text-white p-4">No payments found.</p>
+            <p className="text-foreground p-4">No payments found.</p>
           ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[#191a1e]">
-                    <TableHead className="text-slate-300">Transaction ID</TableHead>
+                  <TableRow className="border">
+                    <TableHead className="text-foreground">Transaction ID</TableHead>
 
 
-                    <TableHead className="text-slate-300">Amount</TableHead>
-                    <TableHead className="text-slate-300">Method</TableHead>
-                    <TableHead className="text-slate-300">Date</TableHead>
-                    <TableHead className="text-slate-300">Status</TableHead>
+                    <TableHead className="text-foreground">Amount</TableHead>
+                    <TableHead className="text-foreground">Method</TableHead>
+                    <TableHead className="text-foreground">Date</TableHead>
+                    <TableHead className="text-foreground">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {payments.map((payment: Payment) => (
-                    <TableRow key={payment._id} className="border-slate-700">
-                      <TableCell className="text-slate-300">{payment._id}</TableCell>
+                    <TableRow key={payment._id} className="">
+                      <TableCell className="text-foreground">{payment._id}</TableCell>
 
-                      <TableCell className="font-semibold text-amber-400">${payment.amount}</TableCell>
-                      <TableCell className="text-slate-300">{payment.paymentMethod}</TableCell>
-                      <TableCell className="text-slate-300">{payment.createdAt}</TableCell>
+                      <TableCell className="font-semibold text-foreground">${payment.amount}</TableCell>
+                      <TableCell className="text-foreground">{payment.paymentMethod}</TableCell>
+                      <TableCell className="text-foreground">{payment.createdAt}</TableCell>
                       <TableCell>
                       <Badge
   className={

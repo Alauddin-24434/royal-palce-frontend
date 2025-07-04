@@ -310,8 +310,8 @@ const onEditSubmit = async (data: ServiceFormData) => {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
                     <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">Services Management</h1>
-                        <p className="text-slate-300">Manage hotel services and amenities</p>
+                        <h1 className="text-4xl font-bold text-foreground mb-2">Services Management</h1>
+                    
                     </div>
                     <Button onClick={() => setShowAddModal(true)} className="bg-orange-500 hover:bg-orange-600 mt-4 md:mt-0">
                         <Plus className="w-4 h-4 mr-2" />
@@ -321,12 +321,12 @@ const onEditSubmit = async (data: ServiceFormData) => {
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+                    <Card className="bg-main backdrop-blur-sm ">
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-slate-400 text-sm">Total Services</p>
-                                    <p className="text-2xl font-bold text-white">{totalServices}</p>
+                                    <p className="text-foreground text-sm">Total Services</p>
+                                    <p className="text-2xl font-bold text-foreground">{totalServices}</p>
                                 </div>
                                 <div className="bg-blue-500/20 p-3 rounded-full">
                                     <DollarSign className="w-6 h-6 text-blue-400" />
@@ -335,12 +335,12 @@ const onEditSubmit = async (data: ServiceFormData) => {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+                    <Card className="bg-main backdrop-blur-sm ">
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-slate-400 text-sm">Free Services</p>
-                                    <p className="text-2xl font-bold text-white">{freeServices}</p>
+                                    <p className="text-foreground text-sm">Free Services</p>
+                                    <p className="text-2xl font-bold text-foreground">{freeServices}</p>
                                 </div>
                                 <div className="bg-green-500/20 p-3 rounded-full">
                                     <Gift className="w-6 h-6 text-green-400" />
@@ -349,12 +349,12 @@ const onEditSubmit = async (data: ServiceFormData) => {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+                    <Card className="bg-main backdrop-blur-sm ">
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-slate-400 text-sm">Paid Services</p>
-                                    <p className="text-2xl font-bold text-white">{paidServices}</p>
+                                    <p className="text-foreground text-sm">Paid Services</p>
+                                    <p className="text-2xl font-bold text-foreground">{paidServices}</p>
                                 </div>
                                 <div className="bg-orange-500/20 p-3 rounded-full">
                                     <DollarSign className="w-6 h-6 text-orange-400" />
@@ -363,12 +363,12 @@ const onEditSubmit = async (data: ServiceFormData) => {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+                    <Card className="bg-main backdrop-blur-sm ">
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-slate-400 text-sm">Daily Revenue</p>
-                                    <p className="text-2xl font-bold text-white">${totalRevenue}</p>
+                                    <p className="text-foreground text-sm">Daily Revenue</p>
+                                    <p className="text-2xl font-bold text-foreground">${totalRevenue}</p>
                                 </div>
                                 <div className="bg-purple-500/20 p-3 rounded-full">
                                     <DollarSign className="w-6 h-6 text-purple-400" />
@@ -379,47 +379,47 @@ const onEditSubmit = async (data: ServiceFormData) => {
                 </div>
 
                 {/* Filters */}
-                <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700 mb-6">
+                <Card className="bg-main backdrop-blur-sm  mb-6">
                     <CardContent className="p-6">
                         <div className="flex flex-col md:flex-row gap-4">
                             <div className="flex-1">
                                 <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground w-4 h-4" />
                                     <Input
                                         placeholder="Search services..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="pl-10 bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                                        className="pl-10 bg-main/50  text-foreground placeholder:text-foreground focus:border-orange-500 focus:ring-orange-500/20"
                                     />
                                 </div>
                             </div>
                             <Select value={filterType} onValueChange={setFilterType}>
-                                <SelectTrigger className="w-full md:w-48 bg-slate-700/50 border-slate-600 text-white focus:border-orange-500 focus:ring-orange-500/20">
+                                <SelectTrigger className="w-full md:w-48 bg-main/50  text-foreground focus:border-orange-500 focus:ring-orange-500/20">
                                     <Filter className="w-4 h-4 mr-2" />
                                     <SelectValue placeholder="Filter by type" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-slate-800 border-slate-700">
-                                    <SelectItem value="all" className="text-white hover:bg-slate-700">
+                                <SelectContent className="bg-main ">
+                                    <SelectItem value="all" className="text-foreground hover:bg-main">
                                         All Services
                                     </SelectItem>
-                                    <SelectItem value="free" className="text-white hover:bg-slate-700">
+                                    <SelectItem value="free" className="text-foreground hover:bg-main">
                                         Free Services
                                     </SelectItem>
-                                    <SelectItem value="paid" className="text-white hover:bg-slate-700">
+                                    <SelectItem value="paid" className="text-foreground hover:bg-main">
                                         Paid Services
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
                             {/* <Select value={selectedRoom} onValueChange={setSelectedRoom}>
-                                <SelectTrigger className="w-full md:w-48 bg-slate-700/50 border-slate-600 text-white focus:border-orange-500 focus:ring-orange-500/20">
+                                <SelectTrigger className="w-full md:w-48 bg-main/50  text-foreground focus:border-orange-500 focus:ring-orange-500/20">
                                     <SelectValue placeholder="Filter by room" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-slate-800 border-slate-700">
-                                    <SelectItem value="all" className="text-white hover:bg-slate-700">
+                                <SelectContent className="bg-main ">
+                                    <SelectItem value="all" className="text-foreground hover:bg-main">
                                         All Rooms
                                     </SelectItem>
                                     {roomsData?.data?.map((room:IRoom) => (
-                                        <SelectItem key={room._id} value={room._id} className="text-white hover:bg-slate-700">
+                                        <SelectItem key={room._id} value={room._id} className="text-foreground hover:bg-main">
                                             {room.title} ({room.roomNumber})
                                         </SelectItem>
                                     ))}
@@ -430,30 +430,30 @@ const onEditSubmit = async (data: ServiceFormData) => {
                 </Card>
 
                 {/* Services Table */}
-                <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700">
+                <Card className="bg-main backdrop-blur-sm ">
                     <CardHeader>
-                        <CardTitle className="text-white">Services List</CardTitle>
+                        <CardTitle className="text-foreground">Services List</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {isLoading ? (
                             <div className="flex items-center justify-center h-64">
-                                <div className="text-slate-400">Loading services...</div>
+                                <div className="text-foreground">Loading services...</div>
                             </div>
                         ) : (
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="border-slate-700">
-                                        <TableHead className="text-slate-300">Service</TableHead>
+                                    <TableRow className="">
+                                        <TableHead className="text-foreground">Service</TableHead>
                                         
-                                        <TableHead className="text-slate-300">Price/Day</TableHead>
-                                        <TableHead className="text-slate-300">Type</TableHead>
-                                        <TableHead className="text-slate-300">Description</TableHead>
-                                        <TableHead className="text-slate-300">Actions</TableHead>
+                                        <TableHead className="text-foreground">Price/Day</TableHead>
+                                        <TableHead className="text-foreground">Type</TableHead>
+                                        <TableHead className="text-foreground">Description</TableHead>
+                                        <TableHead className="text-foreground">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {filteredServices?.map((service:IService) => (
-                                        <TableRow key={service._id} className="border-slate-700">
+                                        <TableRow key={service._id} className="">
                                             <TableCell>
                                                 <div className="flex items-center gap-3">
                                                     {service.image ? (
@@ -463,18 +463,18 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                                             className="w-10 h-10 rounded-lg object-cover"
                                                         />
                                                     ) : (
-                                                        <div className="w-10 h-10 bg-slate-700 rounded-lg flex items-center justify-center">
-                                                            <ImageIcon className="w-5 h-5 text-slate-400" />
+                                                        <div className="w-10 h-10 bg-main rounded-lg flex items-center justify-center">
+                                                            <ImageIcon className="w-5 h-5 text-foreground" />
                                                         </div>
                                                     )}
                                                     <div>
-                                                        <p className="text-white font-medium">{service.name}</p>
+                                                        <p className="text-foreground font-medium">{service.name}</p>
                                                     </div>
                                                 </div>
                                             </TableCell>
                                             
                                             <TableCell>
-                                                <span className="text-white font-semibold">
+                                                <span className="text-foreground font-semibold">
                                                     {service.isServiceFree ? "Free" : `$${service.pricePerDay}`}
                                                 </span>
                                             </TableCell>
@@ -489,27 +489,27 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                                     {service.isServiceFree ? "Free" : "Paid"}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="text-slate-300 max-w-xs truncate">
+                                            <TableCell className="text-foreground max-w-xs truncate">
                                                 {service.description || "No description"}
                                             </TableCell>
                                             <TableCell>
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-white">
+                                                        <Button variant="ghost" className="h-8 w-8 p-0 text-foreground hover:text-foreground">
                                                             <MoreHorizontal className="h-4 w-4" />
                                                         </Button>
                                                     </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
+                                                    <DropdownMenuContent align="end" className="bg-main ">
                                                         <DropdownMenuItem
                                                             onClick={() => openEditModal(service)}
-                                                            className="text-white hover:bg-slate-700"
+                                                            className="text-foreground hover:bg-main"
                                                         >
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             Edit
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
                                                             onClick={() => service._id && handleDeleteService(service._id)}
-                                                            className="text-red-400 hover:bg-slate-700"
+                                                            className="text-red-400 hover:bg-main"
                                                         >
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             Delete
@@ -528,7 +528,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
 
             {/* Add Service Modal */}
             <Dialog open={showAddModal} onOpenChange={closeAddModal}>
-                <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-2xl">
+                <DialogContent className="bg-main  text-foreground max-w-2xl">
                     <DialogHeader>
                         <DialogTitle className="text-orange-400">Add New Service</DialogTitle>
                     </DialogHeader>
@@ -540,11 +540,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-slate-200">Service Name</FormLabel>
+                                            <FormLabel className="text-foreground">Service Name</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
-                                                    className="bg-slate-700/50 border-slate-600 text-white"
+                                                    className="bg-main/50  text-foreground"
                                                     placeholder="Enter service name"
                                                 />
                                             </FormControl>
@@ -557,11 +557,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
 
                             {/* Single Image Upload */}
                             <div className="space-y-2">
-                                <Label className="text-slate-200">Service Image</Label>
+                                <Label className="text-foreground">Service Image</Label>
                                 <Input type="file" accept="image/*" className="hidden" id="image-upload" onChange={handleImageChange} />
                                 <Label
                                     htmlFor="image-upload"
-                                    className="cursor-pointer flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                                    className="cursor-pointer flex items-center gap-2 text-foreground hover:text-foreground transition-colors"
                                 >
                                     <Upload className="w-5 h-5" />
                                     Click to upload image
@@ -578,7 +578,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                             onClick={handleRemoveImage}
                                             className="absolute -top-2 -right-2 bg-red-500 p-1 rounded-full hover:bg-red-600"
                                         >
-                                            <X className="h-3 w-3 text-white" />
+                                            <X className="h-3 w-3 text-foreground" />
                                         </button>
                                     </div>
                                 )}
@@ -589,11 +589,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-slate-200">Description (Optional)</FormLabel>
+                                        <FormLabel className="text-foreground">Description (Optional)</FormLabel>
                                         <FormControl>
                                             <Textarea
                                                 {...field}
-                                                className="bg-slate-700/50 border-slate-600 text-white"
+                                                className="bg-main/50  text-foreground"
                                                 placeholder="Enter service description"
                                                 rows={3}
                                             />
@@ -609,12 +609,12 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     name="pricePerDay"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-slate-200">Price per Day ($)</FormLabel>
+                                            <FormLabel className="text-foreground">Price per Day ($)</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
                                                     type="number"
-                                                    className="bg-slate-700/50 border-slate-600 text-white"
+                                                    className="bg-main/50  text-foreground"
                                                     placeholder="0.00"
                                                     disabled={watchAddServiceFree}
                                                     onChange={(e) => field.onChange(Number(e.target.value))}
@@ -629,11 +629,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     name="isServiceFree"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-slate-200">Service Type</FormLabel>
+                                            <FormLabel className="text-foreground">Service Type</FormLabel>
                                             <FormControl>
-                                                <div className="flex items-center space-x-2 p-3 bg-slate-700/30 rounded-lg">
+                                                <div className="flex items-center space-x-2 p-3 bg-main/30 rounded-lg">
                                                     <Switch checked={field.value} onCheckedChange={field.onChange} />
-                                                    <Label className="text-slate-300">{field.value ? "Free Service" : "Paid Service"}</Label>
+                                                    <Label className="text-foreground">{field.value ? "Free Service" : "Paid Service"}</Label>
                                                 </div>
                                             </FormControl>
                                             <FormMessage />
@@ -647,7 +647,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     type="button"
                                     onClick={closeAddModal}
                                     variant="outline"
-                                    className="flex-1 bg-slate-700/30 border-slate-600 text-white hover:bg-slate-700/50"
+                                    className="flex-1 bg-main/30  text-foreground hover:bg-main/50"
                                 >
                                     <X className="w-4 h-4 mr-2" />
                                     Cancel
@@ -668,7 +668,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
 
             {/* Edit Service Modal */}
             <Dialog open={showEditModal} onOpenChange={closeEditModal}>
-                <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-2xl">
+                <DialogContent className="bg-main  text-foreground max-w-2xl">
                     <DialogHeader>
                         <DialogTitle className="text-orange-400">Edit Service</DialogTitle>
                     </DialogHeader>
@@ -680,11 +680,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-slate-200">Service Name</FormLabel>
+                                            <FormLabel className="text-foreground">Service Name</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
-                                                    className="bg-slate-700/50 border-slate-600 text-white"
+                                                    className="bg-main/50  text-foreground"
                                                     placeholder="Enter service name"
                                                 />
                                             </FormControl>
@@ -697,7 +697,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
 
                             {/* Single Image Upload */}
                             <div className="space-y-2">
-                                <Label className="text-slate-200">Service Image</Label>
+                                <Label className="text-foreground">Service Image</Label>
                                 <Input
                                     type="file"
                                     accept="image/*"
@@ -707,7 +707,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                 />
                                 <Label
                                     htmlFor="edit-image-upload"
-                                    className="cursor-pointer flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                                    className="cursor-pointer flex items-center gap-2 text-foreground hover:text-foreground transition-colors"
                                 >
                                     <Upload className="w-5 h-5" />
                                     Click to upload new image
@@ -724,7 +724,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                             onClick={handleRemoveImage}
                                             className="absolute -top-2 -right-2 bg-red-500 p-1 rounded-full hover:bg-red-600"
                                         >
-                                            <X className="h-3 w-3 text-white" />
+                                            <X className="h-3 w-3 text-foreground" />
                                         </button>
                                     </div>
                                 )}
@@ -735,11 +735,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-slate-200">Description (Optional)</FormLabel>
+                                        <FormLabel className="text-foreground">Description (Optional)</FormLabel>
                                         <FormControl>
                                             <Textarea
                                                 {...field}
-                                                className="bg-slate-700/50 border-slate-600 text-white"
+                                                className="bg-main/50  text-foreground"
                                                 placeholder="Enter service description"
                                                 rows={3}
                                             />
@@ -755,12 +755,12 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     name="pricePerDay"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-slate-200">Price per Day ($)</FormLabel>
+                                            <FormLabel className="text-foreground">Price per Day ($)</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
                                                     type="number"
-                                                    className="bg-slate-700/50 border-slate-600 text-white"
+                                                    className="bg-main/50  text-foreground"
                                                     placeholder="0.00"
                                                     disabled={watchEditServiceFree}
                                                     onChange={(e) => field.onChange(Number(e.target.value))}
@@ -775,11 +775,11 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     name="isServiceFree"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-slate-200">Service Type</FormLabel>
+                                            <FormLabel className="text-foreground">Service Type</FormLabel>
                                             <FormControl>
-                                                <div className="flex items-center space-x-2 p-3 bg-slate-700/30 rounded-lg">
+                                                <div className="flex items-center space-x-2 p-3 bg-main/30 rounded-lg">
                                                     <Switch checked={field.value} onCheckedChange={field.onChange} />
-                                                    <Label className="text-slate-300">{field.value ? "Free Service" : "Paid Service"}</Label>
+                                                    <Label className="text-foreground">{field.value ? "Free Service" : "Paid Service"}</Label>
                                                 </div>
                                             </FormControl>
                                             <FormMessage />
@@ -793,7 +793,7 @@ const onEditSubmit = async (data: ServiceFormData) => {
                                     type="button"
                                     onClick={closeEditModal}
                                     variant="outline"
-                                    className="flex-1 bg-slate-700/30 border-slate-600 text-white hover:bg-slate-700/50"
+                                    className="flex-1 bg-main/30  text-foreground hover:bg-main/50"
                                 >
                                     <X className="w-4 h-4 mr-2" />
                                     Cancel

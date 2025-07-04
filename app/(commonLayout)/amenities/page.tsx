@@ -17,8 +17,7 @@ import { IAmineties } from "@/app/types/amineties.interface";
 
 const Amenities = () => {
   const { data: servicesData, isLoading } = useFindAllServiceQuery(undefined);
-  console.log(servicesData)
-
+ 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -53,7 +52,7 @@ const Amenities = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-white">
+          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             Experience exceptional comfort with
             <br />
             <span className="block">our exclusive amenities</span>
@@ -61,7 +60,7 @@ const Amenities = () => {
         </div>
 
         {/* Amenities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 ">
           {servicesData?.data?.map((amenity: IAmineties) => (
             <Card
               key={amenity?._id}

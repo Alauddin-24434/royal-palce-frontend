@@ -25,29 +25,38 @@ export default function GuestDashboard({ stats, bookings }: GuestDashboardProps)
     <div className="space-y-8 px-4 py-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-1">Guest Dashboard</h2>
-        <p className="text-slate-400">Welcome! View your upcoming stays and recent bookings.</p>
+        <h2 className="text-3xl font-bold text-foreground mb-1">Guest Dashboard</h2>
+       
       </div>
 
       {/* === Stat Cards === */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {stats.map((stat, index) => (
-          <Card
-            key={index}
-            className="bg-gradient-to-br from-[#bf9310]/70 to-[#292c35] border-0 shadow-lg"
-          >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">
-                {stat.title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <div className="text-3xl font-bold text-white">{stat.value}</div>
-              <div>{iconMap[stat.icon]}</div>
-            </CardContent>
-          </Card>
-        ))}
+        {stats.map((stat, index) => {
+          let bgColor = "";
+          if (stat.title === "Upcoming Booking Room") bgColor = "bg-green-500";
+          else if (stat.title === "Past Booking") bgColor = "bg-red-500";
+          else if (stat.title === "Total Bookings") bgColor = "bg-blue-500";
+          else if (stat.title === "Total Paid") bgColor = "bg-[#bf9310]";
+
+          return (
+            <Card
+              key={index}
+              className={`${bgColor} shadow-md`}
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-white/80">
+                  {stat.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex items-center justify-between">
+                <div className="text-3xl font-bold text-white">{stat.value}</div>
+                <div>{iconMap[stat.icon]}</div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
+
 
       {/* === Booking Table === */}
       <Card className="bg-[#1e1f25] border border-slate-700 shadow-md">
@@ -76,13 +85,12 @@ export default function GuestDashboard({ stats, bookings }: GuestDashboardProps)
                     <td className="p-3">{booking.rooms?.[0]?.checkOutDate || "-"}</td>
                     <td className="p-3">
                       <Badge
-                        className={`capitalize ${
-                          booking.bookingStatus === "Booked"
+                        className={`capitalize ${booking.bookingStatus === "Booked"
                             ? "bg-emerald-600"
                             : booking.bookingStatus === "Cancelled"
-                            ? "bg-red-500"
-                            : "bg-yellow-500"
-                        }`}
+                              ? "bg-red-500"
+                              : "bg-yellow-500"
+                          }`}
                       >
                         {booking.bookingStatus}
                       </Badge>

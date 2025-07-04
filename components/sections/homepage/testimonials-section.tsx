@@ -39,7 +39,7 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="relative bg-[#191a1e] min-h-screen my-12">
+    <section className="relative bg-main min-h-screen ">
       {/* Background Image */}
       <div className="absolute h-[70vh] inset-0">
         <Image
@@ -89,7 +89,7 @@ const TestimonialsSection = () => {
     {testimonials.map((testimonial:ITestimonial) => (
       <div
         key={testimonial._id}
-        className="bg-black/40 backdrop-blur-sm border border-gray-700 rounded-lg p-8"
+        className="bg-black/40  backdrop-blur-sm border  rounded-lg p-8"
       >
         {/* ... rest of the testimonial card ... */}
         <div className="flex items-center mb-6">

@@ -45,8 +45,8 @@ export default function RoomsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Room Management</h1>
-          <p className="text-slate-400">Manage hotel rooms and availability</p>
+          <h1 className="text-3xl font-bold text-foreground">Room Management</h1>
+       
         </div>
         <Button
           className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-medium"
@@ -57,18 +57,18 @@ export default function RoomsPage() {
       </div>
 
       {/* Filters */}
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-main ">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input placeholder="Search rooms..." className="pl-10 bg-slate-700/50 border-slate-600 text-white" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground" />
+              <Input placeholder="Search rooms..." className="pl-10 bg-main  text-foreground" />
             </div>
             <Select>
-              <SelectTrigger className="w-full sm:w-48 bg-slate-700/50 border-slate-600 text-white">
+              <SelectTrigger className="w-full sm:w-48 bg-main  text-foreground">
                 <SelectValue placeholder="Room Type" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent className="bg-main ">
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="luxury">Luxury</SelectItem>
                 <SelectItem value="suite">Suite</SelectItem>
@@ -77,10 +77,10 @@ export default function RoomsPage() {
               </SelectContent>
             </Select>
             <Select>
-              <SelectTrigger className="w-full sm:w-48 bg-slate-700/50 border-slate-600 text-white">
+              <SelectTrigger className="w-full sm:w-48 bg-main  text-foreground">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent className="bg-main ">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="available">Available</SelectItem>
                 <SelectItem value="occupied">Occupied</SelectItem>
@@ -94,63 +94,88 @@ export default function RoomsPage() {
       {/* Room Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {roomsData?.data?.map((room:IRoom) => (
-          <Card key={room?._id} className="bg-slate-800/50 border-slate-700 overflow-hidden p-0">
-            <div className="aspect-video bg-slate-700 relative ">
-              <img src={room.images?.[0] || "/placeholder.svg"} alt={room?.title} className="w-full h-full object-cover " />
-              
-            </div>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-white text-lg">{room.title}</CardTitle>
-                  <p className="text-slate-400 text-sm">
-                    {room.type} • Room {room.roomNumber}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-amber-400">${room.price}</p>
-                  <p className="text-xs text-slate-400">per night</p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-4 text-slate-400">
-                
-                <div className="flex items-center gap-1">
-                  <Bed className="h-4 w-4" />
-                  <span className="text-sm">{room?.type}</span>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {room.features.slice(0, 3).map((feature) => (
-                  <Badge key={feature} variant="secondary" className="bg-slate-700 text-slate-300">
-                    {feature}
-                  </Badge>
-                ))}
-                {room.features.length > 3 && (
-                  <Badge variant="secondary" className="bg-slate-700 text-slate-300">
-                    +{room.features.length - 3} more
-                  </Badge>
-                )}
-              </div>
-              <div className="flex gap-2 p-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
-                  onClick={() => handleOpenEditModal(room)}
-                >
-                  Edit
-                </Button>
-                <Button variant="outline" size="sm" className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700">
-                  View Details
-                </Button>
-                <Button onClick={()=>handleDeleteRoom(room?._id)} variant="outline" size="sm" className="flex-1 ">
-                 Delete
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+         <Card key={room?._id} className="bg-main overflow-hidden p-0 flex flex-col">
+  <div className="aspect-video  relative">
+    <img
+      src={room.images?.[0] || "/placeholder.svg"}
+      alt={room?.title}
+      className="w-full h-full object-cover"
+    />
+  </div>
+
+  <CardHeader>
+    <div className="flex justify-between items-start">
+      <div>
+        <CardTitle className="text-foreground text-lg">{room.title}</CardTitle>
+        <p className="text-foreground text-sm">
+          {room.type} • Room {room.roomNumber}
+        </p>
+      </div>
+      <div className="text-right">
+        <p className="text-2xl font-bold text-amber-400">${room.price}</p>
+        <p className="text-xs text-foreground">per night</p>
+      </div>
+    </div>
+  </CardHeader>
+
+  <CardContent className="flex flex-col flex-1 justify-between space-y-4">
+    <div className="text-foreground flex items-center gap-4">
+      <div className="flex items-center gap-1">
+        <Bed className="h-4 w-4" />
+        <span className="text-sm">{room?.type}</span>
+      </div>
+    </div>
+
+    {/* Fixed height features section */}
+    <div className="flex flex-wrap gap-2 min-h-[40px] max-h-[60px] overflow-hidden">
+      {room.features.slice(0, 3).map((feature) => (
+        <Badge
+          key={feature}
+          variant="secondary"
+          className=" text-foreground text-xs"
+        >
+          {feature}
+        </Badge>
+      ))}
+      {room.features.length > 3 && (
+        <Badge
+          variant="secondary"
+          className=" text-foreground text-xs"
+        >
+          +{room.features.length - 3} more
+        </Badge>
+      )}
+    </div>
+
+    {/* Push buttons to bottom */}
+    <div className="flex gap-2 mt-auto pt-2">
+      <Button
+        variant="outline"
+        size="sm"
+        className="flex-1 text-foreground hover:"
+        onClick={() => handleOpenEditModal(room)}
+      >
+        Edit
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        className="flex-1 text-foreground hover:"
+      >
+        View Details
+      </Button>
+      <Button
+        onClick={() => handleDeleteRoom(room?._id)}
+        variant="outline"
+        size="sm"
+        className="flex-1 text-foreground hover:bg-red-700"
+      >
+        Delete
+      </Button>
+    </div>
+  </CardContent>
+</Card>
+
         ))}
        
       </div>

@@ -32,7 +32,7 @@ const AmenitiesSection = () => {
 
 
   return (
-    <section className="relative py-24 bg-[#191a1e] overflow-hidden">
+    <section className="relative py-24 bg-main overflow-hidden">
 
 
 
@@ -44,7 +44,7 @@ const AmenitiesSection = () => {
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
             <div className="flex items-center">
               <Star className="w-6 h-6 text-[#bf9310] mr-3" />
-              <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
+              <h2 className="title text-sm font-medium tracking-[0.2em] uppercase">
                 Amenities
               </h2>
               <Star className="w-6 h-6 text-[#bf9310] ml-3" />
@@ -53,7 +53,7 @@ const AmenitiesSection = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-white">
+          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             Experience exceptional comfort with
             <br />
             <span className="block">our exclusive amenities</span>

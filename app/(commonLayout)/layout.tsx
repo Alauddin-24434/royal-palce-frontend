@@ -4,7 +4,7 @@ import { Header } from "@/components/shared/header";
 
 const layout = ({children}:{children:React.ReactNode})=>{
     return (
-        <div className="bg-[#0b0b0d]">
+        <div className="">
             <Header/>
             <main>{children}</main>
             <Footer/>

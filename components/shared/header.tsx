@@ -3,12 +3,13 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { Crown, Menu, X } from "lucide-react"
+import { Crown, Menu, X, Sun, Moon } from "lucide-react"  // আইকন আমদানি করো
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useSelector, useDispatch } from "react-redux"
 import { selectCurrentUser, logout } from "@/redux/features/auth/authSlice"
 import { DropdownMenuInNav } from "./dropdown-menu"
+import { useTheme } from "next-themes"
 
 export function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -29,17 +30,24 @@ export function Header() {
     router.push("/")
   }
 
+  const { theme, setTheme } = useTheme()
+
+  // থিম টগল ফাংশন
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
+  }
+
   return (
     <>
       {/* Header */}
-      <header className="bg-[#191a1e] sticky top-0 z-50">
+      <header className="bg-main sticky top-0 z-50 shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <Crown className="h-5 w-5 text-[#bf9310] mr-2" />
-                <span className="font-bold text-[#bf9310] text-sm lg:text-base">
+                <Crown className="h-5 w-5 title mr-2" />
+                <span className="font-bold title text-sm lg:text-base">
                   ROYAL PALACE
                 </span>
               </Link>
@@ -51,24 +59,38 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`font-medium transition-colors duration-200 ${pathname === item.href
-                    ? "text-yellow-500"
-                    : "text-white hover:text-yellow-500"
-                    }`}
+                  className={`font-medium transition-colors duration-200 ${
+                    pathname === item.href
+                      ? "title"
+                      : "text-foreground hover:title"
+                  }`}
                 >
                   {item.name}
                 </Link>
               ))}
             </nav>
 
-         
+            {/* থিম টগল বাটন + DropdownMenuInNav */}
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle Dark Mode"
+                className="p-2 rounded hover:title hover:text-foreground transition"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </button>
 
-            <DropdownMenuInNav      onClick={handleLogout}  />
+              <DropdownMenuInNav onClick={handleLogout} />
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Sidebar Overlay */}
+      {/* Sidebar Overlay (তোমার আগের মতো থাকবে) */}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-50 flex">
           {/* Sidebar */}
@@ -76,7 +98,7 @@ export function Header() {
             {/* Close button */}
             <button
               onClick={() => setIsSidebarOpen(false)}
-              className="text-white hover:text-yellow-500 mb-4"
+              className="text-white hover:title mb-4"
             >
               <X />
             </button>
@@ -87,10 +109,11 @@ export function Header() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsSidebarOpen(false)}
-                className={`block px-4 py-2 rounded font-medium ${pathname === item.href
-                  ? "bg-yellow-600 text-black"
-                  : "hover:bg-yellow-700"
-                  }`}
+                className={`block px-4 py-2 rounded font-medium ${
+                  pathname === item.href
+                    ? "bg-yellow-600 text-black"
+                    : "hover:bg-yellow-700"
+                }`}
               >
                 {item.name}
               </Link>

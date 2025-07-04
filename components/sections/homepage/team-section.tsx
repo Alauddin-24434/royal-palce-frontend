@@ -48,7 +48,7 @@ export default function TeamSection() {
         <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
         <div className="flex items-center">
           <Users className="w-6 h-6 text-[#bf9310] mr-3" />
-          <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
+          <h2 className="title text-sm font-medium tracking-[0.2em] uppercase">
             Meet Our Team
           </h2>
           <Users className="w-6 h-6 text-[#bf9310] ml-3" />
@@ -57,7 +57,7 @@ export default function TeamSection() {
       </div>
 
       {/* Main Heading */}
-      <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-white">
+      <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
         Dedicated Professionals Behind
         <br />
         Our Royal Experience
@@ -70,7 +70,7 @@ export default function TeamSection() {
           {teamMembers.map((member, index) => (
             <Card
               key={index}
-              className="group hover:shadow-2xl transition-all duration-500 border-0 bg-[#191a1e] hover:-translate-y-2 p-0 rounded-none"
+              className="group hover:shadow-2xl transition-all duration-500 border-0 bg-main hover:-translate-y-2 p-0 rounded-none"
             >
               <CardContent className="p-0">
                 <div className="relative overflow-hidden">
@@ -96,8 +96,8 @@ export default function TeamSection() {
 
                 <div className="p-6">
                   <div className="mb-3">
-                    <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
-                    <p className="text-[#bf9310] font-semibold text-sm uppercase tracking-wide">{member.role}</p>
+                    <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
+                    <p className="title font-semibold text-sm uppercase tracking-wide">{member.role}</p>
                   </div>
 
                  

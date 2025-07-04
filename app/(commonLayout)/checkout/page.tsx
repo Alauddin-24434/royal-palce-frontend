@@ -71,13 +71,13 @@ export default function RoyalCheckoutPage() {
                 toast.dismiss(t.id);
                 toast.success("Cart cleared!");
               }}
-              className="bg-red-600 text-white px-3 py-1 rounded"
+              className="bg-red-600 text-foreground px-3 py-1 rounded"
             >
               Confirm
             </button>
             <button
               onClick={() => toast.dismiss(t.id)}
-              className="bg-gray-500 text-white px-3 py-1 rounded"
+              className="bg-gray-500 text-foreground px-3 py-1 rounded"
             >
               Cancel
             </button>
@@ -120,7 +120,7 @@ export default function RoyalCheckoutPage() {
 
   return (
     <PrivateRoute>
-      <div className="min-h-screen text-white bg-black">
+      <div className="min-h-screen text-foreground ">
         {/* ====================== Title Section ====================== */}
         <div className="flex items-center justify-center py-6 sm:py-10 px-4 text-center flex-wrap">
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 mr-4" />
@@ -145,18 +145,18 @@ export default function RoyalCheckoutPage() {
             {/* LEFT SIDE */}
             <div className="lg:col-span-2 space-y-8">
               {cartSummary?.map((cart, index) => (
-                <Card key={index} className="bg-[#191a1e]">
+                <Card key={index} className="bg-main">
                   <CardContent className="pt-6 space-y-4">
                     <div className="flex flex-col sm:flex-row gap-4">
                       <div className="relative w-full sm:w-28 h-28 rounded-xl overflow-hidden border-2 border-yellow-400/30 flex-shrink-0">
                         <Image src={cart?.room.image} alt="Room" fill className="object-cover" />
                         <div className="absolute top-2 right-2">
-                          <Crown className="w-4 h-4 text-yellow-400" />
+                          <Crown className="w-4 h-4 text-foreground" />
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-xl text-yellow-400">{cart?.room?.name}</h3>
-                        <p className="text-sm text-purple-200">
+                        <h3 className="font-bold text-xl text-foreground">{cart?.room?.name}</h3>
+                        <p className="text-sm text-foreground">
                           ${cart.room.price} × {cart.nights} nights ={" "}
                           <span className="text-yellow-400 font-bold">${cart.subtotal.toFixed(2)}</span>
                         </p>
@@ -164,11 +164,11 @@ export default function RoyalCheckoutPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
                       <div>
-                        <span className="text-purple-300">Check-in</span>
+                        <span className="text-foreground">Check-in</span>
                         <p className="font-semibold text-yellow-400">{cart?.room?.checkInDate}</p>
                       </div>
                       <div>
-                        <span className="text-purple-300">Check-out</span>
+                        <span className="text-foreground">Check-out</span>
                         <p className="font-semibold text-yellow-400">{cart?.room?.checkOutDate}</p>
                       </div>
                       <Button
@@ -185,9 +185,9 @@ export default function RoyalCheckoutPage() {
               ))}
 
               {/* Guest Info */}
-              <Card className="bg-[#191a1e]">
+              <Card className="bg-main">
                 <CardHeader>
-                  <CardTitle className="text-yellow-400 flex items-center gap-2">
+                  <CardTitle className="text-foreground flex items-center gap-2">
                     <Crown className="w-5 h-5" />
                     Distinguished Guest Information
                   </CardTitle>
@@ -195,30 +195,30 @@ export default function RoyalCheckoutPage() {
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="name" className="text-purple-200">
+                      <Label htmlFor="name" className="text-foreground">
                         Royal First Name <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="bg-purple-800/50 text-white w-full"
+                        className="bg-background text-foreground w-full"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="city" className="text-purple-200">
+                      <Label htmlFor="city" className="text-foreground">
                         Royal City <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="city"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="bg-purple-800/50 text-white w-full"
+                        className="bg-background text-foreground w-full"
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-purple-200">
+                    <Label htmlFor="email" className="text-foreground">
                       Royal Email Address <span className="text-red-500">*</span>
                     </Label>
                     <Input
@@ -226,11 +226,11 @@ export default function RoyalCheckoutPage() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-purple-800/50 text-white w-full"
+                      className="bg-background text-foreground w-full"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-purple-200">
+                    <Label htmlFor="phone" className="text-foreground">
                       Royal Contact Number <span className="text-red-500">*</span>
                     </Label>
                     <Input
@@ -238,11 +238,11 @@ export default function RoyalCheckoutPage() {
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="bg-purple-800/50 text-white w-full"
+                      className="bg-background text-foreground w-full"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="address" className="text-purple-200">
+                    <Label htmlFor="address" className="text-foreground">
                       Royal Address <span className="text-red-500">*</span>
                     </Label>
                     <Input
@@ -250,7 +250,7 @@ export default function RoyalCheckoutPage() {
                       type="text"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      className="bg-purple-800/50 text-white w-full"
+                      className="bg-background text-foreground w-full"
                     />
                   </div>
                 </CardContent>
@@ -260,30 +260,30 @@ export default function RoyalCheckoutPage() {
             {/* RIGHT SIDE */}
             <div className="lg:col-span-1">
               <Card
-                className="bg-[#191a1e] sticky top-24 lg:top-24 md:top-20 sm:static sm:mt-8"
+                className="bg-main sticky top-24 lg:top-24 md:top-20 sm:static sm:mt-8"
               >
                 <CardHeader>
-                  <CardTitle className="text-yellow-400 flex items-center gap-2">
+                  <CardTitle className="text-foreground flex items-center gap-2">
                     <Crown className="w-5 h-5" />
                     Royal Booking Summary
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-purple-200">Room Charges</span>
+                    <div className="flex justify-between items-center border-b">
+                      <span className="text-foreground">Room Charges</span>
                       <span className="font-semibold">${totalAmount.toFixed(2)}</span>
                     </div>
               
-                    <Separator className="bg-purple-700/50" />
+                 
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total</span>
-                      <span className="text-yellow-400">${totalAmount.toFixed(2)}</span>
+                      <span className="text-foreground">${totalAmount.toFixed(2)}</span>
                     </div>
                   </div>
 
-                  <div className="space-y-3 pt-4 border-t border-purple-700/50">
-                    <h4 className="font-semibold text-yellow-400 flex items-center gap-2">
+                  <div className="space-y-3 pt-4 border-t ">
+                    <h4 className="font-semibold text-foreground flex items-center gap-2">
                       <Award className="w-4 h-4" />
                       Royal Inclusions
                     </h4>

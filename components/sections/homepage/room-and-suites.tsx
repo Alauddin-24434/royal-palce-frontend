@@ -19,7 +19,7 @@ const RoomAndSuites = () => {
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
             <div className="flex items-center">
               <Bed className="w-6 h-6 text-[#bf9310] mr-3" />
-              <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
+              <h2 className="title text-sm font-medium tracking-[0.2em] uppercase">
                 Hotel Rooms & Suites
               </h2>
               <Bed className="w-6 h-6 text-[#bf9310] ml-3" />
@@ -28,7 +28,7 @@ const RoomAndSuites = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-white">
+          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             Choose from our selection of
             <br />
             <span className="block">luxury accommodations</span>

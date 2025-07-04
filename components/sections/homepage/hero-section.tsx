@@ -45,12 +45,12 @@ const HeroSection = () => {
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-5xl px-4">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-gray-100 mb-6">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-6">
           Discover The Perfect
           <br />
-          <span className="text-yellow-400">Blend of Luxury Resort</span>
+          <span className="title">Blend of Luxury Resort</span>
         </h1>
-        <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
+        <p className="text-lg sm:text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12">
           Experience unparalleled luxury and comfort in our world-class resort
           where every moment becomes a cherished memory.
         </p>
@@ -61,11 +61,11 @@ const HeroSection = () => {
             e.preventDefault();
             handleSearch();
           }}
-          className="bg-[#0b0b0d] bg-opacity-70 rounded-lg p-6 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-gray-200 shadow-lg"
+          className="backdrop-blur-sm border bg-background/50 p-6 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-foreground "
         >
           {/* Check-in */}
           <div className="flex flex-col">
-            <label htmlFor="checkIn" className="mb-1 font-semibold text-yellow-400">
+            <label htmlFor="checkIn" className="mb-1 font-semibold text-foreground">
               Check-in
             </label>
             <input
@@ -73,14 +73,14 @@ const HeroSection = () => {
               id="checkIn"
               value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
-              className="rounded-md bg-[#191a1e] text-white p-2"
+              className="rounded-md bg-main text-foreground border p-2"
               required
             />
           </div>
 
           {/* Check-out */}
           <div className="flex flex-col">
-            <label htmlFor="checkOut" className="mb-1 font-semibold text-yellow-400">
+            <label htmlFor="checkOut" className="mb-1 font-semibold text-foreground">
               Check-out
             </label>
             <input
@@ -88,23 +88,23 @@ const HeroSection = () => {
               id="checkOut"
               value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
-              className="rounded-md bg-[#191a1e] text-white p-2"
+              className="rounded-md bg-main text-foreground border p-2"
               required
             />
           </div>
 
           {/* Adults */}
           <div className="flex flex-col">
-            <label htmlFor="adults" className="mb-1 font-semibold text-yellow-400">
+            <label htmlFor="adults" className="mb-1 font-semibold text-foreground">
               Adults
             </label>
             <select
               id="adults"
               value={adults}
               onChange={(e) => setAdults(parseInt(e.target.value))}
-              className="rounded-md bg-[#191a1e] text-white p-2"
+              className="rounded-md bg-main text-foreground border p-2"
             >
-              {[...Array(10).keys()].map((num) => (
+              {[...Array(4).keys()].map((num) => (
                 <option key={num + 1} value={num + 1}>
                   {num + 1}
                 </option>
@@ -114,18 +114,18 @@ const HeroSection = () => {
 
           {/* Children */}
           <div className="flex flex-col">
-            <label htmlFor="children" className="mb-1 font-semibold text-yellow-400">
+            <label htmlFor="children" className="mb-1 font-semibold text-foreground">
               Children
             </label>
             <select
               id="children"
               value={children}
               onChange={(e) => setChildren(parseInt(e.target.value))}
-              className="rounded-md bg-[#191a1e] text-white p-2"
+              className="rounded-md bg-main text-foreground border p-2"
             >
-              {[...Array(6).keys()].map((num) => (
-                <option key={num} value={num}>
-                  {num}
+              {[...Array(4).keys()].map((num) => (
+                <option key={num+1} value={num+1}>
+                  {num+1}
                 </option>
               ))}
             </select>
@@ -134,10 +134,11 @@ const HeroSection = () => {
           {/* Submit button spans full width on small screens */}
           <button
             type="submit"
-            className="sm:col-span-2 md:col-span-4 bg-yellow-400 text-black font-bold rounded-md py-3 mt-4 sm:mt-0 hover:bg-yellow-500 transition"
+            className="sm:col-span-2 md:col-span-4 cursor-pointer
+             bg-[#bf9310] text-foreground font-bold rounded-md py-3 mt-4 sm:mt-0 hover:bg-yellow-500 transition"
           >
             <CalendarDays className="inline-block mr-2 w-5 h-5" />
-            Search Rooms
+            Available Rooms
           </button>
         </form>
       </div>

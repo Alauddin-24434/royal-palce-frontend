@@ -29,7 +29,7 @@ export default function DashboardPage() {
     }
   }, [user, refetch])
 
-  console.log("Dashboard Data:", dashboardData)
+
 
   if (isLoading) {
     return (

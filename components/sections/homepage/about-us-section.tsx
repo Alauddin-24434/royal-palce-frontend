@@ -27,7 +27,7 @@ const featuresData = [
 
 const AboutUsSection = () => {
   return (
-    <section className="bg-[#191a1e] text-white py-20 px-4 md:px-6 lg:px-8 relative overflow-hidden">
+    <section className="bg-main text-white py-20 px-4 md:px-6 lg:px-8 relative overflow-hidden">
     
       <div className="container mx-auto relative z-10">
   <div className="mb-20">
@@ -45,7 +45,7 @@ const AboutUsSection = () => {
   </div>
 
   {/* Main Heading with one consistent color and smaller size */}
-  <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-white">
+  <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
     Where Royal Heritage Meets
     <br />
     Modern Luxury & Elegance
@@ -85,31 +85,31 @@ const AboutUsSection = () => {
                 <div className="text-4xl md:text-5xl font-light text-[#bf9310] mb-2">
                   150+
                 </div>
-                <div className="text-slate-400 text-sm uppercase tracking-wide">Royal Suites</div>
+                <div className="text-foreground text-sm uppercase tracking-wide">Royal Suites</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-light text-[#bf9310] mb-2">
                   5.0
                 </div>
-                <div className="text-slate-400 text-sm uppercase tracking-wide">Royal Rating</div>
+                <div className="text-foreground text-sm uppercase tracking-wide">Royal Rating</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-light text-[#bf9310] mb-2">
                   200K+
                 </div>
-                <div className="text-slate-400 text-sm uppercase tracking-wide">Distinguished Guests</div>
+                <div className="text-foreground text-sm uppercase tracking-wide">Distinguished Guests</div>
               </div>
             </div>
 
             {/* Royal Description */}
             <div className="space-y-6 mb-10">
-              <p className="text-slate-300 leading-relaxed text-lg">
+              <p className="text-foreground leading-relaxed text-lg">
                 Nestled in the heart of the city, our Royal Palace Hotel stands as a testament to timeless elegance and
                 unparalleled luxury. Each suite is meticulously designed with hand-selected furnishings, marble
                 bathrooms, and panoramic views that capture the essence of royal living.
               </p>
 
-              <p className="text-slate-300 leading-relaxed">
+              <p className="text-foreground leading-relaxed">
                 From our award-winning spa treatments to our Michelin-starred dining experiences, every moment at our
                 palace is crafted to exceed the expectations of the most discerning guests. Our dedicated concierge team
                 ensures that your every wish is anticipated and fulfilled with the grace befitting royalty.
@@ -120,15 +120,15 @@ const AboutUsSection = () => {
             <div className="flex flex-wrap gap-4 mb-10">
               <div className="flex items-center bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
                 <Users className="w-4 h-4 text-[#bf9310] mr-2" />
-                <span className="text-sm text-slate-300">24/7 Butler Service</span>
+                <span className="text-sm text-foreground">24/7 Butler Service</span>
               </div>
               <div className="flex items-center bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
                 <Star className="w-4 h-4 text-[#bf9310] mr-2" />
-                <span className="text-sm text-slate-300">Michelin Dining</span>
+                <span className="text-sm text-foreground">Michelin Dining</span>
               </div>
               <div className="flex items-center bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
                 <Crown className="w-4 h-4 text-[#bf9310] mr-2" />
-                <span className="text-sm text-slate-300">Royal Heritage</span>
+                <span className="text-sm text-foreground">Royal Heritage</span>
               </div>
             </div>
 
