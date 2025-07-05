@@ -1,42 +1,9 @@
-import { Button } from '../../ui/button';
-import {
-  ArrowRight,
-  Crown,
-  Shield,
-  Sparkles,
-  Play,
-  Star,
-  Award,
-  Users,
-} from 'lucide-react';
+import { Crown, Star, Award, Users } from 'lucide-react';
 import Image from 'next/image';
-
-const featuresData = [
-  {
-    icon: <Crown />,
-    title: 'Royal Suites',
-    subtitle: 'Palatial accommodations fit for royalty',
-  },
-  {
-    icon: <Shield />,
-    title: 'Butler Service',
-    subtitle: 'Personal attendants at your service',
-  },
-  {
-    icon: <Sparkles />,
-    title: 'Fine Dining',
-    subtitle: 'Michelin-starred culinary experiences',
-  },
-  {
-    icon: <Star />,
-    title: 'Royal Treatment',
-    subtitle: 'Exclusive spa and wellness services',
-  },
-];
 
 const AboutUsSection = () => {
   return (
-    <section className="bg-main text-white py-20 px-4 md:px-6 lg:px-8 relative overflow-hidden">
+    <section className="bg-main text-white py-20 p-4 relative overflow-hidden">
       <div className="container mx-auto relative z-10">
         <div className="mb-20">
           {/* Title Decoration */}
@@ -44,7 +11,7 @@ const AboutUsSection = () => {
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
             <div className="flex items-center">
               <Crown className="w-6 h-6 text-[#bf9310] mr-3" />
-              <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
+              <h2 className="text-[#bf9310] text-base md:text-sm font-medium tracking-[0.2em] uppercase">
                 About Our Palace
               </h2>
               <Crown className="w-6 h-6 text-[#bf9310] ml-3" />
@@ -115,7 +82,7 @@ const AboutUsSection = () => {
 
             {/* Royal Description */}
             <div className="space-y-6 mb-10">
-              <p className="text-foreground leading-relaxed text-lg">
+              <p className="text-foreground leading-relaxed text-base md:text-lg">
                 Nestled in the heart of the city, our Royal Palace Hotel stands
                 as a testament to timeless elegance and unparalleled luxury.
                 Each suite is meticulously designed with hand-selected
@@ -123,7 +90,7 @@ const AboutUsSection = () => {
                 the essence of royal living.
               </p>
 
-              <p className="text-foreground leading-relaxed">
+              <p className="text-base md:text-lg text-foreground leading-relaxed">
                 From our award-winning spa treatments to our Michelin-starred
                 dining experiences, every moment at our palace is crafted to
                 exceed the expectations of the most discerning guests. Our
@@ -134,17 +101,17 @@ const AboutUsSection = () => {
 
             {/* Royal Features */}
             <div className="flex flex-wrap gap-4 mb-10">
-              <div className="flex items-center bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
+              <div className="flex items-center bg-main px-4 py-2 rounded-full border border-slate-700">
                 <Users className="w-4 h-4 text-[#bf9310] mr-2" />
                 <span className="text-sm text-foreground">
                   24/7 Butler Service
                 </span>
               </div>
-              <div className="flex items-center bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
+              <div className="flex items-center bg-main px-4 py-2 rounded-full border border-slate-700">
                 <Star className="w-4 h-4 text-[#bf9310] mr-2" />
                 <span className="text-sm text-foreground">Michelin Dining</span>
               </div>
-              <div className="flex items-center bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
+              <div className="flex items-center bg-main px-4 py-2 rounded-full border border-slate-700">
                 <Crown className="w-4 h-4 text-[#bf9310] mr-2" />
                 <span className="text-sm text-foreground">Royal Heritage</span>
               </div>

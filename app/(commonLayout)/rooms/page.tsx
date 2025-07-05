@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -20,23 +20,28 @@ interface IRoom {
 
 const roomTypes = ['all', 'luxury', 'suite', 'deluxe', 'twine'];
 
+// ===== Custom debounce hook =====
 function useDebounce<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
-  React.useEffect(() => {
+
+  useEffect(() => {
     const handler = setTimeout(() => setDebounced(value), delay);
     return () => clearTimeout(handler);
   }, [value, delay]);
+
   return debounced;
 }
 
 export default function RoomsPage() {
-  const [tab, setTab] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
+  // ===== State variables =====
+  const [tab, setTab] = useState('all'); // Active filter tab
+  const [searchTerm, setSearchTerm] = useState(''); // Search input value
+  const [page, setPage] = useState(1); // Current pagination page
 
-  // Debounced searchTerm to reduce API calls
+  // ===== Debounced search term to reduce API calls =====
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+  // ===== Fetch rooms data from API =====
   const { data, isLoading } = useFilterAllRoomsQuery({
     searchTerm: debouncedSearchTerm,
     type: tab === 'all' ? undefined : tab,
@@ -44,18 +49,23 @@ export default function RoomsPage() {
     page,
   });
 
-  const rooms = data?.data?.data || [];
-  const totalPages = data?.meta?.totalPages || 1;
+  const rooms = data?.data?.data ?? [];
+  const totalPages = data?.meta?.totalPages ?? 1;
 
+  // ===== Handlers =====
+  // When search input changes, update searchTerm and reset page to 1
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setPage(1);
   };
 
+  // When tab changes, update active tab and reset page to 1
   const onTabChange = (newTab: string) => {
     setTab(newTab);
     setPage(1);
   };
+
+  // ===== Loading state UI =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -71,8 +81,9 @@ export default function RoomsPage() {
 
   return (
     <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
-      {/* Filter controls */}
+      {/* ===== Filter controls: Select for mobile, Tabs for desktop ===== */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+        {/* Mobile dropdown select for room type */}
         <select
           value={tab}
           onChange={(e) => onTabChange(e.target.value)}
@@ -85,6 +96,7 @@ export default function RoomsPage() {
           ))}
         </select>
 
+        {/* Desktop tabs for room type */}
         <Tabs
           value={tab}
           onValueChange={onTabChange}
@@ -103,6 +115,7 @@ export default function RoomsPage() {
           </TabsList>
         </Tabs>
 
+        {/* Search input */}
         <Input
           placeholder="Search rooms..."
           value={searchTerm}
@@ -111,7 +124,7 @@ export default function RoomsPage() {
         />
       </div>
 
-      {/* Rooms grid */}
+      {/* ===== Rooms grid ===== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {rooms.map((room: IRoom) => (
           <Card
@@ -125,11 +138,14 @@ export default function RoomsPage() {
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
+              {/* Overlay */}
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-all duration-500" />
+              {/* Price badge */}
               <div className="absolute top-4 right-4 bg-[#bf9310] text-white px-3 py-1 text-xs md:text-sm font-semibold">
                 ${room.price}/night
               </div>
 
+              {/* Title, rating stars and button */}
               <div className="absolute bottom-6 left-6 text-white space-y-2 text-sm md:text-base">
                 <div className="font-light text-lg md:text-xl">
                   {room.title}
@@ -142,11 +158,10 @@ export default function RoomsPage() {
                     />
                   ))}
                 </div>
-
                 <Link href={`/rooms/${room._id}`}>
                   <Button
                     variant="outline"
-                    className="mt-2  bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
+                    className="mt-2 bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
                   >
                     VIEW DETAILS <ArrowRight className="w-4 h-4 inline" />
                   </Button>
@@ -157,7 +172,7 @@ export default function RoomsPage() {
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* ===== Pagination controls ===== */}
       <div className="flex justify-center flex-wrap gap-2 mt-10">
         <Button
           onClick={() => setPage((prev) => Math.max(1, prev - 1))}

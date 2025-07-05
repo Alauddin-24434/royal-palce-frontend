@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   clearCart,
@@ -22,22 +21,27 @@ import toast, { Toaster } from 'react-hot-toast';
 import PrivateRoute from '@/components/PrivateRoute';
 
 export default function RoyalCheckoutPage() {
+  // ===== Redux & API hooks =====
   const [bookingInitiate] = useBookingInitiateMutation();
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.phone || '');
+  // ===== Form states =====
+  const [name, setName] = useState(user?.name ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
+  const [phone, setPhone] = useState(user?.phone ?? '');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // ===== Select cart items for current user =====
   const selectCartByUser = useMemo(
-    () => makeSelectCartItemsByUser(user?._id || ''),
+    () => makeSelectCartItemsByUser(user?._id ?? ''),
     [user?._id],
   );
   const cartItems = useAppSelector(selectCartByUser);
 
+  // ===== Calculate nights and subtotal per cart item =====
   const cartSummary = cartItems.map((item) => {
     const nights = differenceInDays(
       new Date(item.room.checkOutDate),
@@ -48,72 +52,70 @@ export default function RoyalCheckoutPage() {
     return { ...item, nights, subtotal };
   });
 
+  // ===== Total amount of booking =====
   const totalAmount = cartSummary.reduce((sum, item) => sum + item.subtotal, 0);
 
-  const bookingData = {
-    userId: user?._id,
-    rooms: cartItems?.map((item) => item.room),
-    totalAmount,
-    name,
-    email,
-    phone,
-    address,
-    city,
-  };
-
+  // ===== Remove single item from cart =====
   const handleRemove = (roomId: string) => {
     dispatch(removeCartItem(roomId));
   };
 
+  // ===== Clear entire cart with confirmation =====
   const handleClearCart = () => {
-    toast(
-      (t) => (
-        <div className="flex flex-col gap-2">
-          <p>Are you sure you want to clear the cart?</p>
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={() => {
-                dispatch(clearCart());
-                toast.dismiss(t.id);
-                toast.success('Cart cleared!');
-              }}
-              className="bg-red-600 text-foreground px-3 py-1 rounded"
-            >
-              Confirm
-            </button>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="bg-gray-500 text-foreground px-3 py-1 rounded"
-            >
-              Cancel
-            </button>
-          </div>
+    toast((t) => (
+      <div className="flex flex-col gap-2">
+        <p>Are you sure you want to clear the cart?</p>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => {
+              dispatch(clearCart());
+              toast.dismiss(t.id);
+              toast.success('Cart cleared!');
+            }}
+            className="bg-red-600 text-foreground px-3 py-1 rounded"
+          >
+            Confirm
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="bg-gray-500 text-foreground px-3 py-1 rounded"
+          >
+            Cancel
+          </button>
         </div>
-      ),
-      {
-        duration: 8000,
-        style: {
-          minWidth: '250px',
-        },
-      },
-    );
+      </div>
+    ));
   };
 
+  // ===== Submit booking and initiate payment =====
   const handleSubmit = async () => {
     if (!name || !email || !phone || !address || !city) {
       toast.error('Please fill in all required fields.');
       return;
     }
 
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 || totalAmount === 0) {
       toast.error('Your cart is empty.');
       return;
     }
 
+    if (isSubmitting) return; // prevent multiple submits
+    setIsSubmitting(true);
+
+    const bookingData = {
+      userId: user?._id,
+      rooms: cartItems.map((item) => item.room),
+      totalAmount,
+      name,
+      email,
+      phone,
+      address,
+      city,
+    };
+
     try {
       const response = await bookingInitiate(bookingData).unwrap();
-
-      if (response?.success && response?.payment_url) {
+      if (response?.success === true && response?.payment_url) {
         window.location.href = response.payment_url;
       } else {
         toast.error('Payment initiation failed. Please try again.');
@@ -121,13 +123,15 @@ export default function RoyalCheckoutPage() {
     } catch (error) {
       console.error('Payment initiation error:', error);
       toast.error('Unexpected error during payment.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <PrivateRoute>
-      <div className="min-h-screen text-foreground ">
-        {/* ====================== Title Section ====================== */}
+      <div className="min-h-screen text-foreground">
+        {/* ===== Title Section ===== */}
         <div className="flex items-center justify-center py-6 sm:py-10 px-4 text-center flex-wrap">
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 mr-4" />
           <div className="flex items-center justify-center">
@@ -140,6 +144,7 @@ export default function RoyalCheckoutPage() {
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 ml-4" />
         </div>
 
+        {/* ===== Clear Cart Button ===== */}
         <div className="container mx-auto px-4 py-6">
           <div className="mb-6 flex justify-end">
             <Button variant="destructive" onClick={handleClearCart} size="sm">
@@ -148,9 +153,9 @@ export default function RoyalCheckoutPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* LEFT SIDE */}
+            {/* ===== Left Side: Cart Items and Guest Info ===== */}
             <div className="lg:col-span-2 space-y-8">
-              {cartSummary?.map((cart, index) => (
+              {cartSummary.map((cart, index) => (
                 <Card key={index} className="bg-main">
                   <CardContent className="pt-6 space-y-4">
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -177,6 +182,7 @@ export default function RoyalCheckoutPage() {
                         </p>
                       </div>
                     </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
                       <div>
                         <span className="text-foreground">Check-in</span>
@@ -203,7 +209,7 @@ export default function RoyalCheckoutPage() {
                 </Card>
               ))}
 
-              {/* Guest Info */}
+              {/* ===== Guest Information Form ===== */}
               <Card className="bg-main">
                 <CardHeader>
                   <CardTitle className="text-foreground flex items-center gap-2">
@@ -278,7 +284,7 @@ export default function RoyalCheckoutPage() {
               </Card>
             </div>
 
-            {/* RIGHT SIDE */}
+            {/* ===== Right Side: Booking Summary ===== */}
             <div className="lg:col-span-1">
               <Card className="bg-main sticky top-24 lg:top-24 md:top-20 sm:static sm:mt-8">
                 <CardHeader>
@@ -335,10 +341,11 @@ export default function RoyalCheckoutPage() {
 
                   <Button
                     onClick={handleSubmit}
-                    className="w-full bg-[#bf9310]  cursor-pointer text-black hover:bg-[#a87e0d] font-bold py-4 text-xs md:text-lg rounded-lg shadow-lg hover:scale-105 transition-transform"
+                    className="w-full bg-[#bf9310] cursor-pointer text-black hover:bg-[#a87e0d] font-bold py-4 text-xs md:text-lg rounded-lg shadow-lg hover:scale-105 transition-transform"
                     size="lg"
+                    disabled={isSubmitting}
                   >
-                    Confirm Booking
+                    {isSubmitting ? 'Processing...' : 'Confirm Booking'}
                   </Button>
                 </CardContent>
               </Card>

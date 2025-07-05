@@ -9,26 +9,29 @@ import AmenitiesSection from '@/components/sections/homepage/amineties-section';
 
 export default function Home() {
   return (
-    <div className="min-h-screen  text-white">
-      {/*  Hero Section */}
+    <div className="min-h-screen">
+      {/* ===== Hero Section ===== */}
       <HeroSection />
-      {/* about us */}
+
+      {/* ===== About Us Section ===== */}
       <AboutUsSection />
-      {/* Rooms & Suites */}
+
+      {/* ===== Rooms & Suites Section ===== */}
       <RoomAndSuites />
 
-      {/*. Amenities Section */}
+      {/* ===== Amenities Section ===== */}
       <AmenitiesSection />
-      {/*team  member section */}
 
+      {/* ===== Team Member Section ===== */}
       <TeamSection />
 
-      {/* testimonials  */}
+      {/* ===== Testimonials Section ===== */}
       <TestimonialsSection />
 
-      {/* spoonser */}
+      {/* ===== Sponsors Section (commented out) ===== */}
       {/* <SpoonserSection /> */}
-      {/*  blogs */}
+
+      {/* ===== Blogs Section (commented out) ===== */}
       {/* <BlogsSection /> */}
     </div>
   );

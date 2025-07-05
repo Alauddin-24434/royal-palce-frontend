@@ -8,12 +8,14 @@ const serviceApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Service'],
     }),
     findAllService: build.query({
       query: () => ({
         url: '/services',
         method: 'GET',
       }),
+      providesTags: ['Service'],
     }),
 
     updateService: build.mutation({
@@ -22,12 +24,14 @@ const serviceApi = baseApi.injectEndpoints({
         method: 'PATCH', // or PUT, depending on your API
         body: formData,
       }),
+      invalidatesTags: ['Service'],
     }),
     deleteService: build.mutation({
       query: (id) => ({
         url: `/services/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Service'],
     }),
   }),
   overrideExisting: false,

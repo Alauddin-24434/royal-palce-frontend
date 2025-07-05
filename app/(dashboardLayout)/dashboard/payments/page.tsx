@@ -36,15 +36,16 @@ export interface Payment {
   paymentMethod: string;
   date: string;
   status: 'completed' | 'pending' | 'failed' | 'cancled' | 'refunded';
-
   createdAt: string;
 }
 
 export default function Payments() {
+  // ===== State variables =====
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
+  // ===== Fetch payments using RTK Query =====
   const {
     data: paymentData,
     isLoading,
@@ -58,6 +59,7 @@ export default function Payments() {
 
   const payments = paymentData?.data || [];
 
+  // ===== Prepare data for the bar chart =====
   const chartData = [
     {
       status: 'Paid',
@@ -83,6 +85,7 @@ export default function Payments() {
 
   return (
     <div className="space-y-6 p-4">
+      {/* ===== Header and Filters ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Payments</h1>
@@ -90,17 +93,17 @@ export default function Payments() {
         <div className="flex flex-col sm:flex-row gap-4">
           <Input
             placeholder="Search by guest/email"
-            className="bg-main text-foreground "
+            className="bg-main text-foreground"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select
             onValueChange={(value) => setStatus(value)}
             defaultValue="all"
           >
-            <SelectTrigger className="w-[150px] bg-main text-foreground ">
+            <SelectTrigger className="w-[150px] bg-main text-foreground">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent className="bg-main  text-foreground">
+            <SelectContent className="bg-main text-foreground">
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="completed">Paid</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
@@ -110,6 +113,7 @@ export default function Payments() {
         </div>
       </div>
 
+      {/* ===== Payment Status Chart ===== */}
       <Card className="bg-main">
         <CardHeader>
           <CardTitle className="text-foreground">
@@ -121,16 +125,16 @@ export default function Payments() {
             <BarChart data={chartData}>
               <XAxis
                 dataKey="status"
-                stroke="#8884d8" // axis line color
-                tick={{ fill: '#eab308', fontWeight: 600 }} // label color and style (Paid, Pending...)
-                axisLine={{ stroke: '#6366f1' }} // X-axis line color
-                tickLine={{ stroke: '#6366f1' }} // tick line under label
+                stroke="#8884d8"
+                tick={{ fill: '#eab308', fontWeight: 600 }}
+                axisLine={{ stroke: '#6366f1' }}
+                tickLine={{ stroke: '#6366f1' }}
               />
               <YAxis
-                stroke="#8884d8" // axis line color
-                tick={{ fill: '#facc15', fontWeight: 600 }} // left-side number color (0-5)
-                axisLine={{ stroke: '#6366f1' }} // Y-axis line color
-                tickLine={{ stroke: '#6366f1' }} // tick line for Y-axis
+                stroke="#8884d8"
+                tick={{ fill: '#facc15', fontWeight: 600 }}
+                axisLine={{ stroke: '#6366f1' }}
+                tickLine={{ stroke: '#6366f1' }}
               />
               <Tooltip
                 contentStyle={{
@@ -171,7 +175,7 @@ export default function Payments() {
         </CardContent>
       </Card>
 
-      {/* Table */}
+      {/* ===== Payments Table ===== */}
       <Card className="bg-main">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Payments</CardTitle>
@@ -198,7 +202,6 @@ export default function Payments() {
                     <TableHead className="text-foreground">
                       Transaction ID
                     </TableHead>
-
                     <TableHead className="text-foreground">Amount</TableHead>
                     <TableHead className="text-foreground">Method</TableHead>
                     <TableHead className="text-foreground">Date</TableHead>
@@ -207,11 +210,10 @@ export default function Payments() {
                 </TableHeader>
                 <TableBody>
                   {payments.map((payment: Payment) => (
-                    <TableRow key={payment._id} className="">
+                    <TableRow key={payment._id}>
                       <TableCell className="text-foreground">
                         {payment._id}
                       </TableCell>
-
                       <TableCell className="font-semibold text-foreground">
                         ${payment.amount}
                       </TableCell>
@@ -235,7 +237,7 @@ export default function Payments() {
                                     : 'bg-blue-600 hover:bg-blue-700'
                           }
                         >
-                          {payment?.status}
+                          {payment.status}
                         </Badge>
                       </TableCell>
                     </TableRow>

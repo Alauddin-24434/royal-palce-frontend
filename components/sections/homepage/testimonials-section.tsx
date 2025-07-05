@@ -12,13 +12,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
 import { Button } from '../../ui/button';
 import { useFindAllTestimonialsQuery } from '@/redux/features/testimonial/testimonialApi';
-import { ITestimonial } from '@/app/types/testimonial.interface';
+import { ITestimonial } from '@/types/testimonial.interface';
 
 const TestimonialsSection = () => {
   const [page, setPage] = useState(1);
   const limit = 2;
 
-  const { data: testimonialsData,  } = useFindAllTestimonialsQuery({
+  const { data: testimonialsData } = useFindAllTestimonialsQuery({
     page,
     limit,
   });
@@ -113,7 +113,7 @@ const TestimonialsSection = () => {
 
                   <Quote className="w-12 h-12 text-[#bf9310] mb-6" />
                   <p className="text-white text-lg leading-relaxed mb-6">
-                    "{testimonial?.reviewText}"
+                    {testimonial?.reviewText}
                   </p>
                   <div>
                     <h4 className="text-white font-medium text-lg">
@@ -130,11 +130,10 @@ const TestimonialsSection = () => {
             <button
               onClick={handlePrev}
               disabled={page === 1}
-              className={`w-12 h-12 rounded-full border border-gray-600 text-white flex items-center justify-center transition-colors ${
-                page === 1
+              className={`w-12 h-12 rounded-full border border-gray-600 text-white flex items-center justify-center transition-colors ${page === 1
                   ? 'opacity-30 cursor-not-allowed'
                   : 'hover:bg-white hover:text-black cursor-pointer'
-              }`}
+                }`}
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -146,11 +145,10 @@ const TestimonialsSection = () => {
             <button
               onClick={handleNext}
               disabled={testimonials.length < limit}
-              className={`w-12 h-12 rounded-full bg-[#bf9310] text-black flex items-center justify-center transition-colors ${
-                testimonials.length < limit
+              className={`w-12 h-12 rounded-full bg-[#bf9310] text-black flex items-center justify-center transition-colors ${testimonials.length < limit
                   ? 'opacity-30 cursor-not-allowed'
                   : 'hover:bg-yellow-600 cursor-pointer'
-              }`}
+                }`}
             >
               <ChevronRight className="w-5 h-5" />
             </button>

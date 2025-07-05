@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -46,10 +47,12 @@
     "recharts": "^3.0.2",
     "redux-persist": "^6.0.0",
     "reselect": "^5.1.1",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
     "vaul": "^1.1.2",
-    "zod": "^3.25.64"
+    "zod": "^3.25.64",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

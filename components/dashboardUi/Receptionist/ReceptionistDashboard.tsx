@@ -4,7 +4,17 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Users, Bed } from 'lucide-react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  BarChart,
+  XAxis,
+  YAxis,
+  Bar,
+} from 'recharts';
 
 // Icon mapping
 const iconMap: any = {
@@ -69,34 +79,30 @@ export default function ReceptionistDashboard({
         ))}
       </div>
 
-      {/* === Pie Chart === */}
-      <Card className="bg-main  backdrop-blur-sm">
+      {/* === Booking Status Bar Chart === */}
+      <Card className="bg-main backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-foreground">
             Booking Status Overview
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-center">
-          <PieChart width={300} height={250}>
-            <Pie
-              data={pieChartData}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {pieChartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
+        <CardContent className="overflow-x-auto">
+          <div className="w-full">
+            <BarChart width={400} height={250} data={pieChartData}>
+              <XAxis dataKey="name" stroke="#ffffff" />
+              <YAxis stroke="#ffffff" />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value">
+                {pieChartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </div>
         </CardContent>
       </Card>
 

@@ -43,6 +43,7 @@ const ProfilePage = () => {
     );
   }
 
+  /* ===== Handle User Info Update ===== */
   const handleInfoUpdate = async () => {
     try {
       const result = await updateUser({
@@ -60,6 +61,7 @@ const ProfilePage = () => {
     }
   };
 
+  /* ===== Handle Profile Image Update ===== */
   const handleImageUpdate = async () => {
     if (!profileImage) return;
 
@@ -82,6 +84,7 @@ const ProfilePage = () => {
     }
   };
 
+  /* ===== Cancel Edit and Reset ===== */
   const handleCancel = () => {
     setEditedUser({
       name: userInfo.name || '',
@@ -90,6 +93,7 @@ const ProfilePage = () => {
     setIsEditing(false);
   };
 
+  /* ===== Badge Color based on Role ===== */
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin':
@@ -104,6 +108,7 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen p-4">
       <div className="relative max-w-4xl mx-auto">
+        {/* ===== Page Header ===== */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">
             My Profile
@@ -111,6 +116,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* ===== Profile Image Section ===== */}
           <div className="lg:col-span-1">
             <Card className="bg-main border shadow-md">
               <CardContent className="p-6">
@@ -124,7 +130,7 @@ const ProfilePage = () => {
                         }
                         alt={userInfo.name}
                       />
-                      <AvatarFallback className="bg-main text-foreground  text-2xl">
+                      <AvatarFallback className="bg-main text-foreground text-2xl">
                         {userInfo.name?.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -186,6 +192,7 @@ const ProfilePage = () => {
             </Card>
           </div>
 
+          {/* ===== Profile Information Section ===== */}
           <div className="lg:col-span-2">
             <Card className="bg-main border shadow-md">
               <CardHeader className="flex flex-row items-center justify-between">
@@ -225,6 +232,7 @@ const ProfilePage = () => {
                 )}
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Full Name Field */}
                 <div className="space-y-2">
                   <Label className="text-foreground font-medium">
                     Full Name
@@ -245,6 +253,7 @@ const ProfilePage = () => {
                   )}
                 </div>
 
+                {/* Phone Number Field */}
                 <div className="space-y-2">
                   <Label className="text-foreground font-medium">
                     Phone Number
@@ -269,6 +278,7 @@ const ProfilePage = () => {
                   )}
                 </div>
 
+                {/* Account Role Field */}
                 <div className="space-y-2">
                   <Label className="text-foreground font-medium">
                     Account Role

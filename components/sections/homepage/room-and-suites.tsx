@@ -4,7 +4,7 @@ import { Bed, Home, Star, Users, ArrowRight } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { useFindAllRoomsQuery } from '@/redux/features/room/room.api';
 import Image from 'next/image';
-import type { IRoom } from '@/app/types/room.interface';
+import type { IRoom } from '@/types/room.interface';
 import Link from 'next/link';
 
 const RoomAndSuites = () => {

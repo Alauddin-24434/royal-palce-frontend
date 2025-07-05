@@ -23,6 +23,8 @@ import {
 import { Search, Eye, Edit, Trash2, X } from 'lucide-react';
 import { useGetAllBookingsQuery } from '@/redux/features/booking/bookingApi';
 
+// ===== Types =====
+
 interface Room {
   _id: string;
   roomId: {
@@ -43,61 +45,67 @@ interface Booking {
   status: string;
 }
 
+// ===== Component =====
+
 export default function BookingsPage() {
+  // ===== State variables =====
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState<Room[]>([]);
 
+  // ===== Fetch bookings with filters =====
   const { data: bookingData, isLoading: bookingLoading } =
     useGetAllBookingsQuery({
       searchTerm,
       status: statusFilter === 'all' ? '' : statusFilter,
     });
 
-  // Modal open handler
+  // ===== Open modal & set selected rooms =====
   const openRoomsModal = (rooms: Room[]) => {
     setSelectedRooms(rooms);
     setModalOpen(true);
   };
 
-  // Modal close handler
+  // ===== Close modal & clear rooms =====
   const closeModal = () => {
     setModalOpen(false);
     setSelectedRooms([]);
   };
 
   return (
-    <div className="space-y-6 p-4 min-h-screen ">
+    <div className="space-y-6 p-4 min-h-screen">
+      {/* ===== Page Title ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">
-            Booking Management
-          </h1>
-        </div>
+        <h1 className="text-3xl font-bold text-foreground">
+          Booking Management
+        </h1>
       </div>
 
-      {/* Filters */}
-      <Card className="bg-main border  rounded-md">
+      {/* ===== Filters Section ===== */}
+      <Card className="bg-main border rounded-md">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
+            {/* Search Input */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-foreground" />
               <Input
                 placeholder="Search bookings..."
-                className="pl-10 bg-main border  text-foreground rounded-md"
+                className="pl-10 bg-main border text-foreground rounded-md"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
+
+            {/* Status Filter Select */}
             <Select
               onValueChange={(value) => setStatusFilter(value)}
               defaultValue="all"
             >
-              <SelectTrigger className="w-full sm:w-48 bg-main border  text-foreground rounded-md">
+              <SelectTrigger className="w-full sm:w-48 bg-main border text-foreground rounded-md">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="bg-main border ">
+              <SelectContent className="bg-main border">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="booked">Booked</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
@@ -108,8 +116,8 @@ export default function BookingsPage() {
         </CardContent>
       </Card>
 
-      {/* Table */}
-      <Card className="bg-main border  rounded-md">
+      {/* ===== Bookings Table ===== */}
+      <Card className="bg-main border rounded-md">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
         </CardHeader>
@@ -122,7 +130,7 @@ export default function BookingsPage() {
             <div className="overflow-x-auto">
               <Table className="min-w-full">
                 <TableHeader>
-                  <TableRow className="border-b ">
+                  <TableRow className="border-b">
                     <TableHead className="text-foreground">Name</TableHead>
                     <TableHead className="text-foreground">Guest</TableHead>
                     <TableHead className="text-foreground">Rooms</TableHead>
@@ -135,11 +143,14 @@ export default function BookingsPage() {
                   {bookingData?.data?.map((booking: Booking) => (
                     <TableRow
                       key={booking._id}
-                      className="border-b  hover:bg-[#2a2d38] transition"
+                      className="border-b hover:bg-[#2a2d38] transition"
                     >
+                      {/* Booking Name */}
                       <TableCell className="font-medium text-foreground">
                         {booking.name}
                       </TableCell>
+
+                      {/* Guest name and email */}
                       <TableCell>
                         <div>
                           <p className="font-medium text-foreground">
@@ -150,20 +161,26 @@ export default function BookingsPage() {
                           </p>
                         </div>
                       </TableCell>
+
+                      {/* Rooms button to open modal */}
                       <TableCell>
                         <Button
                           variant="outline"
                           size="sm"
-                          className="text-foreground  hover:bg-[#2a2d38]"
+                          className="text-foreground hover:bg-[#2a2d38]"
                           onClick={() => openRoomsModal(booking.rooms)}
                         >
                           {booking.rooms.length} Room
                           {booking.rooms.length > 1 ? 's' : ''}
                         </Button>
                       </TableCell>
+
+                      {/* Total amount */}
                       <TableCell className="font-semibold text-amber-400">
                         ${booking.totalAmount.toFixed(2)}
                       </TableCell>
+
+                      {/* Booking status badge */}
                       <TableCell>
                         <Badge
                           variant={
@@ -187,6 +204,8 @@ export default function BookingsPage() {
                             booking.bookingStatus.slice(1)}
                         </Badge>
                       </TableCell>
+
+                      {/* Action buttons (View, Edit, Delete) */}
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <Button
@@ -224,11 +243,11 @@ export default function BookingsPage() {
         </CardContent>
       </Card>
 
-      {/* Modal */}
+      {/* ===== Modal for Room Details ===== */}
       {modalOpen && (
         <div className="fixed inset-0 bg-main bg-opacity-70 flex justify-center items-center p-4 z-50">
           <div className="bg-main rounded-md max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-lg relative">
-            <div className="flex justify-between items-center p-4 border-b ">
+            <div className="flex justify-between items-center p-4 border-b">
               <h3 className="text-xl font-semibold text-foreground">
                 Room Details
               </h3>
@@ -245,7 +264,7 @@ export default function BookingsPage() {
                 <p className="text-foreground">No rooms available</p>
               ) : (
                 selectedRooms.map((room) => (
-                  <div key={room._id} className="border  rounded-md p-3">
+                  <div key={room._id} className="border rounded-md p-3">
                     <h4 className="font-semibold text-lg text-foreground">
                       {room.roomId.title}
                     </h4>

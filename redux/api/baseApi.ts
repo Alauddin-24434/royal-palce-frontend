@@ -6,7 +6,7 @@ import { updateToken, logout } from '../features/auth/authSlice';
 const mutex = new Mutex();
 // https://royal-place-server.vercel.app
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://royal-place-server.vercel.app/api',
+  baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).auth.token;
@@ -72,7 +72,15 @@ const baseQueryWithReauth: typeof baseQuery = async (
 const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Room', 'Booking', 'User', 'Testimonial', 'Dashboard', 'Payment'],
+  tagTypes: [
+    'Room',
+    'Booking',
+    'User',
+    'Testimonial',
+    'Dashboard',
+    'Payment',
+    'Service',
+  ],
   endpoints: () => ({}),
 });
 

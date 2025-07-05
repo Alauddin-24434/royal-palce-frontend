@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 
 import { useFindAllServiceQuery } from '@/redux/features/service/serviceApi';
 import Image from 'next/image';
-import { IAmineties } from '@/app/types/amineties.interface';
+import { IAmineties } from '@/types/amineties.interface';
 
 const AmenitiesSection = () => {
   const { data: servicesData, isLoading } = useFindAllServiceQuery(undefined);

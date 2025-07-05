@@ -1,34 +1,38 @@
 'use client';
 
+// === Component Imports ===
 import AdminDashboard from '@/components/dashboardUi/Admin/AdminDashboard';
 import GuestDashboard from '@/components/dashboardUi/Guest/GuestDashboard';
 import ReceptionistDashboard from '@/components/dashboardUi/Receptionist/ReceptionistDashboard';
+
+// === Redux and Hooks ===
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-// ... your other imports and state
-
 export default function DashboardPage() {
+  // === Get logged-in user from Redux store ===
   const user = useSelector(selectCurrentUser);
 
+  // === Fetch dashboard data conditionally based on user presence ===
   const {
     data: dashboardData,
     isLoading,
     refetch,
   } = useGetDashboardDataQuery(undefined, {
-    skip: !user,
+    skip: !user, // === যদি user না থাকে তাহলে query skip করো ===
     refetchOnMountOrArgChange: true,
   });
 
-  // ✅ Ensure refetch when user changes
+  // ===  Re-fetch data whenever user changes ===
   useEffect(() => {
     if (user) {
       refetch();
     }
   }, [user, refetch]);
 
+  // === ⏳ Loading Spinner ===
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -40,36 +44,43 @@ export default function DashboardPage() {
     );
   }
 
+  // ===  User not found ===
   if (!user)
     return <div className="text-white text-center mt-10">User not found</div>;
 
-  // Role-based dashboard rendering
-  if (user.role === 'admin') {
-    return (
-      <AdminDashboard
-        stats={dashboardData?.stats}
-        bookings={dashboardData?.recentBookings}
-      />
-    );
-  }
+  // === ✅ Render appropriate dashboard based on user role ===
+  switch (user?.role) {
+    case 'admin':
+      // ===  Admin dashboard ===
+      return (
+        <AdminDashboard
+          stats={dashboardData?.stats}
+          bookings={dashboardData?.recentBookings}
+        />
+      );
 
-  if (user.role === 'receptionist') {
-    return (
-      <ReceptionistDashboard
-        stats={dashboardData?.stats}
-        bookings={dashboardData?.recentBookings}
-      />
-    );
-  }
+    case 'receptionist':
+      // ===  Receptionist dashboard ===
+      return (
+        <ReceptionistDashboard
+          stats={dashboardData?.stats}
+          bookings={dashboardData?.recentBookings}
+        />
+      );
 
-  if (user.role === 'guest') {
-    return (
-      <GuestDashboard
-        stats={dashboardData?.stats}
-        bookings={dashboardData?.recentBookings}
-      />
-    );
-  }
+    case 'guest':
+      // ===  Guest dashboard ===
+      return (
+        <GuestDashboard
+          stats={dashboardData?.stats}
+          bookings={dashboardData?.recentBookings}
+        />
+      );
 
-  return <div className="text-white text-center mt-10">Invalid role</div>;
+    default:
+      // ===  Unrecognized role ===
+      return (
+        <div className="text-white text-center mt-10">Invalid user role</div>
+      );
+  }
 }

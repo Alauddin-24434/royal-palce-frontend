@@ -60,7 +60,7 @@ const menuItems = [
     title: 'Rooms Management',
     url: '/dashboard/rooms',
     icon: Bed,
-    roles: ['admin', 'receptionist'],
+    roles: ['admin'],
   },
 
   {
@@ -86,7 +86,7 @@ const menuItems = [
     title: 'Service Management',
     url: '/dashboard/services',
     icon: Building,
-    roles: ['admin', 'receptionist'],
+    roles: ['admin'],
   },
 ];
 

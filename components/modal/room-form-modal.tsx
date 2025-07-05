@@ -29,7 +29,7 @@ import {
   useCreateRoomMutation,
   useUpdateRoomMutation,
 } from '@/redux/features/room/room.api';
-import { IRoom, RoomType } from '@/app/types/room.interface';
+import { IRoom, RoomType } from '@/types/room.interface';
 
 interface RoomFormModalProps {
   isOpen: boolean;

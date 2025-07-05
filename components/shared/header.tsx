@@ -3,17 +3,19 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Crown,  X, Sun, Moon } from 'lucide-react'; // আইকন আমদানি করো
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectCurrentUser, logout } from '@/redux/features/auth/authSlice';
+import { Crown, Sun, Moon, Bell } from 'lucide-react';
+
+import { useDispatch } from 'react-redux';
+import { logout } from '@/redux/features/auth/authSlice';
 import { DropdownMenuInNav } from './dropdown-menu';
 import { useTheme } from 'next-themes';
+import { NotificationDropdown } from './NotificationDropdown'; // নতুন কম্পোনেন্ট ইম্পোর্ট করো
+import { useNotificationStore } from '@/zustand/useNotificationStore';
 
 export function Header() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const user = useSelector(selectCurrentUser);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -32,18 +34,19 @@ export function Header() {
 
   const { theme, setTheme } = useTheme();
 
-  // থিম টগল ফাংশন
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  const toggleNotification = () => {
+    setIsNotificationOpen((prev) => !prev);
+  };
+
   return (
     <>
-      {/* Header */}
       <header className="bg-main sticky top-0 z-50 shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <Crown className="h-5 w-5 title mr-2" />
@@ -53,7 +56,6 @@ export function Header() {
               </Link>
             </div>
 
-            {/* Center Nav (desktop) */}
             <nav className="hidden md:flex space-x-10 mx-auto">
               {navigation.map((item) => (
                 <Link
@@ -70,8 +72,33 @@ export function Header() {
               ))}
             </nav>
 
-            {/* থিম টগল বাটন + DropdownMenuInNav */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 relative">
+              {/* Notification Bell */}
+              <button
+                onClick={(e) => {
+                  e.preventDefault(); // reload প্রতিরোধ
+                  toggleNotification();
+                }}
+                aria-label="Toggle Notifications"
+                className="relative p-2 rounded hover:title hover:text-foreground transition"
+              >
+                <Bell className="w-6 h-6" />
+
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Notification Dropdown */}
+              {isNotificationOpen && (
+                <NotificationDropdown
+                  onClose={() => setIsNotificationOpen(false)}
+                />
+              )}
+
+              {/* থিম টগল */}
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle Dark Mode"
@@ -90,84 +117,7 @@ export function Header() {
         </div>
       </header>
 
-      {/* Sidebar Overlay (তোমার আগের মতো থাকবে) */}
-      {isSidebarOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          {/* Sidebar */}
-          <div className="w-64 bg-[#191a1e] text-white p-4 shadow-lg space-y-4">
-            {/* Close button */}
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="text-white hover:title mb-4"
-            >
-              <X />
-            </button>
-
-            {/* Nav links */}
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setIsSidebarOpen(false)}
-                className={`block px-4 py-2 rounded font-medium ${
-                  pathname === item.href
-                    ? 'bg-yellow-600 text-black'
-                    : 'hover:bg-yellow-700'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-
-            <div className="border-t border-gray-700 pt-4">
-              {user ? (
-                <>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center space-x-2"
-                    onClick={() => setIsSidebarOpen(false)}
-                  >
-                    <div className="w-8 h-8 rounded-full overflow-hidden border border-yellow-500">
-                      <Image
-                        src={user?.image || '/default-avatar.png'}
-                        alt="Profile"
-                        width={32}
-                        height={32}
-                        className="object-cover"
-                      />
-                    </div>
-                    <span className="text-white">Dashboard</span>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsSidebarOpen(false);
-                    }}
-                    className="mt-3 w-full text-left text-white border border-yellow-600 px-3 py-2 rounded hover:bg-yellow-600 hover:text-black"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <Link href="/login">
-                  <Button
-                    onClick={() => setIsSidebarOpen(false)}
-                    className="w-full bg-[#bf9310] hover:bg-yellow-600 text-black font-semibold mt-2"
-                  >
-                    Login
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-
-          {/* Background overlay */}
-          <div
-            className="flex-1 bg-black bg-opacity-50"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        </div>
-      )}
+      {/* Sidebar & rest... */}
     </>
   );
 }

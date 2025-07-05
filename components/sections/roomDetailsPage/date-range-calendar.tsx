@@ -31,9 +31,7 @@ interface DateRangeCalendarProps {
 }
 
 export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
-  const [mainImage] = useState(
-    room?.images?.[0] || '/placeholder.svg',
-  );
+  const [mainImage] = useState(room?.images?.[0] || '/placeholder.svg');
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [selectedRange, setSelectedRange] = useState<DateRange>({});

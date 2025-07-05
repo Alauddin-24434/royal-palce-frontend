@@ -1,14 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
+
 import { useLoginUserMutation } from '@/redux/features/auth/authApi';
-import { useAppDispatch } from '@/redux/hooks';
 import { setUser } from '@/redux/features/auth/authSlice';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useAppDispatch } from '@/redux/hooks';
 
 interface LoginFormData {
   email: string;
@@ -20,10 +23,10 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // URL থেকে redirect প্যারামিটার নিন, না থাকলে ডিফল্ট "/" পেজে যাবে
+  // === Get redirect URL from query string or fallback to home ===
   const redirect = searchParams.get('redirect') || '/';
 
-  const [login, { isLoading, error }] = useLoginUserMutation();
+  const [login, { isLoading }] = useLoginUserMutation();
 
   const {
     register,
@@ -32,42 +35,40 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>();
 
+  // === Handle form submission ===
   const onSubmit = async (data: LoginFormData) => {
     try {
-      // Login API কল
       const response = await login(data).unwrap();
+      const { accessToken, user } = response.data;
 
-      const { accessToken, user } = response?.data;
-
-      // Redux স্টোরে user & token সেট করুন
+      // === Save user and token to Redux store ===
       dispatch(setUser({ user, token: accessToken }));
 
-      // ফর্ম রিসেট করুন
+      // === Reset form and navigate ===
       reset();
-
-      // সফল লগিনের পরে redirect পেজে নেভিগেট করুন
       router.replace(redirect);
-    } catch (err) {
-      console.error('Login failed:', err);
-      // এখানে তোমার মতো এরর হ্যান্ডলিং যোগ করতে পারো
+    } catch (err: any) {
+      toast.error(err?.message || 'An unexpected error occurred');
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      {/* Background overlay */}
-      <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-10"></div>
+      {/* === Background image overlay === */}
+      <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-10" />
 
       <div className="relative w-full max-w-md">
+        {/* === Login Card === */}
         <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-2xl">
-          {/* Header */}
+          {/* === Header === */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
             <p className="text-slate-300">Sign in to your resort account</p>
           </div>
 
-          {/* Login Form */}
+          {/* === Login Form === */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* === Email Input === */}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-slate-200 font-medium">
                 Email Address
@@ -75,6 +76,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
+                placeholder="Enter your email"
                 {...register('email', {
                   required: 'Email is required',
                   pattern: {
@@ -82,7 +84,6 @@ export default function LoginPage() {
                     message: 'Invalid email address',
                   },
                 })}
-                placeholder="Enter your email"
                 className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.email && (
@@ -90,26 +91,22 @@ export default function LoginPage() {
               )}
             </div>
 
+            {/* === Password Input === */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label
-                  htmlFor="password"
-                  className="text-slate-200 font-medium"
-                >
-                  Password
-                </Label>
-              </div>
+              <Label htmlFor="password" className="text-slate-200 font-medium">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
+                placeholder="Enter your password"
                 {...register('password', {
-                  required: 'Password is Required',
+                  required: 'Password is required',
                   minLength: {
                     value: 6,
                     message: 'Minimum 6 characters required',
                   },
                 })}
-                placeholder="Enter your password"
                 className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.password && (
@@ -119,6 +116,7 @@ export default function LoginPage() {
               )}
             </div>
 
+            {/* === Submit Button === */}
             <Button
               type="submit"
               disabled={isLoading}
@@ -126,15 +124,9 @@ export default function LoginPage() {
             >
               {isLoading ? 'Loading...' : 'Sign In'}
             </Button>
-
-            {error && (
-              <p className="text-red-500 text-center mt-4">
-                {typeof error === 'string' ? error : 'Something went wrong!'}
-              </p>
-            )}
           </form>
 
-          {/* Signup Link */}
+          {/* === Signup Redirect Link === */}
           <div className="text-center mt-6">
             <p className="text-slate-300">
               Don't have an account?{' '}
@@ -148,6 +140,9 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {/* === Toast Container for Notifications === */}
+      <Toaster position="top-right" />
     </div>
   );
 }

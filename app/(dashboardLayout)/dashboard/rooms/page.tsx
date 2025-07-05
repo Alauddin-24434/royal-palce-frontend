@@ -13,14 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Search, Bed, Users } from 'lucide-react';
+import { Plus, Search, Bed } from 'lucide-react';
 import RoomFormModal from '@/components/modal/room-form-modal';
 import {
   useDeleteRoomMutation,
   useFindAllRoomsQuery,
 } from '@/redux/features/room/room.api';
 import toast, { Toaster } from 'react-hot-toast';
-import { IRoom } from '@/app/types/room.interface';
+import { IRoom } from '@/types/room.interface';
 
 export default function RoomsPage() {
   const { data: roomsData, isLoading } = useFindAllRoomsQuery(undefined);
@@ -31,6 +31,7 @@ export default function RoomsPage() {
     undefined,
   );
 
+  /* ===== Handlers ===== */
   const handleOpenCreateModal = () => {
     setSelectedRoom(undefined);
     setIsModalOpen(true);
@@ -49,9 +50,22 @@ export default function RoomsPage() {
       toast.error('Failed to delete room.');
     }
   };
-
+  // === Loading State ===
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">
+            Loading rooms...
+          </p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="space-y-6">
+      {/* ===== Header and Add Room Button ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">
@@ -66,22 +80,23 @@ export default function RoomsPage() {
         </Button>
       </div>
 
-      {/* Filters */}
-      <Card className="bg-main ">
+      {/* ===== Filters ===== */}
+      <Card className="bg-main">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground" />
               <Input
                 placeholder="Search rooms..."
-                className="pl-10 bg-main  text-foreground"
+                className="pl-10 bg-main text-foreground"
               />
             </div>
+
             <Select>
-              <SelectTrigger className="w-full sm:w-48 bg-main  text-foreground">
+              <SelectTrigger className="w-full sm:w-48 bg-main text-foreground">
                 <SelectValue placeholder="Room Type" />
               </SelectTrigger>
-              <SelectContent className="bg-main ">
+              <SelectContent className="bg-main">
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="luxury">Luxury</SelectItem>
                 <SelectItem value="suite">Suite</SelectItem>
@@ -89,11 +104,12 @@ export default function RoomsPage() {
                 <SelectItem value="twin">Twin</SelectItem>
               </SelectContent>
             </Select>
+
             <Select>
-              <SelectTrigger className="w-full sm:w-48 bg-main  text-foreground">
+              <SelectTrigger className="w-full sm:w-48 bg-main text-foreground">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="bg-main ">
+              <SelectContent className="bg-main">
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="available">Available</SelectItem>
                 <SelectItem value="occupied">Occupied</SelectItem>
@@ -104,14 +120,15 @@ export default function RoomsPage() {
         </CardContent>
       </Card>
 
-      {/* Room Cards */}
+      {/* ===== Room Cards ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {roomsData?.data?.map((room: IRoom) => (
           <Card
             key={room?._id}
             className="bg-main overflow-hidden p-0 flex flex-col"
           >
-            <div className="aspect-video  relative">
+            {/* ===== Room Image ===== */}
+            <div className="aspect-video relative">
               <img
                 src={room.images?.[0] || '/placeholder.svg'}
                 alt={room?.title}
@@ -119,6 +136,7 @@ export default function RoomsPage() {
               />
             </div>
 
+            {/* ===== Room Header ===== */}
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -138,6 +156,7 @@ export default function RoomsPage() {
               </div>
             </CardHeader>
 
+            {/* ===== Room Content ===== */}
             <CardContent className="flex flex-col flex-1 justify-between space-y-4">
               <div className="text-foreground flex items-center gap-4">
                 <div className="flex items-center gap-1">
@@ -146,13 +165,13 @@ export default function RoomsPage() {
                 </div>
               </div>
 
-              {/* Fixed height features section */}
+              {/* ===== Features Section with Fixed Height ===== */}
               <div className="flex flex-wrap gap-2 min-h-[40px] max-h-[60px] overflow-hidden">
                 {room.features.slice(0, 3).map((feature) => (
                   <Badge
                     key={feature}
                     variant="secondary"
-                    className=" text-foreground text-xs"
+                    className="text-foreground text-xs"
                   >
                     {feature}
                   </Badge>
@@ -160,19 +179,19 @@ export default function RoomsPage() {
                 {room.features.length > 3 && (
                   <Badge
                     variant="secondary"
-                    className=" text-foreground text-xs"
+                    className="text-foreground text-xs"
                   >
                     +{room.features.length - 3} more
                   </Badge>
                 )}
               </div>
 
-              {/* Push buttons to bottom */}
+              {/* ===== Action Buttons ===== */}
               <div className="flex gap-2 mt-auto pt-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex-1 text-foreground hover:"
+                  className="flex-1 text-foreground"
                   onClick={() => handleOpenEditModal(room)}
                 >
                   Edit
@@ -180,7 +199,7 @@ export default function RoomsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex-1 text-foreground hover:"
+                  className="flex-1 text-foreground"
                 >
                   View Details
                 </Button>
@@ -198,19 +217,19 @@ export default function RoomsPage() {
         ))}
       </div>
 
+      {/* ===== Room Form Modal ===== */}
       <RoomFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         room={selectedRoom}
       />
+
+      {/* ===== Toast Notifications ===== */}
       <Toaster
         position="top-center"
         reverseOrder={false}
         gutter={8}
-        containerClassName=""
-        containerStyle={{}}
         toastOptions={{
-          // Define default options
           className: '',
           duration: 5000,
           removeDelay: 1000,
@@ -218,8 +237,6 @@ export default function RoomsPage() {
             background: '#363636',
             color: '#fff',
           },
-
-          // Default options for specific types
           success: {
             duration: 3000,
             iconTheme: {

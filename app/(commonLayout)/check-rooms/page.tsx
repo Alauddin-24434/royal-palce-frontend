@@ -1,22 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ChevronLeft, ChevronRight, Star, ArrowRight } from 'lucide-react';
+
+import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
+
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  Bed,
-  Star,
-  Users,
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  ArrowRight,
-} from 'lucide-react';
-import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
-import Image from 'next/image';
-import Link from 'next/link';
 
 interface IRoom {
   _id: string;
@@ -26,6 +20,7 @@ interface IRoom {
   images: string[];
 }
 
+// === Available Room Types ===
 const roomTypes = ['all', 'luxury', 'suite', 'deluxe', 'twine'];
 
 export default function CheckRooms() {
@@ -33,7 +28,6 @@ export default function CheckRooms() {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
-  // Handle search params from URL
   const [queryParams, setQueryParams] = useState({
     checkInDate: '',
     checkOutDate: '',
@@ -41,6 +35,7 @@ export default function CheckRooms() {
     children: 0,
   });
 
+  // === Extract search query params from URL ===
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -53,6 +48,7 @@ export default function CheckRooms() {
     }
   }, []);
 
+  // === Fetch filtered room data ===
   const { data, isLoading } = useFilterAllRoomsQuery(
     {
       checkInDate: queryParams.checkInDate,
@@ -64,34 +60,41 @@ export default function CheckRooms() {
       page,
     },
     {
-      skip: !queryParams.checkInDate || !queryParams.checkOutDate, // Prevent early call
+      skip: !queryParams.checkInDate || !queryParams.checkOutDate,
     },
   );
 
   const rooms = data?.data?.data || [];
   const totalPages = data?.meta?.totalPages || 1;
 
-  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setPage(1);
-  };
-
+  // === Handlers ===
   const onTabChange = (newTab: string) => {
     setTab(newTab);
     setPage(1);
   };
 
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setPage(1);
+  };
+
+  // === Loading State ===
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-[#bf9310] font-semibold text-lg">Loading...</div>
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">
+            Loading rooms...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
-      {/* Filter controls */}
+      {/* === Room Filter Controls === */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
         {/* Mobile Dropdown */}
         <select
@@ -125,16 +128,18 @@ export default function CheckRooms() {
           </TabsList>
         </Tabs>
 
-        {/* Search (if you implement later) */}
-        {/* <Input
+        {/* Search bar (optional future feature) */}
+        {/* 
+        <Input
           placeholder="Search rooms..."
           value={searchTerm}
           onChange={onSearchChange}
           className="w-full md:w-80"
-        /> */}
+        /> 
+        */}
       </div>
 
-      {/* Rooms grid */}
+      {/* === Room Cards Grid === */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {rooms.map((room: IRoom) => (
           <Card
@@ -153,6 +158,7 @@ export default function CheckRooms() {
                 ${room.price}/night
               </div>
 
+              {/* Card Content */}
               <div className="absolute bottom-6 left-6 text-white space-y-2 text-sm md:text-base">
                 <div className="font-light text-lg md:text-xl">
                   {room.title}
@@ -169,9 +175,9 @@ export default function CheckRooms() {
                 <Link href={`/rooms/${room._id}`}>
                   <Button
                     variant="outline"
-                    className="mt-2 bg-transparent  text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
+                    className="mt-2 bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
                   >
-                    VIEW DETAILS <ArrowRight className="w-4 h-4 inline" />
+                    VIEW DETAILS <ArrowRight className="w-4 h-4 inline ml-1" />
                   </Button>
                 </Link>
               </div>
@@ -180,7 +186,7 @@ export default function CheckRooms() {
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* === Pagination === */}
       <div className="flex justify-center flex-wrap gap-2 mt-10">
         <Button
           onClick={() => setPage((prev) => Math.max(1, prev - 1))}
@@ -193,6 +199,7 @@ export default function CheckRooms() {
         {Array.from({ length: totalPages }).map((_, i) => {
           const pageNumber = i + 1;
           const isActive = page === pageNumber;
+
           return (
             <Button
               key={pageNumber}

@@ -14,66 +14,18 @@ import {
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { useGetBookingsByUserIdQuery } from '@/redux/features/booking/bookingApi';
-
-// --- Types & Interfaces ---
-
-interface Room {
-  _id: string;
-  roomNumber?: string;
-  floor?: number;
-  title?: string;
-  images?: string[];
-  features?: string[];
-  description?: string;
-  type?: string;
-  price?: number;
-  adults?: number;
-  children?: number;
-  bed?: {
-    type: string;
-    count: number;
-  };
-  roomStatus?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  __v?: number;
-  maxOccupancy?: number;
-}
-
-interface BookingRoom {
-  _id: string;
-  roomId: Room | {}; // populated room or empty object if not populated
-  checkInDate: string;
-  checkOutDate: string;
-}
-
-type BookingStatus = 'pending' | 'booked' | 'cancelled' | string;
-
-interface Booking {
-  _id: string;
-  userId: string;
-  rooms: BookingRoom[];
-  totalAmount: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  transactionId: string;
-  bookingStatus: BookingStatus;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-// --- Component ---
+import { IBooking } from '@/types/booking.interface';
 
 export default function BookedRooms() {
+  // ===== Get current user from Redux store =====
   const user = useSelector(selectCurrentUser);
+
+  // ===== Fetch bookings by userId via RTK Query =====
   const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(
     user?._id ?? '',
   );
 
+  // ===== Loading state UI =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -85,17 +37,19 @@ export default function BookedRooms() {
     );
   }
 
+  // ===== Handle fetch error or unsuccessful response =====
   if (!bookingData.success) return <div>Error loading bookings</div>;
 
   return (
     <div className="space-y-6">
+      {/* ===== Page Title ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Booked Rooms</h1>
         </div>
       </div>
 
-      {/* Bookings Table */}
+      {/* ===== Bookings Table ===== */}
       <Card className="bg-main border border-slate-700 shadow-md">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
@@ -114,12 +68,12 @@ export default function BookedRooms() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {bookingData.data.map((booking: Booking) => (
+                {bookingData.data.map((booking: IBooking) => (
                   <TableRow
                     key={booking._id}
                     className="border-slate-700  text-foreground"
                   >
-                    {/* রুম গুলোর title comma separated দেখাবে */}
+                    {/* ===== Comma separated room titles ===== */}
                     <TableCell>
                       {booking.rooms
                         ?.map((r) =>
@@ -129,16 +83,22 @@ export default function BookedRooms() {
                         )
                         .join(', ')}
                     </TableCell>
+
+                    {/* ===== Number of rooms in booking ===== */}
                     <TableCell>{booking.rooms.length}</TableCell>
 
+                    {/* ===== Check-in date from first room ===== */}
                     <TableCell>{booking.rooms[0]?.checkInDate}</TableCell>
 
+                    {/* ===== Check-out date from first room ===== */}
                     <TableCell>{booking.rooms[0]?.checkOutDate}</TableCell>
 
+                    {/* ===== Total amount ===== */}
                     <TableCell className="font-semibold ">
                       ${booking.totalAmount}
                     </TableCell>
 
+                    {/* ===== Booking status with colored badge ===== */}
                     <TableCell>
                       <Badge
                         variant={

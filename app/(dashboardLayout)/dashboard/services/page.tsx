@@ -1,7 +1,6 @@
+// === Imports ===
 'use client';
 import { useState, useEffect } from 'react';
-import type React from 'react';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -63,14 +62,14 @@ import {
 } from '@/components/ui/form';
 import {
   useCreateServiceMutation,
+  useDeleteServiceMutation,
   useFindAllServiceQuery,
   useUpdateServiceMutation,
 } from '@/redux/features/service/serviceApi';
-import { useFindAllRoomsQuery } from '@/redux/features/room/room.api';
-import { IRoom } from '@/app/types/room.interface';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { IService } from '@/types/service.interface';
 
-// Validation schema
+// === Validation Schema ===
 const serviceSchema = z.object({
   name: z.string().min(1, 'Service name is required'),
   description: z.string().optional(),
@@ -81,28 +80,12 @@ const serviceSchema = z.object({
 
 type ServiceFormData = z.infer<typeof serviceSchema>;
 
-interface IService {
-  _id?: string;
-  name: string;
-  image: string;
-  description?: string;
-  pricePerDay: number;
-  isServiceFree: boolean;
-  isDeleted?: boolean;
-}
-
-interface Room {
-  _id: string;
-  name: string;
-  roomNumber: string;
-}
-
 export default function ServicesPage() {
+  // === State Management ===
   const [createService] = useCreateServiceMutation();
   const [updateService, { isLoading: updateLoading }] =
     useUpdateServiceMutation();
-
-  const { data: roomsData } = useFindAllRoomsQuery(undefined);
+  const [deleteService] = useDeleteServiceMutation();
   const { data: servicesData, isLoading } = useFindAllServiceQuery(undefined);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -115,7 +98,7 @@ export default function ServicesPage() {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
 
-  // React Hook Form for Add Service
+  // === React Hook Form Setup ===
   const addForm = useForm<ServiceFormData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
@@ -127,7 +110,6 @@ export default function ServicesPage() {
     },
   });
 
-  // React Hook Form for Edit Service
   const editForm = useForm<ServiceFormData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
@@ -139,7 +121,6 @@ export default function ServicesPage() {
     },
   });
 
-  // Watch isServiceFree to automatically set price to 0
   const watchAddServiceFree = addForm.watch('isServiceFree');
   const watchEditServiceFree = editForm.watch('isServiceFree');
 
@@ -147,104 +128,78 @@ export default function ServicesPage() {
     if (watchAddServiceFree) {
       addForm.setValue('pricePerDay', 0);
     }
-  }, [watchAddServiceFree, addForm]);
+  }, [watchAddServiceFree]);
 
   useEffect(() => {
     if (watchEditServiceFree) {
       editForm.setValue('pricePerDay', 0);
     }
-  }, [watchEditServiceFree, editForm]);
+  }, [watchEditServiceFree]);
 
+  // === Image Handling ===
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const maxSize = 5 * 1024 * 1024; // 5MB
-
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
         alert('File size must be less than 5MB');
-        e.target.value = ''; // ইনপুট রিসেট করতে পারেন
+        e.target.value = '';
         setImageFile(null);
         setImagePreview('');
         return;
       }
-
       setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
+      reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  // Remove image
   const handleRemoveImage = () => {
     setImageFile(null);
     setImagePreview('');
   };
 
-  // Add service form submission
+  // === Form Submission Handlers ===
   const onAddSubmit = async (data: ServiceFormData) => {
     try {
       const formData = new FormData();
-
-      // Append image if selected
-      if (imageFile) {
-        formData.append('image', imageFile);
-      }
-
-      // Append all form data fields
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value as string);
-      });
-
+      if (imageFile) formData.append('image', imageFile);
+      Object.entries(data).forEach(([key, value]) =>
+        formData.append(key, String(value)),
+      );
       const response = await createService(formData).unwrap();
-
       if (response.success) {
         setShowAddModal(false);
         addForm.reset();
         handleRemoveImage();
         toast.success('Service added successfully!');
-      } else {
-        toast.error('Failed to add service');
-      }
+      } else toast.error('Failed to add service');
     } catch (error) {
       console.error('Error adding service:', error);
       alert('Error adding service');
     }
   };
 
-  // Edit service form submission
   const onEditSubmit = async (data: ServiceFormData) => {
     if (!selectedService?._id) return;
-
     try {
       const formData = new FormData();
-
-      // Append image if selected
-      if (imageFile) {
-        formData.append('image', imageFile);
-      }
-
-      // Append other form fields
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value as string);
-      });
-
+      if (imageFile) formData.append('image', imageFile);
+      Object.entries(data).forEach(([key, value]) =>
+        formData.append(key, String(value)),
+      );
       const response = await updateService({
         id: selectedService._id,
         formData,
       });
-
       if ('data' in response && response.data?.success) {
         setShowEditModal(false);
         editForm.reset();
         handleRemoveImage();
         setSelectedService(null);
-        toast.success('Service updated sucessfully');
-      } else {
-        toast.error('Failed to update service');
-      }
+        toast.success('Service updated successfully!');
+      } else toast.error('Failed to update service');
     } catch (error) {
       console.error('Error updating service:', error);
       alert('Error updating service');
@@ -252,41 +207,30 @@ export default function ServicesPage() {
   };
 
   const handleDeleteService = async (serviceId: string) => {
-    if (!confirm('Are you sure you want to delete this service?')) return;
+
 
     try {
-      const response = await fetch(
-        `https://royal-place-server.vercel.app/api/services/${serviceId}`,
-        {
-          method: 'DELETE',
-        },
-      );
-
-      const result = await response.json();
-      if (result.success) {
-        alert('Service deleted successfully!');
-      } else {
-        alert('Failed to delete service');
+      const result = await deleteService(serviceId).unwrap();
+      if (result?.success) {
+        toast.success('Service deleted!')
       }
     } catch (error) {
       console.error('Error deleting service:', error);
-      alert('Error deleting service');
+      toast.error('Error deleting service');
     }
   };
 
+  // === Modal Handlers ===
   const openEditModal = (service: IService) => {
     setSelectedService(service);
     editForm.reset({
       name: service.name,
-
       description: service.description || '',
       pricePerDay: service.pricePerDay,
       isServiceFree: service.isServiceFree,
       image: service.image || '',
     });
-    if (service.image) {
-      setImagePreview(service.image);
-    }
+    if (service.image) setImagePreview(service.image);
     setShowEditModal(true);
   };
 
@@ -303,46 +247,41 @@ export default function ServicesPage() {
     setSelectedService(null);
   };
 
-  const filteredServices = servicesData?.data?.filter(
-    (service: { name: string; description: string; isServiceFree: any }) => {
-      const matchesSearch =
-        service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.description?.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesType =
-        filterType === 'all' ||
-        (filterType === 'free' && service.isServiceFree) ||
-        (filterType === 'paid' && !service.isServiceFree);
-
-      const matchesRoom = selectedRoom === 'all';
-
-      return matchesSearch && matchesType && matchesRoom;
-    },
-  );
+  // === Filters and Stats ===
+  const filteredServices = servicesData?.data?.filter((service: IService) => {
+    const matchesSearch =
+      service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      service.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType =
+      filterType === 'all' ||
+      (filterType === 'free' && service.isServiceFree) ||
+      (filterType === 'paid' && !service.isServiceFree);
+    const matchesRoom = selectedRoom === 'all';
+    return matchesSearch && matchesType && matchesRoom;
+  });
 
   const totalServices = servicesData?.data?.length;
   const freeServices = servicesData?.data?.filter(
-    (s: { isServiceFree: boolean }) => s.isServiceFree,
+    (s: IService) => s.isServiceFree,
   ).length;
   const paidServices = servicesData?.data?.filter(
-    (s: { isServiceFree: any }) => !s.isServiceFree,
+    (s: IService) => !s.isServiceFree,
   ).length;
   const totalRevenue = servicesData?.data?.reduce(
-    (sum: any, s: { isServiceFree: any; pricePerDay: any }) =>
-      sum + (s.isServiceFree ? 0 : s.pricePerDay),
+    (sum: number, s: IService) => sum + (s.isServiceFree ? 0 : s.pricePerDay),
     0,
   );
 
   return (
     <div className="min-h-screen ">
-      {/* Background decorative elements */}
+      {/*==== Background decorative elements===== */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative ">
-        {/* Header */}
+        {/*==== Header =====*/}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-foreground mb-2">
@@ -358,7 +297,7 @@ export default function ServicesPage() {
           </Button>
         </div>
 
-        {/* Stats Cards */}
+        {/*==== Stats Cards ====*/}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-main backdrop-blur-sm ">
             <CardContent className="p-6">
@@ -425,7 +364,7 @@ export default function ServicesPage() {
           </Card>
         </div>
 
-        {/* Filters */}
+        {/*==== Filters==== */}
         <Card className="bg-main backdrop-blur-sm  mb-6">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
@@ -466,26 +405,11 @@ export default function ServicesPage() {
                   </SelectItem>
                 </SelectContent>
               </Select>
-              {/* <Select value={selectedRoom} onValueChange={setSelectedRoom}>
-                                <SelectTrigger className="w-full md:w-48 bg-main/50  text-foreground focus:border-orange-500 focus:ring-orange-500/20">
-                                    <SelectValue placeholder="Filter by room" />
-                                </SelectTrigger>
-                                <SelectContent className="bg-main ">
-                                    <SelectItem value="all" className="text-foreground hover:bg-main">
-                                        All Rooms
-                                    </SelectItem>
-                                    {roomsData?.data?.map((room:IRoom) => (
-                                        <SelectItem key={room._id} value={room._id} className="text-foreground hover:bg-main">
-                                            {room.title} ({room.roomNumber})
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select> */}
             </div>
           </CardContent>
         </Card>
 
-        {/* Services Table */}
+        {/*==== Services Table ====*/}
         <Card className="bg-main backdrop-blur-sm ">
           <CardHeader>
             <CardTitle className="text-foreground">Services List</CardTitle>
@@ -593,7 +517,7 @@ export default function ServicesPage() {
         </Card>
       </div>
 
-      {/* Add Service Modal */}
+      {/*==== Add Service Modal==== */}
       <Dialog open={showAddModal} onOpenChange={closeAddModal}>
         <DialogContent className="bg-main  text-foreground max-w-2xl">
           <DialogHeader>
@@ -758,7 +682,7 @@ export default function ServicesPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Service Modal */}
+      {/*====Edit Service Modal==== */}
       <Dialog open={showEditModal} onOpenChange={closeEditModal}>
         <DialogContent className="bg-main  text-foreground max-w-2xl">
           <DialogHeader>
@@ -920,6 +844,8 @@ export default function ServicesPage() {
           </Form>
         </DialogContent>
       </Dialog>
+      {/* toaster */}
+      <Toaster position="top-right" />
     </div>
   );
 }

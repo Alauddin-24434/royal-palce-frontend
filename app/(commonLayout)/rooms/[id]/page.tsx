@@ -9,15 +9,15 @@ import { useParams } from 'next/navigation';
 import PrivateRoute from '@/components/PrivateRoute';
 
 export default function RoomDetailsPage() {
-  // Get dynamic route param
+  // ===== Get dynamic route param =====
   const params = useParams();
   const id = params?.id;
 
-  // Fetch single room details
+  // ===== Fetch single room details =====
   const { data, isLoading } = useFindSingleRoomQuery(id);
   const room = data?.data;
 
-  // Show loading spinner while fetching
+  // ===== Loading spinner while fetching =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -32,7 +32,7 @@ export default function RoomDetailsPage() {
   return (
     <PrivateRoute>
       <div className="min-h-screen text-white">
-        {/* ====================== Title Section ====================== */}
+        {/* ===== Title Section ===== */}
         <div className="flex items-center justify-center py-6 sm:py-10 px-4 text-center flex-wrap">
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 mr-4" />
           <div className="flex items-center justify-center">
@@ -45,12 +45,12 @@ export default function RoomDetailsPage() {
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 ml-4" />
         </div>
 
-        {/* ====================== Main Content ====================== */}
+        {/* ===== Main Content ===== */}
         <div className="container mx-auto space-y-12 px-4 sm:px-6 lg:px-8">
-          {/* ========== Room Image Gallery ========== */}
+          {/* ===== Room Image Gallery ===== */}
           <RoomImageGallery room={room} />
 
-          {/* ========== Room Info and Features ========== */}
+          {/* ===== Room Info and Features ===== */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* === Room Description === */}
             <div>
@@ -109,7 +109,7 @@ export default function RoomDetailsPage() {
             </div>
           </div>
 
-          {/* ========== Booking Calendar & Reviews Section ========== */}
+          {/* ===== Booking Calendar & Reviews Section ===== */}
           <DateRangeCalendar room={room} />
           <RoomReviewsSection roomId={id as string} />
         </div>
