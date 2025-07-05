@@ -26,20 +26,16 @@ const eslintConfig = [
       prettier: prettierPlugin.default,
     },
     rules: {
-      // ✅ Prettier formatting rules
-      'prettier/prettier': 'warn',
-
-      // ✅ TypeScript-specific rules
-      '@typescript-eslint/no-unused-vars': ['warn'],
-      '@typescript-eslint/no-explicit-any': ['warn'],
-      '@typescript-eslint/no-empty-object-type': ['warn'],
-      '@typescript-eslint/no-require-imports': 'warn',
-
-      // ✅ React rules
-      'react/no-unescaped-entities': ['warn'],
-
-      // ✅ Next.js recommendations
-      '@next/next/no-img-element': ['warn'],
+      'prettier/prettier': 'warn', // or 'off'
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      '@typescript-eslint/no-require-imports': 'off',
+      'react/no-unescaped-entities': 'warn',
+      '@next/next/no-img-element': 'warn',
     },
   },
 ];

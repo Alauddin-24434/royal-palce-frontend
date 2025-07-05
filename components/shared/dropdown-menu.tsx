@@ -20,7 +20,6 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
       {user && (
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer">
-            {' '}
             {/* Main flex container */}
             {/* Avatar */}
             <Avatar>
@@ -28,13 +27,15 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
             {/* Name and Role */}
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">
-                {user?.name || 'User Name'}
-              </span>
-              <span className="text-xs text-foreground">
-                {user?.role || 'User Role'}
-              </span>
+            <div className="">
+              <div className="flex flex-col ">
+                <span className="text-sm font-medium text-foreground">
+                  {user?.name || 'User Name'}
+                </span>
+                <span className="text-xs text-foreground">
+                  {user?.role || 'User Role'}
+                </span>
+              </div>
             </div>
           </div>
         </DropdownMenuTrigger>

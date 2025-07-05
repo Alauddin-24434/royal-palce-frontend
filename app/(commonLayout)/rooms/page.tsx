@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Star, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight, ArrowRight, Bed } from 'lucide-react';
 import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -81,6 +81,19 @@ export default function RoomsPage() {
 
   return (
     <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
+      {/* ===== Title Section ===== */}
+      <div className="flex items-center justify-center  px-4 text-center flex-wrap">
+        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
+        <div className="flex items-center justify-center">
+          <Bed className="w-5 h-5 sm:w-6 sm:h-6 title mr-2" />
+          <h2 className="title text-base sm:text-lg md:text-xl font-medium tracking-[0.2em] uppercase">
+            Hotel Rooms
+          </h2>
+          <Bed className="w-5 h-5 sm:w-6 sm:h-6 title ml-2" />
+        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 ml-4" />
+      </div>
+
       {/* ===== Filter controls: Select for mobile, Tabs for desktop ===== */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
         {/* Mobile dropdown select for room type */}

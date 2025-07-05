@@ -78,8 +78,14 @@ const menuItems = [
   },
   {
     title: 'Booked Room',
-    url: '/dashboard/booked',
+    url: '/dashboard/booked-user',
     icon: Bed,
+    roles: ['guest'],
+  },
+  {
+    title: 'Payments',
+    url: '/dashboard/payments-user',
+    icon: CreditCard,
     roles: ['guest'],
   },
   {
@@ -150,7 +156,7 @@ export function AppSidebar() {
                     >
                       <Link
                         href={item.url}
-                        className="flex items-center space-x-3 text-foreground hover:text-white"
+                        className="flex items-center space-x-3 text-foreground hover:text-foreground"
                       >
                         <item.icon className="h-5 w-5" />
                         <span>{item.title}</span>
@@ -169,33 +175,35 @@ export function AppSidebar() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="w-full justify-start h-12 hover:bg-slate-700/50"
+              className="w-full justify-start h-12 bg-main "
             >
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8  rounded-full flex items-center justify-center">
                   <User className="h-4 w-4 text-foreground" />
                 </div>
                 <div className="text-left">
-                  <p className="text-sm font-medium text-white">{user?.name}</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {user?.name}
+                  </p>
                   <p className="text-xs text-foreground">{user?.email}</p>
                 </div>
               </div>
               <ChevronDown className="h-4 w-4 text-foreground ml-auto" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-main " align="end">
+          <DropdownMenuContent className="w-56 bg-main  " align="end">
             <Link href="/dashboard/profile">
-              <DropdownMenuItem className="hover:bg-slate-700">
-                <User className="mr-2 h-4 w-4 text-slate-400" />
+              <DropdownMenuItem className="">
+                <User className="mr-2 h-4 w-4 text-foreground" />
                 <span className="text-foreground">Profile</span>
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuSeparator className="bg-slate-700" />
+            <DropdownMenuSeparator className="" />
             <DropdownMenuItem
               onClick={handleLogout}
-              className="hover:bg-slate-700 text-red-400 cursor-pointer"
+              className=" text-red-400 cursor-pointer"
             >
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-4 w-4 text-foreground" />
               <span>Logout</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -6,7 +6,7 @@ import { updateToken, logout } from '../features/auth/authSlice';
 const mutex = new Mutex();
 // https://royal-place-server.vercel.app
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).auth.token;

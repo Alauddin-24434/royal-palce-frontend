@@ -130,10 +130,11 @@ const TestimonialsSection = () => {
             <button
               onClick={handlePrev}
               disabled={page === 1}
-              className={`w-12 h-12 rounded-full border border-gray-600 text-white flex items-center justify-center transition-colors ${page === 1
+              className={`w-12 h-12 rounded-full border border-gray-600 text-white flex items-center justify-center transition-colors ${
+                page === 1
                   ? 'opacity-30 cursor-not-allowed'
                   : 'hover:bg-white hover:text-black cursor-pointer'
-                }`}
+              }`}
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -145,10 +146,11 @@ const TestimonialsSection = () => {
             <button
               onClick={handleNext}
               disabled={testimonials.length < limit}
-              className={`w-12 h-12 rounded-full bg-[#bf9310] text-black flex items-center justify-center transition-colors ${testimonials.length < limit
+              className={`w-12 h-12 rounded-full bg-[#bf9310] text-black flex items-center justify-center transition-colors ${
+                testimonials.length < limit
                   ? 'opacity-30 cursor-not-allowed'
                   : 'hover:bg-yellow-600 cursor-pointer'
-                }`}
+              }`}
             >
               <ChevronRight className="w-5 h-5" />
             </button>

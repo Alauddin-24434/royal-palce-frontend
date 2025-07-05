@@ -65,6 +65,15 @@ const bookingApi = baseApi.injectEndpoints({
       },
       providesTags: ['Booking'],
     }),
+
+    // ========= cancel booking by roomId========================
+    cnacelBooking: build.mutation({
+      query: (id: string) => ({
+        url: `/bookings/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['Booking'],
+    }),
   }),
 });
 
@@ -75,6 +84,7 @@ export const {
   useGetBookingByIdQuery,
   useGetBookedDatesQuery,
   useGetBookingsByUserIdQuery,
+  useCnacelBookingMutation,
 } = bookingApi;
 
 export default bookingApi;

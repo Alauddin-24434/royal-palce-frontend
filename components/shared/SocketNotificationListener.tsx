@@ -26,6 +26,10 @@ const EVENTS: { event: string; getMessage: (payload: any) => string }[] = [
     event: 'payment-initiated',
     getMessage: (data) => `Payment initiated for booking ${data.bookingId}`,
   },
+  {
+    event: 'booking-cancelled',
+    getMessage: (data) => `Payment initiated for booking ${data.bookingId}`,
+  },
 ];
 
 const SocketNotificationListener = () => {

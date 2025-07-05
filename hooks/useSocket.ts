@@ -19,13 +19,13 @@ export const useSocket = () => {
         },
       });
 
-      socket.on('connect', () => {
-        console.log('✅ Socket connected:', socket.id);
-      });
+      // socket.on('connect', () => {
+      //   console.log('✅ Socket connected:', socket.id);
+      // });
 
-      socket.on('connect_error', (err) => {
-        console.error('❌ Socket connection error:', err);
-      });
+      // socket.on('connect_error', (err) => {
+      //   console.error('❌ Socket connection error:', err);
+      // });
 
       socketRef.current = socket;
     }

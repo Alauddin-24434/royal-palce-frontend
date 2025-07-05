@@ -18,7 +18,15 @@ const paymentApi = baseApi.injectEndpoints({
       },
       providesTags: ['Payment'],
     }),
+    //  getting payments by userId
+    getPaymentsByUserId: build.query({
+      query: (id: string) => ({
+        url: `/payments/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['Payment'],
+    }),
   }),
 });
 
-export const { useGetPaymentsQuery } = paymentApi;
+export const { useGetPaymentsQuery, useGetPaymentsByUserIdQuery } = paymentApi;

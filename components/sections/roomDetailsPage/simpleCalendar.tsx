@@ -43,11 +43,11 @@ export default function SimpleCalendar({
   const nextMonth = () => setCurrentMonth(addDays(monthEnd, 1));
 
   return (
-    <div className="p-4 bg-[#191a1e]  rounded-lg text-white font-sans max-w-md mx-auto">
+    <div className="p-4 bg-main rounded-lg text-foreground font-sans max-w-md mx-auto">
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={prevMonth}
-          className="px-1 md:px-2 bg-[#bf9310] rounded text-white hover:bg-[#a87e0d]"
+          className="px-1 md:px-2 bg-[#bf9310] rounded text-foreground hover:bg-[#a87e0d]"
           aria-label="Previous Month"
         >
           &lt;
@@ -59,7 +59,7 @@ export default function SimpleCalendar({
 
         <button
           onClick={nextMonth}
-          className="px-1 md:px-2 bg-[#bf9310]  rounded text-white hover:bg-[#a87e0d]"
+          className="px-1 md:px-2 bg-[#bf9310]  rounded text-foreground hover:bg-[#a87e0d]"
           aria-label="Next Month"
         >
           &gt;
@@ -104,7 +104,7 @@ export default function SimpleCalendar({
                 py-2 rounded-md transition-colors
                 ${isSelected ? 'bg-yellow-400 text-black font-bold shadow-md' : ''}
                 ${isInRange ? 'bg-yellow-200 text-black' : ''}
-                ${shouldDisable ? 'bg-red-600 text-white cursor-not-allowed' : ''}
+                ${shouldDisable ? 'bg-red-600 text-foreground cursor-not-allowed' : ''}
                 ${
                   !shouldDisable && isCurrentMonth && !isSelected && !isInRange
                     ? 'hover:bg-yellow-600'

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import {  Award, Users } from 'lucide-react';
+import { Award, Users } from 'lucide-react';
 
 const teamMembers = [
   {

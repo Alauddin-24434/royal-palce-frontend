@@ -10,7 +10,6 @@ import { IAmineties } from '@/types/amineties.interface';
 
 const AmenitiesSection = () => {
   const { data: servicesData, isLoading } = useFindAllServiceQuery(undefined);
-  console.log(servicesData);
 
   if (isLoading) {
     return (

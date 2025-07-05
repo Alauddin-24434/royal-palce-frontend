@@ -74,6 +74,7 @@ export default function DashboardPage() {
         <GuestDashboard
           stats={dashboardData?.stats}
           bookings={dashboardData?.recentBookings}
+          pastBookings={dashboardData?.pastBookings}
         />
       );
 

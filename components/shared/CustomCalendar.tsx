@@ -61,8 +61,8 @@ export default function CustomCalendar({
     isBefore(date, new Date(today.setHours(0, 0, 0, 0))) || isDateBooked(date);
 
   return (
-    <div className="border border-slate-600 rounded-md p-4 bg-[#1e1f23]">
-      <div className="flex justify-between  items-center mb-3 text-white border-b border-slate-700 pb-2">
+    <div className="">
+      <div className="flex justify-between  items-center mb-3 text-foreground  pb-2">
         <button
           aria-label="Previous month"
           onClick={prevMonth}
@@ -84,12 +84,9 @@ export default function CustomCalendar({
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-xs text-slate-400 select-none border-b border-slate-700 pb-1">
+      <div className="grid grid-cols-7 gap-1 text-xs text-foreground select-none border-b border-slate-700 pb-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div
-            key={day}
-            className="text-center font-medium border border-slate-700 rounded-sm"
-          >
+          <div key={day} className="text-center font-medium ">
             {day}
           </div>
         ))}
@@ -125,12 +122,12 @@ export default function CustomCalendar({
                 border border-slate-700
                 ${
                   isDisabled
-                    ? 'bg-red-600 text-white cursor-not-allowed border-red-700'
+                    ? 'bg-red-600 text-foreground cursor-not-allowed border-red-700'
                     : isSelected
                       ? 'bg-[#bf9310] text-black font-bold border-yellow-400'
                       : inRange
                         ? 'bg-yellow-600 text-black border-yellow-300'
-                        : 'hover:bg-yellow-400 hover:text-black hover:cursor-pointer text-white border-slate-700'
+                        : 'hover:bg-yellow-400 hover:text-black hover:cursor-pointer text-foreground border-slate-700'
                 }
                 ${isToday ? 'border-2 border-slate-400' : ''}
               `}
@@ -141,7 +138,7 @@ export default function CustomCalendar({
         })}
       </div>
 
-      <div className="mt-4 flex gap-4 text-sm text-slate-300">
+      <div className="mt-4 flex gap-4 text-sm text-foreground">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-[#bf9310] rounded" />
           Selected
@@ -149,10 +146,6 @@ export default function CustomCalendar({
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-red-600 rounded" />
           Booked
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 border border-slate-600 rounded" />
-          Today
         </div>
       </div>
     </div>

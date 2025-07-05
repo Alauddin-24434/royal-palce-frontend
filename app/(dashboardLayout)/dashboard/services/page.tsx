@@ -207,12 +207,10 @@ export default function ServicesPage() {
   };
 
   const handleDeleteService = async (serviceId: string) => {
-
-
     try {
       const result = await deleteService(serviceId).unwrap();
       if (result?.success) {
-        toast.success('Service deleted!')
+        toast.success('Service deleted!');
       }
     } catch (error) {
       console.error('Error deleting service:', error);

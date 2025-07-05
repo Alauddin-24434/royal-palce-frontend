@@ -3,30 +3,30 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { differenceInDays } from 'date-fns';
-import { Crown, Check, Award, Bed } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Bed, Crown, Check, Award, ShoppingCart } from 'lucide-react';
+import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   clearCart,
   makeSelectCartItemsByUser,
   removeCartItem,
 } from '@/redux/features/cart/cartSlice';
-import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { useBookingInitiateMutation } from '@/redux/features/booking/bookingApi';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import toast, { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
 import PrivateRoute from '@/components/PrivateRoute';
 
 export default function RoyalCheckoutPage() {
-  // ===== Redux & API hooks =====
-  const [bookingInitiate] = useBookingInitiateMutation();
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
+  const [bookingInitiate] = useBookingInitiateMutation();
 
-  // ===== Form states =====
   const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
   const [phone, setPhone] = useState(user?.phone ?? '');
@@ -34,14 +34,12 @@ export default function RoyalCheckoutPage() {
   const [city, setCity] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ===== Select cart items for current user =====
   const selectCartByUser = useMemo(
     () => makeSelectCartItemsByUser(user?._id ?? ''),
     [user?._id],
   );
   const cartItems = useAppSelector(selectCartByUser);
 
-  // ===== Calculate nights and subtotal per cart item =====
   const cartSummary = cartItems.map((item) => {
     const nights = differenceInDays(
       new Date(item.room.checkOutDate),
@@ -52,33 +50,30 @@ export default function RoyalCheckoutPage() {
     return { ...item, nights, subtotal };
   });
 
-  // ===== Total amount of booking =====
   const totalAmount = cartSummary.reduce((sum, item) => sum + item.subtotal, 0);
 
-  // ===== Remove single item from cart =====
   const handleRemove = (roomId: string) => {
     dispatch(removeCartItem(roomId));
   };
 
-  // ===== Clear entire cart with confirmation =====
   const handleClearCart = () => {
     toast((t) => (
-      <div className="flex flex-col gap-2">
-        <p>Are you sure you want to clear the cart?</p>
-        <div className="flex justify-end gap-2">
+      <div className="p-4 space-y-2 text-sm">
+        <p>Are you sure you want to clear your booking cart?</p>
+        <div className="flex gap-2 justify-end">
           <button
             onClick={() => {
               dispatch(clearCart());
               toast.dismiss(t.id);
               toast.success('Cart cleared!');
             }}
-            className="bg-red-600 text-foreground px-3 py-1 rounded"
+            className="px-3 py-1 bg-red-600 text-white rounded"
           >
             Confirm
           </button>
           <button
             onClick={() => toast.dismiss(t.id)}
-            className="bg-gray-500 text-foreground px-3 py-1 rounded"
+            className="px-3 py-1 bg-gray-400 text-black rounded"
           >
             Cancel
           </button>
@@ -87,19 +82,15 @@ export default function RoyalCheckoutPage() {
     ));
   };
 
-  // ===== Submit booking and initiate payment =====
   const handleSubmit = async () => {
     if (!name || !email || !phone || !address || !city) {
       toast.error('Please fill in all required fields.');
       return;
     }
-
-    if (cartItems.length === 0 || totalAmount === 0) {
-      toast.error('Your cart is empty.');
+    if (cartItems.length === 0) {
+      toast.error('Your cart is empty!');
       return;
     }
-
-    if (isSubmitting) return; // prevent multiple submits
     setIsSubmitting(true);
 
     const bookingData = {
@@ -115,14 +106,13 @@ export default function RoyalCheckoutPage() {
 
     try {
       const response = await bookingInitiate(bookingData).unwrap();
-      if (response?.success === true && response?.payment_url) {
+      if (response?.success && response?.payment_url) {
         window.location.href = response.payment_url;
       } else {
-        toast.error('Payment initiation failed. Please try again.');
+        toast.error('Payment initiation failed.');
       }
     } catch (error) {
-      console.error('Payment initiation error:', error);
-      toast.error('Unexpected error during payment.');
+      toast.error('Unexpected error occurred.');
     } finally {
       setIsSubmitting(false);
     }
@@ -130,77 +120,84 @@ export default function RoyalCheckoutPage() {
 
   return (
     <PrivateRoute>
-      <div className="min-h-screen text-foreground">
+      <div className="min-h-screen bg-background text-foreground py-10 px-4">
         {/* ===== Title Section ===== */}
-        <div className="flex items-center justify-center py-6 sm:py-10 px-4 text-center flex-wrap">
-          <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 mr-4" />
+        <div className="flex items-center justify-center pb-10 px-4 text-center flex-wrap">
+          <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
           <div className="flex items-center justify-center">
-            <Bed className="w-5 h-5 sm:w-6 sm:h-6 text-[#bf9310] mr-2" />
-            <h2 className="text-[#bf9310] text-sm sm:text-base font-medium tracking-[0.2em] uppercase">
-              Hotel Checkout Page
+            <Bed className="w-5 h-5 sm:w-6 sm:h-6 title mr-2" />
+            <h2 className="title text-base sm:text-lg md:text-xl font-medium tracking-[0.2em] uppercase">
+              Chekout Rooms
             </h2>
-            <Bed className="w-5 h-5 sm:w-6 sm:h-6 text-[#bf9310] ml-2" />
+            <Bed className="w-5 h-5 sm:w-6 sm:h-6 title ml-2" />
           </div>
-          <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32 ml-4" />
+          <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 ml-4" />
         </div>
 
-        {/* ===== Clear Cart Button ===== */}
-        <div className="container mx-auto px-4 py-6">
-          <div className="mb-6 flex justify-end">
-            <Button variant="destructive" onClick={handleClearCart} size="sm">
-              Clear Cart
-            </Button>
+        {/* If Cart is Empty */}
+        {cartItems.length === 0 ? (
+          <div className="container mx-auto flex flex-col items-center text-center space-y-6 py-20">
+            <ShoppingCart className="w-16 h-16 text-muted-foreground" />
+            <p className="text-xl font-medium text-muted-foreground">
+              Your booking cart is empty
+            </p>
+            <Link href="/rooms">
+              <Button
+                variant="default"
+                className="bg-yellow-500 hover:bg-yellow-600 text-black"
+              >
+                Explore Rooms
+              </Button>
+            </Link>
           </div>
+        ) : (
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* LEFT SIDE */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="flex justify-between items-center border p-2 rounded-md">
+                <h3 className="text-xl font-semibold">Selected Rooms</h3>
+                <Button
+                  onClick={handleClearCart}
+                  variant="destructive"
+                  size="sm"
+                >
+                  Clear Cart
+                </Button>
+              </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* ===== Left Side: Cart Items and Guest Info ===== */}
-            <div className="lg:col-span-2 space-y-8">
-              {cartSummary.map((cart, index) => (
-                <Card key={index} className="bg-main">
-                  <CardContent className="pt-6 space-y-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="relative w-full sm:w-28 h-28 rounded-xl overflow-hidden border-2 border-yellow-400/30 flex-shrink-0">
-                        <Image
-                          src={cart?.room.image}
-                          alt="Room"
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute top-2 right-2">
-                          <Crown className="w-4 h-4 text-foreground" />
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-xl text-foreground">
-                          {cart?.room?.name}
-                        </h3>
-                        <p className="text-sm text-foreground">
-                          ${cart.room.price} × {cart.nights} nights ={' '}
-                          <span className="text-yellow-400 font-bold">
-                            ${cart.subtotal.toFixed(2)}
-                          </span>
-                        </p>
-                      </div>
+              {cartSummary.map((cart, idx) => (
+                <Card
+                  key={idx}
+                  className="bg-main border border-yellow-500/20 shadow"
+                >
+                  <CardContent className="p-4 flex flex-col sm:flex-row gap-4">
+                    <div className="relative w-full sm:w-28 h-28 rounded overflow-hidden">
+                      <Image
+                        src={cart.room.image}
+                        alt="room"
+                        fill
+                        className="object-cover rounded"
+                      />
                     </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
-                      <div>
-                        <span className="text-foreground">Check-in</span>
-                        <p className="font-semibold text-yellow-400">
-                          {cart?.room?.checkInDate}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-foreground">Check-out</span>
-                        <p className="font-semibold text-yellow-400">
-                          {cart?.room?.checkOutDate}
-                        </p>
-                      </div>
+                    <div className="flex-1 space-y-2">
+                      <h4 className="text-lg font-bold">{cart.room.name}</h4>
+                      <p className="text-sm">
+                        ${cart.room.price} x {cart.nights} nights ={' '}
+                        <span className="text-yellow-500 font-semibold">
+                          ${cart.subtotal.toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs">
+                        Check-in: {cart.room.checkInDate}
+                      </p>
+                      <p className="text-xs">
+                        Check-out: {cart.room.checkOutDate}
+                      </p>
                       <Button
-                        onClick={() => handleRemove(cart?.room.roomId)}
-                        variant="destructive"
-                        className="col-span-1 sm:col-span-2"
+                        onClick={() => handleRemove(cart.room.roomId)}
+                        variant="outline"
                         size="sm"
+                        className="text-red-500 border-red-300 hover:bg-red-100"
                       >
                         Remove
                       </Button>
@@ -209,141 +206,87 @@ export default function RoyalCheckoutPage() {
                 </Card>
               ))}
 
-              {/* ===== Guest Information Form ===== */}
+              {/* Guest Form */}
               <Card className="bg-main">
                 <CardHeader>
-                  <CardTitle className="text-foreground flex items-center gap-2">
-                    <Crown className="w-5 h-5" />
-                    Distinguished Guest Information
+                  <CardTitle className="text-foreground">
+                    Your Details
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name" className="text-foreground">
-                        Royal First Name <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="bg-background text-foreground w-full"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="city" className="text-foreground">
-                        Royal City <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="city"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        className="bg-background text-foreground w-full"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="email" className="text-foreground">
-                      Royal Email Address{' '}
-                      <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="bg-background text-foreground w-full"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone" className="text-foreground">
-                      Royal Contact Number{' '}
-                      <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="bg-background text-foreground w-full"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="address" className="text-foreground">
-                      Royal Address <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="address"
-                      type="text"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="bg-background text-foreground w-full"
-                    />
-                  </div>
+                <CardContent className="space-y-4">
+                  <InputField
+                    label="Full Name"
+                    value={name}
+                    onChange={setName}
+                    required
+                  />
+                  <InputField
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    required
+                  />
+                  <InputField
+                    label="Phone"
+                    type="tel"
+                    value={phone}
+                    onChange={setPhone}
+                    required
+                  />
+                  <InputField
+                    label="Address"
+                    value={address}
+                    onChange={setAddress}
+                    required
+                  />
+                  <InputField
+                    label="City"
+                    value={city}
+                    onChange={setCity}
+                    required
+                  />
                 </CardContent>
               </Card>
             </div>
 
-            {/* ===== Right Side: Booking Summary ===== */}
-            <div className="lg:col-span-1">
-              <Card className="bg-main sticky top-24 lg:top-24 md:top-20 sm:static sm:mt-8">
+            {/* RIGHT SIDE */}
+            <div className="sticky top-24 space-y-6">
+              <Card className="bg-main shadow border">
                 <CardHeader>
-                  <CardTitle className="text-foreground flex items-center gap-2">
-                    <Crown className="w-5 h-5" />
-                    Royal Booking Summary
+                  <CardTitle className="text-foreground">
+                    Booking Summary
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center border-b">
-                      <span className="text-foreground">Room Charges</span>
-                      <span className="font-semibold">
-                        ${totalAmount.toFixed(2)}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between text-xl font-bold">
-                      <span>Total</span>
-                      <span className="text-foreground">
-                        ${totalAmount.toFixed(2)}
-                      </span>
-                    </div>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>${totalAmount.toFixed(2)}</span>
                   </div>
-
-                  <div className="space-y-3 pt-4 border-t ">
-                    <h4 className="font-semibold text-foreground flex items-center gap-2">
+                  <div className="pt-4 border-t">
+                    <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
                       <Award className="w-4 h-4" />
                       Royal Inclusions
                     </h4>
-                    <div className="space-y-2 text-green-400 text-sm">
-                      <div className="flex items-center gap-2">
+                    <ul className="text-sm space-y-1 text-green-400">
+                      <li className="flex items-center gap-2">
                         <Check className="w-4 h-4" />
-                        Royal breakfast for 2 guests
-                      </div>
-                      <div className="flex items-center gap-2">
+                        Breakfast Included
+                      </li>
+                      <li className="flex items-center gap-2">
                         <Check className="w-4 h-4" />
-                        Private butler service
-                      </div>
-                      <div className="flex items-center gap-2">
+                        Spa Access
+                      </li>
+                      <li className="flex items-center gap-2">
                         <Check className="w-4 h-4" />
-                        Palace spa access
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        Limousine transfer
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        Free cancellation (24h)
-                      </div>
-                    </div>
+                        Free Cancellation
+                      </li>
+                    </ul>
                   </div>
-
                   <Button
                     onClick={handleSubmit}
-                    className="w-full bg-[#bf9310] cursor-pointer text-black hover:bg-[#a87e0d] font-bold py-4 text-xs md:text-lg rounded-lg shadow-lg hover:scale-105 transition-transform"
-                    size="lg"
                     disabled={isSubmitting}
+                    className="w-full bg-yellow-500 text-black font-bold hover:bg-yellow-600"
                   >
                     {isSubmitting ? 'Processing...' : 'Confirm Booking'}
                   </Button>
@@ -351,9 +294,39 @@ export default function RoyalCheckoutPage() {
               </Card>
             </div>
           </div>
-        </div>
-        <Toaster position="top-right" reverseOrder={false} />
+        )}
+        <Toaster position="top-right" />
       </div>
     </PrivateRoute>
+  );
+}
+
+//  Reusable InputField Component
+function InputField({
+  label,
+  value,
+  onChange,
+  type = 'text',
+  required = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <Label className="text-sm mb-1 block text-foreground">
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </Label>
+      <Input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-background text-foreground"
+      />
+    </div>
   );
 }

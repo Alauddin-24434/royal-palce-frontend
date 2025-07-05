@@ -13,8 +13,13 @@ import {
 } from '@/components/ui/table';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
-import { useGetBookingsByUserIdQuery } from '@/redux/features/booking/bookingApi';
+import {
+  useCancelBookingMutation,
+  useGetBookingsByUserIdQuery,
+} from '@/redux/features/booking/bookingApi';
 import { IBooking } from '@/types/booking.interface';
+import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 export default function BookedRooms() {
   // ===== Get current user from Redux store =====
@@ -24,6 +29,21 @@ export default function BookedRooms() {
   const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(
     user?._id ?? '',
   );
+
+  //===== Camcel booking req by RoomId via RTK Query============
+
+  const [cnacelBooking] = useCancelBookingMutation();
+
+  //=============booking cancelel =================
+
+  const cancelBookingHandeller = async (roomId: string) => {
+    try {
+      await cnacelBooking(roomId);
+    } catch (error) {
+      console.log(error);
+      toast.error('Error cancel booking');
+    }
+  };
 
   // ===== Loading state UI =====
   if (isLoading) {
@@ -36,9 +56,6 @@ export default function BookedRooms() {
       </div>
     );
   }
-
-  // ===== Handle fetch error or unsuccessful response =====
-  if (!bookingData.success) return <div>Error loading bookings</div>;
 
   return (
     <div className="space-y-6">
@@ -57,21 +74,22 @@ export default function BookedRooms() {
         <CardContent>
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader>
-                <TableRow className="bg-[#2a2d38] text-foreground">
-                  <TableHead>Room Title</TableHead>
-                  <TableHead>Room Count</TableHead>
-                  <TableHead>Check-in</TableHead>
-                  <TableHead>Check-out</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
+              <TableHeader className="bg-[#2a2d38] text-white">
+                <TableRow>
+                  <TableHead className="text-white">Room Title</TableHead>
+                  <TableHead className="text-white">Room Count</TableHead>
+                  <TableHead className="text-white">Check-in</TableHead>
+                  <TableHead className="text-white">Check-out</TableHead>
+                  <TableHead className="text-white">Amount</TableHead>
+                  <TableHead className="text-white">Status</TableHead>
+                  <TableHead className="text-white">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {bookingData.data.map((booking: IBooking) => (
                   <TableRow
                     key={booking._id}
-                    className="border-slate-700  text-foreground"
+                    className="border hover:bg-slate-800/40 transition text-foreground"
                   >
                     {/* ===== Comma separated room titles ===== */}
                     <TableCell>
@@ -118,6 +136,20 @@ export default function BookedRooms() {
                       >
                         {booking.bookingStatus}
                       </Badge>
+                    </TableCell>
+                    {/* ==== cancel button============= */}
+                    <TableCell>
+                      <Button
+                        variant="outline"
+                        onClick={() => cancelBookingHandeller(booking._id)}
+                        disabled={
+                          booking.bookingStatus === 'cancelled' ||
+                          booking.bookingStatus === 'pending' ||
+                          booking.bookingStatus === 'failed'
+                        }
+                      >
+                        Cancel
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

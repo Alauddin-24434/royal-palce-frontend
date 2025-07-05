@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-
 import {
   Star,
   MessageCircle,
@@ -40,14 +39,10 @@ interface RoomReviewsSectionProps {
 }
 
 const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const user = useSelector(selectCurrentUser);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [showWriteReview, setShowWriteReview] = useState(false);
-  const [newReview, setNewReview] = useState({
-    rating: 5,
-    text: '',
-  });
+  const [newReview, setNewReview] = useState({ rating: 5, text: '' });
 
   const { data, refetch } = useFindTestimonialsByRoomIdQuery(roomId);
   const reviewsData: Review[] = data?.data || [];
@@ -57,7 +52,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
 
   const submitReviewHandler = async () => {
     if (!newReview.text || !newReview.rating || !roomId) {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
       return;
     }
 
@@ -72,15 +67,12 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
         reviewDate: new Date().toISOString(),
       };
 
-      console.log(payload);
-
       await createTestimonial(payload).unwrap();
       setNewReview({ rating: 5, text: '' });
       setShowWriteReview(false);
       refetch();
     } catch (error) {
-      console.error('Review submission failed:', error);
-      alert('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -95,11 +87,11 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
   };
 
   return (
-    <section className="relative py-20">
+    <section className="relative py-20 overflow-x-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-20 w-32 h-32 border border-amber-400 rotate-45"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 border border-amber-400 rotate-12"></div>
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-20 left-20 w-32 h-32 border border-amber-400 rotate-45" />
+        <div className="absolute bottom-20 right-20 w-24 h-24 border border-amber-400 rotate-12" />
         <Sparkles className="absolute top-16 right-16 w-12 h-12 text-amber-400/20 animate-pulse" />
         <Crown className="absolute bottom-32 left-32 w-16 h-16 text-amber-400/15 animate-float" />
       </div>
@@ -107,58 +99,70 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-8">
-            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
+          <div className="flex items-center justify-center mb-8 flex-wrap gap-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32" />
             <div className="flex items-center">
-              <MessageCircle className="w-6 h-6 text-[#bf9310] mr-3" />
+              <MessageCircle className="w-5 h-5 text-[#bf9310] mr-2" />
               <h2 className="text-[#bf9310] text-sm font-medium tracking-[0.2em] uppercase">
                 Guest Reviews
               </h2>
-              <MessageCircle className="w-6 h-6 text-[#bf9310] ml-3" />
+              <MessageCircle className="w-5 h-5 text-[#bf9310] ml-2" />
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6"></div>
+            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32" />
           </div>
         </div>
 
-        {/* Filter */}
-        <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
-          <div className="flex items-center gap-4">
+        {/* Filter Section */}
+        {/* Filter Section */}
+        <div className="flex flex-wrap items-center justify-between mb-8 gap-4 rounded-lg px-4 py-4 shadow-sm">
+          {/* Left - Filter by rating */}
+          <div className="flex items-center gap-4 flex-wrap">
             <Filter className="w-5 h-5 text-amber-400" />
-            <span className="text-slate-400">Filter by rating:</span>
-            <div className="flex gap-2">
+            <span className="text-foreground">Filter by rating:</span>
+            <div className="flex gap-2 flex-wrap">
               <Button
                 variant={selectedRating === null ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setSelectedRating(null)}
                 className={
                   selectedRating === null
-                    ? 'bg-amber-400 text-slate-900'
-                    : 'border-slate-600 text-slate-400'
+                    ? 'bg-amber-400 text-foreground'
+                    : ' text-foreground'
                 }
               >
                 All
               </Button>
-              {[5, 4, 3, 2, 1].map((rating) => (
-                <Button
-                  key={rating}
-                  variant={selectedRating === rating ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedRating(rating)}
-                  className={
-                    selectedRating === rating
-                      ? 'bg-amber-400 text-slate-900'
-                      : 'border-slate-600 text-slate-400'
-                  }
-                >
-                  {rating} ⭐
-                </Button>
-              ))}
+              {[5, 4, 3, 2, 1].map((rating) => {
+                const bgColors: Record<number, string> = {
+                  5: 'bg-green-500',
+                  4: 'bg-emerald-500',
+                  3: 'bg-yellow-500',
+                  2: 'bg-orange-500',
+                  1: 'bg-red-500',
+                };
+
+                return (
+                  <Button
+                    key={rating}
+                    size="sm"
+                    onClick={() => setSelectedRating(rating)}
+                    className={`${
+                      selectedRating === rating
+                        ? `${bgColors[rating]} text-white`
+                        : 'border border-slate-600 text-foreground bg-transparent'
+                    }`}
+                  >
+                    {rating} ⭐
+                  </Button>
+                );
+              })}
             </div>
           </div>
 
+          {/* Right - Write Review Button */}
           <Button
             onClick={() => setShowWriteReview(!showWriteReview)}
-            className="bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 hover:from-amber-500 hover:to-amber-700"
+            className="cursor-pointer bg-[#bf9310] hover:bg-amber-500 text-foreground"
           >
             <MessageCircle className="w-4 h-4 mr-2" />
             Write Review
@@ -167,14 +171,13 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
 
         {/* Write Review Form */}
         {showWriteReview && (
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700 mb-8">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-semibold text-white mb-6">
+          <Card className="bg-main backdrop-blur-sm border mb-8">
+            <CardContent className="p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-6">
                 Share Your Experience
               </h3>
-
               <div>
-                <label className="block text-slate-400 mb-2">Rating</label>
+                <label className="block text-foreground mb-2">Rating</label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((rating) => (
                     <button
@@ -183,18 +186,20 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                       className="p-1"
                     >
                       <Star
-                        className={`w-8 h-8 ${
+                        className={`w-7 h-7 sm:w-8 sm:h-8 ${
                           rating <= newReview.rating
                             ? 'text-amber-400 fill-amber-400'
-                            : 'text-slate-600'
+                            : 'text-foreground'
                         }`}
                       />
                     </button>
                   ))}
                 </div>
               </div>
-              <div>
-                <label className="block text-slate-400 mb-2">Your Review</label>
+              <div className="mt-4">
+                <label className="block text-foreground mb-2">
+                  Your Review
+                </label>
                 <Textarea
                   value={newReview.text}
                   onChange={(e) =>
@@ -202,21 +207,21 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                   }
                   placeholder="Share your experience with this room..."
                   rows={4}
-                  className="bg-slate-700/50 my-6 border-slate-600 text-white"
+                  className="bg-main my-4 border text-foreground"
                 />
               </div>
               <div className="flex gap-4">
                 <Button
                   onClick={submitReviewHandler}
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-amber-400 cursor-pointer to-amber-600 text-slate-900"
+                  className="bg-[#bf9310] hover:bg-amber-400 text-foreground"
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Review'}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowWriteReview(false)}
-                  className="border-slate-600 text-slate-400"
+                  className="border-slate-600 text-foreground"
                 >
                   Cancel
                 </Button>
@@ -225,7 +230,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
           </Card>
         )}
 
-        {/* Review Cards */}
+        {/* Review List */}
         <div className="space-y-6">
           {reviewsData
             .filter((review) =>
@@ -234,28 +239,26 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
             .map((review) => (
               <Card
                 key={review._id}
-                className="bg-slate-800/40 border border-slate-700 backdrop-blur-md"
+                className="bg-main border backdrop-blur-md"
               >
-                <CardContent className="p-6">
-                  <div className="flex gap-4 items-start">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row gap-4 items-start">
                     <Image
                       src={review.userImage || '/placeholder.svg'}
                       alt={review.userName}
                       width={60}
                       height={60}
-                      className="rounded-full object-cover"
+                      className="rounded-full object-cover w-12 h-12 sm:w-14 sm:h-14"
                     />
                     <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-white text-lg font-semibold">
+                      <div className="flex justify-between items-center">
+                        <h4 className="text-foreground text-base sm:text-lg font-semibold">
                           {review.userName}
                         </h4>
-
-                        {/* 🔥 Show Delete icon only if user is owner */}
                         {user?._id === review.userId && (
                           <button
                             onClick={() => handleDeleteReview(review._id)}
-                            className="text-red-500 cursor-pointer hover:text-red-600"
+                            className="text-red-500 hover:text-red-600"
                             title="Delete review"
                           >
                             <Trash className="w-5 h-5" />
@@ -270,15 +273,15 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                             className={`w-4 h-4 ${
                               star <= review.rating
                                 ? 'text-amber-400 fill-amber-400'
-                                : 'text-slate-600'
+                                : 'text-foreground'
                             }`}
                           />
                         ))}
                       </div>
-                      <p className="text-slate-300 mt-2 leading-relaxed">
+                      <p className="text-foreground mt-2 leading-relaxed">
                         {review.reviewText}
                       </p>
-                      <p className="text-sm text-slate-500 mt-2">
+                      <p className="text-sm text-foreground mt-2 flex items-center">
                         <Calendar className="inline w-4 h-4 mr-1" />
                         {new Date(review.reviewDate).toLocaleDateString()}
                       </p>

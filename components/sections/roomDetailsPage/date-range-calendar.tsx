@@ -121,18 +121,18 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8  md:px-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Calendar Selection */}
-      <Card className="bg-[#191a1e] hidden sm:block">
+      <Card className="bg-main hidden sm:block">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-foreground flex items-center gap-2">
             <CalendarDays className="w-5 h-5 text-[#bf9310]" />
             Select Your Dates
           </CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="h-64 flex items-center justify-center text-slate-400">
+            <div className="h-64 flex items-center justify-center text-foreground">
               Loading available dates...
             </div>
           ) : (
@@ -172,19 +172,19 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
         />
 
         {selectedRange.from && (
-          <p className="mt-2 text-sm text-white">
+          <p className="mt-2 text-sm text-foreground">
             Selected date: {format(selectedRange.from, 'PPP')}
           </p>
         )}
       </div>
 
       {/* Booking Summary */}
-      <Card className="bg-[#191a1e] flex flex-col h-full">
+      <Card className="bg-main flex flex-col h-full">
         <CardHeader className="flex flex-col md:flex-row items-center justify-between">
-          <CardTitle className="text-white">Summary</CardTitle>
+          <CardTitle className="text-foreground">Summary</CardTitle>
           <p className="text-sm text-center text-slate-300 flex justify-center items-center gap-2">
             <Moon className="text-[#bf9310]" />{' '}
-            <span className="text-white font-semibold">
+            <span className="text-foreground font-semibold">
               {numberOfNights} night{numberOfNights > 1 ? 's' : ''}
             </span>
           </p>
@@ -196,19 +196,19 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-slate-400 text-sm">Check-in</label>
-                    <div className="p-3 bg-slate-700/30 rounded-lg text-white">
+                    <label className="text-foreground text-sm">Check-in</label>
+                    <div className="p-3 bg-slate-700/30 rounded-lg text-foreground">
                       {format(selectedRange.from, 'MMM dd, yyyy')}
-                      <div className="text-slate-400 text-xs flex items-center gap-1">
+                      <div className="text-foreground text-xs flex items-center gap-1">
                         <Clock className="w-3 h-3" /> 3:00 PM
                       </div>
                     </div>
                   </div>
                   <div>
-                    <label className="text-slate-400 text-sm">Check-out</label>
-                    <div className="p-3 bg-slate-700/30 rounded-lg text-white">
+                    <label className="text-foreground text-sm">Check-out</label>
+                    <div className="p-3 bg-slate-700/30 rounded-lg text-foreground">
                       {format(selectedRange.to, 'MMM dd, yyyy')}
-                      <div className="text-slate-400 text-xs flex items-center gap-1">
+                      <div className="text-foreground text-xs flex items-center gap-1">
                         <Clock className="w-3 h-3" /> 11:00 AM
                       </div>
                     </div>
@@ -220,14 +220,14 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
               <div className="flex flex-col sm:flex-row gap-3 pt-6">
                 <Button
                   onClick={handleBookNow}
-                  className="flex-1 bg-[#bf9310]  text-white hover:bg-[#a87e0d] cursor-pointer"
+                  className="flex-1 bg-[#bf9310]  text-foreground hover:bg-[#a87e0d] cursor-pointer"
                 >
                   Book Now
                 </Button>
                 <Button
                   onClick={handleAddToCart}
                   variant="outline"
-                  className="flex-1 text-white border-slate-600 bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer"
+                  className="flex-1 text-foreground border-slate-600 bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer"
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   Add to Cart
@@ -237,7 +237,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
           ) : (
             <div className="text-center py-8 flex-1 flex flex-col justify-center">
               <CalendarDays className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">
+              <p className="text-foreground">
                 Select your check-in and check-out dates to see pricing
               </p>
             </div>
