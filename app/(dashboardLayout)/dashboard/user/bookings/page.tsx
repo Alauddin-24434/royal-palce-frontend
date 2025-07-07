@@ -21,7 +21,7 @@ import { IBooking } from '@/types/booking.interface';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 
-export default function BookedRooms() {
+export default function UserBookings() {
   // ===== Get current user from Redux store =====
   const user = useSelector(selectCurrentUser);
 

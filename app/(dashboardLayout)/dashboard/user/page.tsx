@@ -4,12 +4,14 @@ import React, { JSX } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Bed, Calendar, DollarSign } from 'lucide-react';
+import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
+import { IBooking } from '@/types/booking.interface';
 
-type GuestDashboardProps = {
-  stats: any[];
-  bookings: any[];
-  pastBookings: any[];
-};
+export interface IStat {
+  title: string;
+  value: number;
+  icon: string;
+}
 
 const iconMap: Record<string, JSX.Element> = {
   Bed: <Bed className="h-8 w-8 text-foreground" />,
@@ -17,23 +19,39 @@ const iconMap: Record<string, JSX.Element> = {
   DollarSign: <DollarSign className="h-8 w-8 text-foreground" />,
 };
 
-export default function GuestDashboard({
-  stats,
-  bookings,
-  pastBookings,
-}: GuestDashboardProps) {
+export default function GuestDashboard() {
+  const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading ...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = dashboardData?.stats ?? [];
+  const bookings = dashboardData?.bookings ?? [];
+  const pastBookings = dashboardData?.pastBookings ?? [];
+
   return (
     <div className="space-y-8 px-4 py-6">
       {/* Header */}
-      <div>
-        <h2 className="text-3xl font-bold text-foreground mb-1">
-          Guest Dashboard
-        </h2>
-      </div>
+      <h2 className="text-3xl font-bold text-foreground mb-1">
+        Guest Dashboard
+      </h2>
 
       {/* === Stat Cards === */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {stats.map((stat, index) => {
+        {stats.map((stat: IStat, index: number) => {
           let bgColor = '';
           if (stat.title === 'Upcoming Booking Room') bgColor = 'bg-green-500';
           else if (stat.title === 'Past Booking') bgColor = 'bg-red-500';
@@ -60,7 +78,7 @@ export default function GuestDashboard({
       </div>
 
       {/* === Recent Bookings === */}
-      <Card className="bbg-main border border-slate-700 shadow-md">
+      <Card className="bg-main border border-slate-700 shadow-md">
         <CardHeader>
           <CardTitle className="text-foreground">
             Your Recent Bookings
@@ -83,7 +101,7 @@ export default function GuestDashboard({
                 </tr>
               </thead>
               <tbody>
-                {bookings.map((booking: any) => (
+                {bookings.map((booking: IBooking) => (
                   <tr
                     key={booking._id}
                     className="border hover:bg-slate-800/40 transition"
@@ -148,7 +166,7 @@ export default function GuestDashboard({
                 </tr>
               </thead>
               <tbody>
-                {pastBookings.map((booking: any) => (
+                {pastBookings.map((booking: IBooking) => (
                   <tr
                     key={booking._id}
                     className="border-b border-slate-700 hover:bg-slate-800/40 transition"

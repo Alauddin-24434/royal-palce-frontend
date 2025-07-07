@@ -6,7 +6,7 @@ const teamMembers = [
   {
     name: 'Alexander Windsor',
     role: 'General Manager',
-    image: '/gn-maneger.avif',
+    image: '/images/gn-maneger.avif',
     description:
       'Leading our royal hospitality with 15 years of luxury hotel experience',
     specialty: 'Executive Leadership',
@@ -14,7 +14,7 @@ const teamMembers = [
   {
     name: 'Isabella Rosewood',
     role: 'Head Receptionist',
-    image: '/hd-recep.jpg',
+    image: '/images/hd-recep.jpg',
     description:
       'Your first point of contact, ensuring every guest feels like royalty',
     specialty: 'Guest Relations',
@@ -23,7 +23,7 @@ const teamMembers = [
   {
     name: 'Sophia Blackwood',
     role: 'Room Service Manager',
-    image: '/rm-service.webp',
+    image: '/images/rm-service.webp',
     description: 'Delivering exceptional in-room dining experiences 24/7',
     specialty: 'Premium Service',
   },
@@ -31,7 +31,7 @@ const teamMembers = [
   {
     name: 'Victoria Ashford',
     role: 'Housekeeping Supervisor',
-    image: '/housekeeping_supervisor.jpg',
+    image: '/images/housekeeping_supervisor.jpg',
     description: 'Maintaining the highest standards of cleanliness and comfort',
     specialty: 'Attention to Detail',
   },

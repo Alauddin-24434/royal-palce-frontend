@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { differenceInDays } from 'date-fns';
-import { Bed, Crown, Check, Award, ShoppingCart } from 'lucide-react';
+import { Bed, Check, Award, ShoppingCart } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -20,7 +20,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
-import PrivateRoute from '@/components/PrivateRoute';
 
 export default function RoyalCheckoutPage() {
   const user = useSelector(selectCurrentUser);

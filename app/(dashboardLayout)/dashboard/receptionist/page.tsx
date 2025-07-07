@@ -4,18 +4,17 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Users, Bed } from 'lucide-react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  BarChart,
-  XAxis,
-  YAxis,
-  Bar,
-} from 'recharts';
+import { Cell, Tooltip, Legend, BarChart, XAxis, YAxis, Bar } from 'recharts';
+import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
+import { IBooking } from '@/types/booking.interface';
 
+interface IStatCardData {
+  title: string;
+  value: number | string;
+  change: string;
+  color: string;
+  icon: keyof typeof iconMap;
+}
 // Icon mapping
 const iconMap: any = {
   Calendar: <Calendar className="h-6 w-6" />,
@@ -26,18 +25,31 @@ const iconMap: any = {
 // Reusable pie colors
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
-type ReceptionistDashboardProps = {
-  stats: any[];
-  bookings: any[];
-};
+export default function ReceptionistDashboard() {
+  const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
-export default function ReceptionistDashboard({
-  stats,
-  bookings,
-}: ReceptionistDashboardProps) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading ...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = dashboardData?.stats ?? [];
+  const bookings = dashboardData?.bookings ?? [];
+
   const statusCount: Record<string, number> = {};
 
-  bookings.forEach((booking) => {
+  bookings.forEach((booking: IBooking) => {
     const status = booking.bookingStatus || 'unknown';
     statusCount[status] = (statusCount[status] || 0) + 1;
   });
@@ -57,7 +69,7 @@ export default function ReceptionistDashboard({
 
       {/* === Stat Cards === */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {stats.map((stat, index) => (
+        {stats.map((stat: IStatCardData, index: number) => (
           <Card key={index} className="bg-main  backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-foreground">

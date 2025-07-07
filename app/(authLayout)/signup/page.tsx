@@ -2,19 +2,12 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 import { useSignUpUserMutation } from '@/redux/features/auth/authApi';
 import { useAppDispatch } from '@/redux/hooks';
@@ -42,7 +35,6 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<SignupFormData>();
 
-  // === Handle form submission ===
   const onSubmit = async (data: SignupFormData) => {
     try {
       const response = await signup(data).unwrap();
@@ -57,20 +49,17 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      {/* === Subtle background image overlay === */}
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      {/* === Shared Background Image Overlay === */}
       <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-10" />
 
       <div className="relative w-full max-w-md">
-        {/* === Signup Card === */}
-        <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-main rounded-2xl p-8 shadow-2xl">
           {/* === Heading === */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Join Our Resort
-            </h1>
-            <p className="text-slate-300">
-              Create your account to experience luxury
+            <h1 className="text-3xl font-bold title mb-2">Create Account</h1>
+            <p className="text-foreground">
+              Start your luxurious journey today
             </p>
           </div>
 
@@ -78,7 +67,7 @@ export default function SignupPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* === Full Name === */}
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-slate-200 font-medium">
+              <Label htmlFor="name" className="text-foreground font-medium">
                 Full Name
               </Label>
               <Input
@@ -86,7 +75,7 @@ export default function SignupPage() {
                 type="text"
                 {...register('name', { required: 'Name is required' })}
                 placeholder="Enter your full name"
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                className="bg-background border-slate-600 text-foreground placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.name && (
                 <p className="text-red-400 text-sm">{errors.name.message}</p>
@@ -95,7 +84,7 @@ export default function SignupPage() {
 
             {/* === Email === */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-200 font-medium">
+              <Label htmlFor="email" className="text-foreground font-medium">
                 Email Address
               </Label>
               <Input
@@ -109,7 +98,7 @@ export default function SignupPage() {
                   },
                 })}
                 placeholder="Enter your email"
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                className="bg-background border-slate-600 text-foreground placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.email && (
                 <p className="text-red-400 text-sm">{errors.email.message}</p>
@@ -118,7 +107,7 @@ export default function SignupPage() {
 
             {/* === Password === */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-200 font-medium">
+              <Label htmlFor="password" className="text-foreground font-medium">
                 Password
               </Label>
               <Input
@@ -132,7 +121,7 @@ export default function SignupPage() {
                   },
                 })}
                 placeholder="Create a strong password"
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                className="bg-background border-slate-600 text-foreground placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.password && (
                 <p className="text-red-400 text-sm">
@@ -141,9 +130,9 @@ export default function SignupPage() {
               )}
             </div>
 
-            {/* === Phone Number === */}
+            {/* === Phone (optional) === */}
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-slate-200 font-medium">
+              <Label htmlFor="phone" className="text-foreground font-medium">
                 Phone Number (Optional)
               </Label>
               <Input
@@ -151,7 +140,7 @@ export default function SignupPage() {
                 type="tel"
                 {...register('phone')}
                 placeholder="Enter your phone number"
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                className="bg-background border-slate-600 text-foreground placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
             </div>
 
@@ -159,7 +148,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50"
+              className="w-full bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50"
             >
               {isLoading ? 'Creating Account...' : 'Create Account'}
             </Button>
@@ -167,11 +156,11 @@ export default function SignupPage() {
 
           {/* === Redirect to Login === */}
           <div className="text-center mt-6">
-            <p className="text-slate-300">
+            <p className="text-foreground">
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="text-orange-400 hover:text-orange-300 font-medium transition-colors"
+                className="title hover:text-yellow-500 font-medium  transition-colors"
               >
                 Sign in here
               </Link>

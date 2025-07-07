@@ -39,7 +39,7 @@ export interface Payment {
   createdAt: string;
 }
 
-export default function Payments() {
+export default function ReceptionistPaymentsPage() {
   // ===== State variables =====
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('all');

@@ -53,24 +53,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen  flex items-center justify-center p-4">
       {/* === Background image overlay === */}
       <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-10" />
 
       <div className="relative w-full max-w-md">
         {/* === Login Card === */}
-        <div className="bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-main rounded-2xl p-8 shadow-2xl">
           {/* === Header === */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-slate-300">Sign in to your resort account</p>
+            <h1 className="text-3xl font-bold title mb-2">Welcome Back</h1>
+            <p className="text-foreground">Sign in to your resort account</p>
           </div>
 
           {/* === Login Form === */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* === Email Input === */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-200 font-medium">
+              <Label htmlFor="email" className="text-foreground font-medium">
                 Email Address
               </Label>
               <Input
@@ -84,7 +84,7 @@ export default function LoginPage() {
                     message: 'Invalid email address',
                   },
                 })}
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                className="bg-background border-slate-600 text-foreground placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.email && (
                 <p className="text-red-400 text-sm">{errors.email.message}</p>
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
             {/* === Password Input === */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-200 font-medium">
+              <Label htmlFor="password" className="text-foreground font-medium">
                 Password
               </Label>
               <Input
@@ -107,7 +107,7 @@ export default function LoginPage() {
                     message: 'Minimum 6 characters required',
                   },
                 })}
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
+                className="bg-background border-slate-600 text-foreground placeholder:text-slate-400 focus:border-orange-500 focus:ring-orange-500/20"
               />
               {errors.password && (
                 <p className="text-red-400 text-sm">
@@ -120,7 +120,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50"
+              className="w-full bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50"
             >
               {isLoading ? 'Loading...' : 'Sign In'}
             </Button>
@@ -128,11 +128,11 @@ export default function LoginPage() {
 
           {/* === Signup Redirect Link === */}
           <div className="text-center mt-6">
-            <p className="text-slate-300">
+            <p className="text-foreground">
               Don't have an account?{' '}
               <Link
                 href="/signup"
-                className="text-orange-400 hover:text-orange-300 font-medium transition-colors"
+                className="title hover:text-yellow-500 font-medium transition-colors"
               >
                 Create one now
               </Link>

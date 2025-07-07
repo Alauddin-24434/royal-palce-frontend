@@ -4,8 +4,30 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 
-export default function AdminDashboard({ stats, bookings }: any) {
+export default function AdminDashboard() {
+  const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-[#bf9310] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#bf9310] font-semibold text-lg">Loading ...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = dashboardData?.stats ?? [];
+  const bookings = dashboardData?.bookings ?? [];
+
   return (
     <div className="space-y-6">
       <div>

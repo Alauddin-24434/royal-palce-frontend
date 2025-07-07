@@ -24,7 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
-const ProfilePage = () => {
+const UserProfile = () => {
   const userInfo = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
@@ -322,4 +322,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default UserProfile;

@@ -8,7 +8,7 @@ export function useLogout() {
 
   const logoutUser = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/logout`, {
+      await fetch('/api/logout', {
         method: 'POST',
         credentials: 'include',
       });

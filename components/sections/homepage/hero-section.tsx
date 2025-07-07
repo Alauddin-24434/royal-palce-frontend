@@ -33,7 +33,7 @@ const HeroSection = () => {
     <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden p-4">
       {/*============== Background image with dark overlay=================== */}
       <Image
-        src="/Hero-Banner.webp"
+        src="/images/Hero-Banner.webp"
         alt="Luxury Resort"
         fill
         className="object-cover"

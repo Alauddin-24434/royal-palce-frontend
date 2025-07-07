@@ -1,6 +1,5 @@
-import { AppSidebar } from '@/components/dashboardUi/app-sidebar';
-import { DashboardHeader } from '@/components/dashboardUi/dashboard-header';
-import PrivateRoute from '@/components/PrivateRoute';
+import { AppSidebar } from '@/components/dashboard/dashboard-sidebar';
+import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 const layout = ({ children }: { children: React.ReactNode }) => {

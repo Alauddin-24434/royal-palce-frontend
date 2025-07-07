@@ -42,7 +42,7 @@ const TestimonialsSection = () => {
       {/* Background Image */}
       <div className="absolute h-[70vh] inset-0">
         <Image
-          src="/08d793fa28a68cda.jpg"
+          src="/images/08d793fa28a68cda.jpg"
           alt="Luxury resort sunset view"
           fill
           className="object-cover"

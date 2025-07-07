@@ -16,7 +16,7 @@ import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 
 import { useGetPaymentsByUserIdQuery } from '@/redux/features/payment/paymentApi';
 
-export default function PaymentsUser() {
+export default function UserPayments() {
   const user = useSelector(selectCurrentUser);
 
   const { data: paymentsData, isLoading } = useGetPaymentsByUserIdQuery(

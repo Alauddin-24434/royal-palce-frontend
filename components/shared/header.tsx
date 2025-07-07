@@ -40,7 +40,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-main sticky top-0 z-50 shadow-lg border">
+    <header className="bg-main sticky top-0 z-50 shadow-lg border-b">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo */}
@@ -108,7 +108,7 @@ export function Header() {
             </button>
 
             {/* User dropdown (hidden on small) */}
-            <div className="hidden md:block">
+            <div>
               <DropdownMenuInNav onClick={logout} />
             </div>
 

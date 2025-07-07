@@ -47,7 +47,7 @@ interface Booking {
 
 // ===== Component =====
 
-export default function BookingsPage() {
+export default function ReceptionistBookingsPage() {
   // ===== State variables =====
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
