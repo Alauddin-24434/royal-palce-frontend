@@ -39,10 +39,10 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await login(data).unwrap();
-      const { accessToken, user } = response.data;
+      const { user } = response.data;
 
       // === Save user and token to Redux store ===
-      dispatch(setUser({ user, token: accessToken }));
+      dispatch(setUser(user));
 
       // === Reset form and navigate ===
       reset();

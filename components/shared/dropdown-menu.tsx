@@ -27,7 +27,7 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
             {/* Name and Role */}
-            <div className="">
+            <div>
               <div className="flex flex-col ">
                 <span className="text-sm font-medium text-foreground">
                   {user?.name || 'User Name'}

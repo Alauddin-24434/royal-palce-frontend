@@ -47,7 +47,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
   const { data, refetch } = useFindTestimonialsByRoomIdQuery(roomId);
   const reviewsData: Review[] = data?.data || [];
   const [deleteTestimonial] = useDeleteTestimonialMutation();
-  const [createTestimonial, { isLoading: isSubmitting }] =
+  const [createTestimonial, { isLoading: isSubmitting, error }] =
     useCreateTestimonialMutation();
 
   const submitReviewHandler = async () => {
@@ -71,8 +71,16 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
       setNewReview({ rating: 5, text: '' });
       setShowWriteReview(false);
       refetch();
-    } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+    } catch (error: any) {
+      const status = error?.status;
+      const message =
+        error?.data?.message || 'Something went wrong. Please try again.';
+
+      if (status === 403) {
+        toast.error(message);
+      } else {
+        toast.error(message);
+      }
     }
   };
 
@@ -258,10 +266,11 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                         {user?._id === review.userId && (
                           <button
                             onClick={() => handleDeleteReview(review._id)}
-                            className="text-red-500 hover:text-red-600"
                             title="Delete review"
+                            className="px-4 py-2 border border-red-500 text-red-500 rounded-md 
+             hover:bg-red-500 hover:text-white transition-colors duration-300"
                           >
-                            <Trash className="w-5 h-5" />
+                            Delete
                           </button>
                         )}
                       </div>

@@ -4,7 +4,10 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated } from '@/redux/features/auth/authSlice';
+import {
+  selectCurrentUser,
+  selectIsAuthenticated,
+} from '@/redux/features/auth/authSlice';
 
 export default function PrivateRoute({
   children,
@@ -15,17 +18,17 @@ export default function PrivateRoute({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-
+  const user = useSelector(selectCurrentUser);
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!user) {
       // Login page এ redirect কর, সাথে redirect করার জন্য current path query হিসেবে পাঠাও
       router.replace(
         `/login?redirect=${pathname}${searchParams ? `?${searchParams.toString()}` : ''}`,
       );
     }
-  }, [isAuthenticated, pathname, searchParams, router]);
+  }, [user, pathname, searchParams, router]);
 
-  if (!isAuthenticated) {
+  if (!user) {
     // ইউজার লগিন না থাকলে কিছু দেখাবে না বা loading spinner দিতে পারো
     return null;
   }

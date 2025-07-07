@@ -10,21 +10,18 @@ export const useSocket = () => {
 
   useEffect(() => {
     if (user && !socketRef.current) {
-      const socket = io(process.env.NEXT_PUBLIC_API_BASE_URL, {
+      const socket = io(process.env.NEXT_PUBLIC_API_BASE_URL as string, {
         withCredentials: true,
-        transports: ['websocket'],
+        transports: ['websocket', 'polling'],
         query: {
           userId: user._id,
           role: user.role,
         },
       });
 
-      // socket.on('connect', () => {
-      //   console.log('✅ Socket connected:', socket.id);
-      // });
-
-      // socket.on('connect_error', (err) => {
-      //   console.error('❌ Socket connection error:', err);
+      // Optional: Add listeners here
+      // socket.on("notification", (data) => {
+      //   console.log("Notification received", data);
       // });
 
       socketRef.current = socket;

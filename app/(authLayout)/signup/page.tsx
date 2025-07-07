@@ -46,9 +46,9 @@ export default function SignupPage() {
   const onSubmit = async (data: SignupFormData) => {
     try {
       const response = await signup(data).unwrap();
-      const { accessToken, user } = response?.data;
+      const { user } = response?.data;
 
-      dispatch(setUser({ user, token: accessToken }));
+      dispatch(setUser(user));
       reset();
       router.replace(redirect);
     } catch (err: any) {

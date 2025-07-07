@@ -4,22 +4,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { Crown, Sun, Moon, Bell } from 'lucide-react';
-
-import { useDispatch } from 'react-redux';
-import { logout } from '@/redux/features/auth/authSlice';
 import { DropdownMenuInNav } from './dropdown-menu';
 import { useTheme } from 'next-themes';
 import { NotificationDropdown } from './NotificationDropdown';
 import { useNotificationStore } from '@/zustand/useNotificationStore';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLogout } from '@/hooks/useLogout';
 
 export function Header() {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const unreadCount = useNotificationStore((state) => state.unreadCount);
 
-  const dispatch = useDispatch();
+  const logout = useLogout();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,12 +26,8 @@ export function Header() {
     { name: 'Rooms & Suites', href: '/rooms' },
     { name: 'Amenities', href: '/amenities' },
     { name: 'Checkout', href: '/checkout' },
+    { name: 'Cart', href: '/cart' },
   ];
-
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push('/');
-  };
 
   const { theme, setTheme } = useTheme();
 
@@ -115,7 +109,7 @@ export function Header() {
 
             {/* User dropdown (hidden on small) */}
             <div className="hidden md:block">
-              <DropdownMenuInNav onClick={handleLogout} />
+              <DropdownMenuInNav onClick={logout} />
             </div>
 
             {/* Hamburger menu (only small screens) */}

@@ -13,7 +13,7 @@ import {
 } from '@/redux/features/cart/cartSlice';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 
-import { Bed, ShoppingCart, Trash2 } from 'lucide-react';
+import { ShoppingCart, Trash2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';

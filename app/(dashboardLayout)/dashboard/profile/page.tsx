@@ -61,8 +61,8 @@ const ProfilePage = () => {
         id: userInfo._id,
         body: editedUser,
       }).unwrap();
-      const { accessToken, user } = result.data;
-      dispatch(setUser({ user, token: accessToken }));
+      const { user } = result.data;
+      dispatch(setUser(user));
       setIsEditing(false);
     } catch (err) {
       console.error('Error updating user info:', err);
@@ -81,8 +81,8 @@ const ProfilePage = () => {
         id: userInfo._id,
         body: formData,
       }).unwrap();
-      const { accessToken, user } = result.data;
-      dispatch(setUser({ user, token: accessToken }));
+      const { user } = result.data;
+      dispatch(setUser(user));
       setProfileImage(null);
       setPreviewImage(null);
     } catch (err) {

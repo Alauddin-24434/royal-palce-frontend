@@ -1,9 +1,9 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   Sidebar,
@@ -41,7 +41,8 @@ import {
   Crown,
 } from 'lucide-react';
 
-import { logout, selectCurrentUser } from '@/redux/features/auth/authSlice';
+import { selectCurrentUser } from '@/redux/features/auth/authSlice';
+import { useLogout } from '@/hooks/useLogout';
 
 const menuItems = [
   {
@@ -98,8 +99,7 @@ const menuItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const dispatch = useDispatch();
-  const router = useRouter();
+
   const user = useSelector(selectCurrentUser);
 
   const role =
@@ -111,15 +111,11 @@ export function AppSidebar() {
 
   const [currentRole] = useState<'admin' | 'receptionist' | 'guest'>(role);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push('/');
-  };
-
   const filteredMenuItems = menuItems.filter((item) =>
     item.roles.includes(currentRole),
   );
 
+  const logout = useLogout();
   return (
     <Sidebar className="border-r bg-main">
       <SidebarHeader className="border-b  p-4">
@@ -200,7 +196,7 @@ export function AppSidebar() {
             </Link>
             <DropdownMenuSeparator className="" />
             <DropdownMenuItem
-              onClick={handleLogout}
+              onClick={logout}
               className=" text-red-400 cursor-pointer"
             >
               <LogOut className="mr-2 h-4 w-4 text-foreground" />

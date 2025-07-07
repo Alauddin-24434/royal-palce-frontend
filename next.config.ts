@@ -2,11 +2,20 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['res.cloudinary.com'], // your external image domains
+    domains: ['res.cloudinary.com'],
   },
 
   eslint: {
-    ignoreDuringBuilds: true, // <-- this disables ESLint errors during build
+    ignoreDuringBuilds: true,
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/:path*`,
+      },
+    ];
   },
 };
 

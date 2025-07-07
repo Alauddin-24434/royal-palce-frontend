@@ -1,19 +1,14 @@
-// src/redux/api/baseApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
-import { updateToken, logout } from '../features/auth/authSlice';
+import { logout } from '../features/auth/authSlice';
 
 const mutex = new Mutex();
-// https://royal-place-server.vercel.app
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`,
-  credentials: 'include',
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as any).auth.token;
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-      // console.log('🔐 Sending access token:', token);
-    }
+  baseUrl: '/api',
+  credentials: 'include', // Required to send HttpOnly cookies
+  prepareHeaders: (headers) => {
+    // Since the token is not accessible from client JS, do not add token to headers
     return headers;
   },
 });
@@ -28,35 +23,27 @@ const baseQueryWithReauth: typeof baseQuery = async (
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    // console.warn('⚠️ Access token expired, trying refresh...');
-
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
       try {
+        // Try to get a new Access Token using the Refresh Token
         const refreshResult = await baseQuery(
           { url: '/users/refresh-token', method: 'POST' },
           api,
           extraOptions,
         );
 
-        // console.log('🔄 Refresh token response:', refreshResult);
-
-        const newToken =
-          (refreshResult.data as any)?.accessToken ||
-          (refreshResult.data as any)?.data?.accessToken;
-
-        if (newToken) {
-          console.log('✅ Got new access token:', newToken);
-
-          // শুধু token আপডেট করো, user আগের মতো থাকবে
-          api.dispatch(updateToken(newToken));
-
-          // Retry original request with new token
-          result = await baseQuery(args, api, extraOptions);
-        } else {
-          // console.warn('⛔ Failed to refresh token, logging out');
+        if (refreshResult?.error) {
+          // If refresh token is invalid, log out the user
           api.dispatch(logout());
+          release();
+          return refreshResult;
         }
+
+        // New Access Token is set as HttpOnly cookie by the server, no need to update client state
+
+        // Retry the original request with new token (cookie will be sent automatically)
+        result = await baseQuery(args, api, extraOptions);
       } finally {
         release();
       }
