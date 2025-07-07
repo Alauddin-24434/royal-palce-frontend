@@ -6,10 +6,10 @@
 
 - **User Authentication & Role Management**
 - **Room Booking System**
-- **Stripe Payment Integration**
-- **Hotel Amenities & Services**
+- **Aamarpay Payment Integration**
+- **Hotel Amenities**
 - **Customer Testimonials**
-- **Refund & Cancellation Prediction Endpoint**
+- **Cancellation Prediction Endpoint**
 
 ---
 
@@ -55,6 +55,12 @@ pnpm install
 pnpm run dev
 # or
 npm run dev
+```
+
+.env
+```bash
+NEXT_PUBLIC_API_BASE_URL=your backednd url add hare
+JWT_SECRET=your jwtsecrect add hare but must be same as backend and clint same sercet 
 ```
 
 ### Production
