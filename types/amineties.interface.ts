@@ -6,7 +6,6 @@ export interface IAmineties {
   pricePerDay: number;
   isServiceFree: boolean;
   isActive: boolean;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  __v: number;
+  createdAt: string;
+  updatedAt: string;
 }

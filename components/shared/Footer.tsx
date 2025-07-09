@@ -10,12 +10,19 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
+//==== === Footer Component: Site footer with logo, links, services, and contact info === ===//
 const Footer = () => {
+  // Dummy click handler placeholder
+  const handleClick = (label: string) => {
+    console.log(`Clicked: ${label}`);
+    // TODO: Implement navigation or action
+  };
+
   return (
     <footer className="bg-main shadow-2xl sticky top-0 z-50 py-12 border-t border-b border-gray-800">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-          {/* Logo & Description */}
+          {/*==== === Logo & Description Section === ===*/}
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <Crown className="h-8 w-8 text-[#bf9310]" />
@@ -28,39 +35,27 @@ const Footer = () => {
               destination where every moment becomes a treasured memory.
             </p>
             <div className="flex space-x-4">
-              {/* Social Icons */}
-              <a
-                href="#"
-                className="w-10 h-10 border border-bg-main rounded-full flex items-center justify-center transition-colors cursor-pointer group shadow-md"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5 text-foreground group-hover:text-[#bf9310]" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-bg-main rounded-full flex items-center justify-center transition-colors cursor-pointer group shadow-md"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5 text-foreground group-hover:text-[#bf9310]" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-bg-main rounded-full flex items-center justify-center transition-colors cursor-pointer group shadow-md"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5 text-foreground group-hover:text-[#bf9310]" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-bg-main rounded-full flex items-center justify-center transition-colors cursor-pointer group shadow-md"
-                aria-label="YouTube"
-              >
-                <Youtube className="w-5 h-5 text-foreground group-hover:text-[#bf9310]" />
-              </a>
+              {/*==== === Social Media Buttons === ===*/}
+              {[
+                { Icon: Facebook, label: 'Facebook' },
+                { Icon: Twitter, label: 'Twitter' },
+                { Icon: Instagram, label: 'Instagram' },
+                { Icon: Youtube, label: 'YouTube' },
+              ].map(({ Icon, label }) => (
+                <button
+                  key={label}
+                  onClick={() => handleClick(label)}
+                  aria-label={label}
+                  className="w-10 h-10 border border-bg-main rounded-full flex items-center justify-center transition-colors cursor-pointer group shadow-md"
+                  type="button"
+                >
+                  <Icon className="w-5 h-5 text-foreground group-hover:text-[#bf9310]" />
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/*==== === Quick Links Section === ===*/}
           <div>
             <h3 className="font-bold mb-6 text-lg text-foreground">
               Quick Links
@@ -75,18 +70,21 @@ const Footer = () => {
                 'Contact Us',
               ].map((link) => (
                 <li key={link}>
-                  <a
-                    href="#"
-                    className="hover:text-[#bf9310] transition-colors"
+                  <button
+                    onClick={() => handleClick(link)}
+                    className="hover:text-[#bf9310] transition-colors text-left w-full"
+                    type="button"
+                    role="link"
+                    tabIndex={0}
                   >
                     {link}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Resort Services */}
+          {/*==== === Resort Services Section === ===*/}
           <div>
             <h3 className="font-bold mb-6 text-lg text-foreground">
               Resort Services
@@ -101,18 +99,21 @@ const Footer = () => {
                 'Airport Transfer',
               ].map((service) => (
                 <li key={service}>
-                  <a
-                    href="#"
-                    className="hover:text-[#bf9310] transition-colors"
+                  <button
+                    onClick={() => handleClick(service)}
+                    className="hover:text-[#bf9310] transition-colors text-left w-full"
+                    type="button"
+                    role="link"
+                    tabIndex={0}
                   >
                     {service}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Information */}
+          {/*==== === Contact Information Section === ===*/}
           <div>
             <h3 className="font-bold mb-6 text-lg text-foreground">
               Contact Information
@@ -145,7 +146,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/*==== === Bottom Bar Section === ===*/}
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-foreground space-y-4 md:space-y-0">
             <p className="text-sm text-center md:text-left">
@@ -155,13 +156,16 @@ const Footer = () => {
             <div className="flex flex-wrap justify-center md:justify-start gap-6">
               {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(
                 (policy) => (
-                  <a
+                  <button
                     key={policy}
-                    href="#"
+                    onClick={() => handleClick(policy)}
                     className="hover:text-[#bf9310] transition-colors text-sm"
+                    type="button"
+                    role="link"
+                    tabIndex={0}
                   >
                     {policy}
-                  </a>
+                  </button>
                 ),
               )}
             </div>

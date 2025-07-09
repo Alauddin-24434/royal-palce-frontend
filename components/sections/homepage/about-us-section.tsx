@@ -6,7 +6,7 @@ const AboutUsSection = () => {
     <section className="bg-main text-white py-20 p-4 relative overflow-hidden">
       <div className="container mx-auto relative z-10">
         <div className="mb-20">
-          {/* Title Decoration */}
+          {/*=============================== Title Decoration ======================*/}
           <div className="flex items-center justify-center mb-8">
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
             <div className="flex items-center">
@@ -19,7 +19,7 @@ const AboutUsSection = () => {
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6"></div>
           </div>
 
-          {/* Main Heading with one consistent color and smaller size */}
+          {/*=========================== Main Heading with one consistent color and smaller size =========================*/}
           <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             Where Royal Heritage Meets
             <br />
@@ -27,7 +27,7 @@ const AboutUsSection = () => {
           </h1>
         </div>
 
-        {/* Main Content Section */}
+        {/*====================================== Main Content Section ========================================*/}
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Video/Image Section */}
           <div className="relative">
@@ -41,7 +41,7 @@ const AboutUsSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
             </div>
 
-            {/* Floating Award Badge */}
+            {/* ==============================Floating Award Badge =======================*/}
             <div className="absolute -bottom-6 -right-6 bg-[#bf9310] p-4 rounded-2xl shadow-2xl">
               <Award className="w-8 h-8 text-slate-900" />
               <div className="text-slate-900 font-bold text-sm mt-1">
@@ -50,9 +50,9 @@ const AboutUsSection = () => {
             </div>
           </div>
 
-          {/* Content Section */}
+          {/* ========================================Content Section =================================*/}
           <div>
-            {/* Royal Statistics */}
+            {/* ========================Royal Statistics ====================*/}
             <div className="grid grid-cols-3 gap-8 mb-10">
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-light text-[#bf9310] mb-2">
@@ -80,7 +80,7 @@ const AboutUsSection = () => {
               </div>
             </div>
 
-            {/* Royal Description */}
+            {/* =======================================Royal Description =================================*/}
             <div className="space-y-6 mb-10">
               <p className="text-foreground leading-relaxed text-base md:text-lg">
                 Nestled in the heart of the city, our Royal Palace Hotel stands
@@ -99,7 +99,7 @@ const AboutUsSection = () => {
               </p>
             </div>
 
-            {/* Royal Features */}
+            {/* =========================================Royal Features ==========================================*/}
             <div className="flex flex-wrap gap-4 mb-10">
               <div className="flex items-center bg-main px-4 py-2 rounded-full border border-slate-700">
                 <Users className="w-4 h-4 text-[#bf9310] mr-2" />

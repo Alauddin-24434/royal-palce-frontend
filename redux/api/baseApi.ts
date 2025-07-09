@@ -2,31 +2,37 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
 import { logout } from '../features/auth/authSlice';
 
+//==== === Create a mutex to handle concurrent refresh token requests === ===//
 const mutex = new Mutex();
 
+//==== === Base query with default config === ===//
 const baseQuery = fetchBaseQuery({
   baseUrl: '/api',
-  credentials: 'include', // Required to send HttpOnly cookies
+  credentials: 'include', // Send HttpOnly cookies with every request
   prepareHeaders: (headers) => {
-    // Since the token is not accessible from client JS, do not add token to headers
+    // Token is not manually set; handled via cookies
     return headers;
   },
 });
 
+//==== === Wrapper to handle re-authentication on 401 errors === ===//
 const baseQueryWithReauth: typeof baseQuery = async (
   args,
   api,
   extraOptions,
 ) => {
+  //==== === Wait if another refresh request is in progress === ===//
   await mutex.waitForUnlock();
 
+  //==== === Perform the original request === ===//
   let result = await baseQuery(args, api, extraOptions);
 
+  //==== === If unauthorized, try refreshing the token === ===//
   if (result?.error?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
       try {
-        // Try to get a new Access Token using the Refresh Token
+        //==== === Attempt to refresh access token === ===//
         const refreshResult = await baseQuery(
           { url: '/users/refresh-token', method: 'POST' },
           api,
@@ -34,20 +40,19 @@ const baseQueryWithReauth: typeof baseQuery = async (
         );
 
         if (refreshResult?.error) {
-          // If refresh token is invalid, log out the user
+          //==== === Refresh failed, force logout === ===//
           api.dispatch(logout());
           release();
           return refreshResult;
         }
 
-        // New Access Token is set as HttpOnly cookie by the server, no need to update client state
-
-        // Retry the original request with new token (cookie will be sent automatically)
+        //==== === Retry the original request after refresh === ===//
         result = await baseQuery(args, api, extraOptions);
       } finally {
         release();
       }
     } else {
+      //==== === Wait for refresh to complete, then retry === ===//
       await mutex.waitForUnlock();
       result = await baseQuery(args, api, extraOptions);
     }
@@ -56,6 +61,7 @@ const baseQueryWithReauth: typeof baseQuery = async (
   return result;
 };
 
+//==== === Create RTK Query API with tags and custom base query === ===//
 const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseQueryWithReauth,
@@ -68,7 +74,7 @@ const baseApi = createApi({
     'Payment',
     'Service',
   ],
-  endpoints: () => ({}),
+  endpoints: () => ({}), // Define endpoints in feature-specific APIs
 });
 
 export default baseApi;

@@ -12,6 +12,7 @@ import { useNotificationStore } from '@/zustand/useNotificationStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLogout } from '@/hooks/useLogout';
 
+// ==== === Header Component: Site header with logo, nav links, theme toggle, notifications, user menu, and mobile menu === === //
 export function Header() {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,6 +22,7 @@ export function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Navigation links
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Rooms & Suites', href: '/rooms' },
@@ -31,10 +33,12 @@ export function Header() {
 
   const { theme, setTheme } = useTheme();
 
+  // Toggle light/dark theme
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // Toggle notification dropdown visibility
   const toggleNotification = () => {
     setIsNotificationOpen((prev) => !prev);
   };
@@ -43,7 +47,7 @@ export function Header() {
     <header className="bg-main sticky top-0 z-50 shadow-lg border-b">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Left: Logo */}
+          {/* ==== === Left: Logo section === === */}
           <Link href="/" className="flex items-center">
             <Crown className="h-5 w-5 title mr-2" />
             <span className="font-bold title text-sm lg:text-base hidden md:block">
@@ -51,7 +55,7 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Center: Navigation (hidden on small) */}
+          {/* ==== === Center: Desktop navigation links (hidden on small screens) === === */}
           <nav className="hidden md:flex space-x-10">
             {navigation.map((item) => (
               <Link
@@ -68,9 +72,9 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right: Icons + Hamburger + User menu */}
+          {/* ==== === Right: Icons (notifications, theme), user menu, and hamburger menu === === */}
           <div className="flex items-center space-x-4">
-            {/* Notification Bell */}
+            {/* Notification Bell button */}
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -94,7 +98,7 @@ export function Header() {
               />
             )}
 
-            {/* Theme Toggle (hidden on small) */}
+            {/* Theme toggle button (hidden on small screens) */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle Dark Mode"
@@ -107,12 +111,12 @@ export function Header() {
               )}
             </button>
 
-            {/* User dropdown (hidden on small) */}
+            {/* User dropdown menu */}
             <div>
               <DropdownMenuInNav onClick={logout} />
             </div>
 
-            {/* Hamburger menu (only small screens) */}
+            {/* Hamburger menu button (visible only on small screens) */}
             <button
               className="md:hidden p-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-title transition"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -137,7 +141,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu dropdown with animation */}
+      {/* ==== === Mobile menu dropdown with smooth animation === === */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

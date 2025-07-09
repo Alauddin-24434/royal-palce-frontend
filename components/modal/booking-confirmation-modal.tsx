@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import {
   Dialog,
@@ -10,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CheckCircle, User, Mail, Phone } from 'lucide-react';
-
+//===========================booking confirmation booking model =====================================
 interface BookingConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,6 +25,7 @@ interface BookingConfirmationModalProps {
   } | null;
 }
 
+// === BookingConfirmationModal: Modal dialog to confirm booking with guest info form and submit action ===
 export default function BookingConfirmationModal({
   isOpen,
   onClose,
@@ -37,6 +39,7 @@ export default function BookingConfirmationModal({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  //=========================================== Handle booking confirmation API call==========================
   const handleConfirmBooking = async () => {
     if (!bookingDetails) return;
 
@@ -86,7 +89,7 @@ export default function BookingConfirmationModal({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Booking Summary */}
+          {/* =========================================Booking Summary================================== */}
           <div className="p-4 bg-slate-700/30 rounded-lg space-y-2">
             <div className="flex justify-between">
               <span className="text-slate-300">Check-in:</span>
@@ -110,8 +113,9 @@ export default function BookingConfirmationModal({
             </div>
           </div>
 
-          {/* Guest Information Form */}
+          {/* ============================================Guest Information Form============================= */}
           <div className="space-y-4">
+            {/* Name */}
             <div className="space-y-2">
               <Label className="text-slate-200 flex items-center gap-2">
                 <User className="w-4 h-4" />
@@ -128,6 +132,7 @@ export default function BookingConfirmationModal({
               />
             </div>
 
+            {/* ==================================Email =====================================*/}
             <div className="space-y-2">
               <Label className="text-slate-200 flex items-center gap-2">
                 <Mail className="w-4 h-4" />
@@ -145,6 +150,7 @@ export default function BookingConfirmationModal({
               />
             </div>
 
+            {/* =====================================Phone ==========================*/}
             <div className="space-y-2">
               <Label className="text-slate-200 flex items-center gap-2">
                 <Phone className="w-4 h-4" />
@@ -162,6 +168,7 @@ export default function BookingConfirmationModal({
               />
             </div>
 
+            {/*==================================== Special Requests ======================================*/}
             <div className="space-y-2">
               <Label className="text-slate-200">
                 Special Requests (Optional)
@@ -181,7 +188,7 @@ export default function BookingConfirmationModal({
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/*============================ Action Buttons ======================*/}
           <div className="flex gap-3">
             <Button
               onClick={onClose}

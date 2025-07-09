@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+//==== === Notification Type === ===//
 type Notification = {
   id: string;
   message: string;
@@ -7,6 +8,7 @@ type Notification = {
   isRead?: boolean;
 };
 
+//==== === Notification Store Interface === ===//
 interface NotificationStore {
   notifications: Notification[];
   unreadCount: number;
@@ -16,10 +18,12 @@ interface NotificationStore {
   clearAllNotifications: () => void;
 }
 
+//==== === Zustand Notification Store === ===//
 export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
   unreadCount: 0,
 
+  //==== === Add Notification === ===//
   addNotification: (noti) =>
     set((state) => {
       const newNotifications = [
@@ -32,6 +36,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       };
     }),
 
+  //==== === Remove Notification by ID === ===//
   removeNotification: (id) =>
     set((state) => {
       const newNotifications = state.notifications.filter((n) => n.id !== id);
@@ -41,6 +46,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       };
     }),
 
+  //==== === Mark Notification as Read === ===//
   markAsRead: (id) =>
     set((state) => {
       const newNotifications = state.notifications.map((n) =>
@@ -52,5 +58,6 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       };
     }),
 
+  //==== === Clear All Notifications === ===//
   clearAllNotifications: () => set({ notifications: [], unreadCount: 0 }),
 }));

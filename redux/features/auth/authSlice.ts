@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 
-// User interface
+//====================== User interface=================
 export interface User {
   _id: string;
   name: string;
@@ -11,7 +11,7 @@ export interface User {
   role: string;
 }
 
-// Auth state interface
+//======================== Auth state interface====================
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -19,7 +19,7 @@ interface AuthState {
   error: string | null;
 }
 
-// Initial state
+// =============================Initial state===========================
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
@@ -27,7 +27,7 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Slice
+// ============================auth Slice========================
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -36,20 +36,20 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    // Login / Set user only
+    // =================Login / Set user only===================
     setUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
       state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
     },
-    // On auth failure
+    //================= On auth failure=================
     authFailure(state, action: PayloadAction<string>) {
       state.error = action.payload;
       state.loading = false;
       state.isAuthenticated = false;
     },
-    // Logout
+    //================= Logout=========================
     logout(state) {
       state.user = null;
       state.isAuthenticated = false;
@@ -59,10 +59,9 @@ const authSlice = createSlice({
   },
 });
 
-// Actions export
 export const { authStart, setUser, authFailure, logout } = authSlice.actions;
 
-// Selectors
+// ========================Selectors===========================
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const selectIsAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated;

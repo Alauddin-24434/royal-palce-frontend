@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '../ui/dialog'; // Adjust your imports as per your setup
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import {
@@ -38,7 +38,7 @@ interface RoomFormModalProps {
   room?: IRoom;
 }
 
-// ✅ Zod schema for validation
+// ==============Zod schema for validation========================
 const roomSchema = z.object({
   roomNumber: z.string().min(1),
   floor: z.number().min(1),
@@ -143,7 +143,7 @@ export default function RoomFormModal({
     );
   };
 
-  // ✅ Image upload
+  // ✅ ============Image upload===========
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
@@ -167,6 +167,7 @@ export default function RoomFormModal({
       setImageFiles(files);
     }
   };
+  //======================== submit form====================
 
   const handleSubmitRoom = async (data: RoomFormData) => {
     try {
@@ -232,7 +233,7 @@ export default function RoomFormModal({
           className="space-y-6 py-4"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Room Number */}
+            {/* ===================Room Number =========================*/}
             <div className="space-y-2">
               <Label>Room Number*</Label>
               <Input {...register('roomNumber')} className="bg-slate-700" />
@@ -243,7 +244,7 @@ export default function RoomFormModal({
               )}
             </div>
 
-            {/* Floor */}
+            {/*=============================== Floor=========================== */}
             <div className="space-y-2">
               <Label>Floor*</Label>
               <Input
@@ -256,13 +257,13 @@ export default function RoomFormModal({
               )}
             </div>
 
-            {/* Title */}
+            {/* ==================================Title =========================*/}
             <div className="space-y-2">
               <Label>Room Title</Label>
               <Input {...register('title')} className="bg-slate-700" />
             </div>
 
-            {/* Type */}
+            {/* ====================================Type ===============================*/}
             <div className="space-y-2">
               <Label>Room Type*</Label>
               <Controller
@@ -285,7 +286,7 @@ export default function RoomFormModal({
               />
             </div>
 
-            {/* Price */}
+            {/* ==================================Price ======================*/}
             <div className="space-y-2">
               <Label> Base Price ($)*</Label>
               <Input
@@ -299,7 +300,7 @@ export default function RoomFormModal({
             </div>
           </div>
 
-          {/* Description */}
+          {/* ==============================Description =======================*/}
           <div className="space-y-2">
             <Label>Description</Label>
             <textarea
@@ -308,7 +309,7 @@ export default function RoomFormModal({
             />
           </div>
 
-          {/* Features */}
+          {/* =====================================Features=========================== */}
           <div className="space-y-2">
             <Label>Features</Label>
             <div className="flex gap-2">
@@ -326,7 +327,7 @@ export default function RoomFormModal({
               </Button>
             </div>
             <div className="flex items-center gap-4">
-              {/* Bed Type */}
+              {/* ==============================Bed Type ==============================*/}
               <div className="w-1/2 space-y-2">
                 <Label>Bed Type*</Label>
                 <select
@@ -345,7 +346,7 @@ export default function RoomFormModal({
                 )}
               </div>
 
-              {/* Bed Count */}
+              {/* =========================Bed Count ==========================*/}
               <div className="w-1/2 space-y-2">
                 <Label>Bed Count*</Label>
                 <Input
@@ -372,7 +373,7 @@ export default function RoomFormModal({
               ))}
             </div>
           </div>
-          {/* Adults */}
+          {/* ==========================================Adults ================================*/}
           <div className="w-1/2 space-y-2">
             <Label>Adults*</Label>
             <Input
@@ -386,7 +387,7 @@ export default function RoomFormModal({
             )}
           </div>
 
-          {/* Children */}
+          {/* ==============================================Children============================== */}
           <div className="w-1/2 space-y-2">
             <Label>Children</Label>
             <Input
@@ -400,7 +401,7 @@ export default function RoomFormModal({
             )}
           </div>
 
-          {/* Images */}
+          {/* ==============================Images ==================================*/}
           <div className="space-y-2">
             <Label>Room Images</Label>
             <Input
@@ -457,7 +458,7 @@ export default function RoomFormModal({
         containerClassName=""
         containerStyle={{}}
         toastOptions={{
-          // Define default options
+          //==================================== Define default options=====================
           className: '',
           duration: 5000,
           removeDelay: 1000,
@@ -466,7 +467,7 @@ export default function RoomFormModal({
             color: '#fff',
           },
 
-          // Default options for specific types
+          // =======================Default options for specific types==================================
           success: {
             duration: 3000,
             iconTheme: {

@@ -8,7 +8,7 @@ const encodeSecret = new TextEncoder().encode(process.env.JWT_SECRET || '');
 const roleBasedRoutes: { [key: string]: string[] } = {
   '/dashboard/admin': ['admin'],
   '/dashboard/receptionist': ['receptionist', 'admin'],
-  '/dashboard/user': ['guest', 'user', 'admin', 'receptionist'],
+  '/dashboard/user': ['gues'],
   // আরও route চাইলে এখানে যোগ করো
 };
 
@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
       const { payload } = await jwtVerify(token, encodeSecret);
       decoded = payload;
     } catch (err) {
-      console.warn('❌ JWT verify failed:', err);
+      console.warn('JWT verify failed:', err);
     }
   }
 
@@ -59,7 +59,7 @@ export async function middleware(request: NextRequest) {
       if (pathname.startsWith(routePrefix)) {
         const allowedRoles = roleBasedRoutes[routePrefix];
         if (!allowedRoles.includes(userRole)) {
-          // 🚫 Unauthorized access
+          //  Unauthorized access
           return NextResponse.redirect(new URL('/unauthorized', request.url));
         }
         break;

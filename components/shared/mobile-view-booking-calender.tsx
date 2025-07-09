@@ -15,7 +15,8 @@ import {
 } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export type DateRange = {
+//============================== date ranage type=====================
+type DateRange = {
   from?: Date;
   to?: Date;
 };
@@ -26,6 +27,7 @@ interface CustomCalendarProps {
   onSelectDate: (date: Date) => void;
 }
 
+// ==== === CustomCalendar Component: Calendar UI with month navigation, booked dates disabling, range selection highlighting === === //
 export default function CustomCalendar({
   bookedDates,
   selectedRange,
@@ -33,6 +35,7 @@ export default function CustomCalendar({
 }: CustomCalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
+  // =======================================Check if date is booked by comparing with bookedDates array (format: 'yyyy-MM-dd')===============================
   const isDateBooked = (date: Date) => {
     if (!isValid(date)) return false;
     const formatted = format(date, 'yyyy-MM-dd');
@@ -43,6 +46,7 @@ export default function CustomCalendar({
   const monthEnd = endOfMonth(currentMonth);
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
+  // =======================================Check if date is inside the selected range (inclusive)============================
   const isInRange = (date: Date) => {
     if (!selectedRange.from || !selectedRange.to) return false;
     return (
@@ -54,15 +58,18 @@ export default function CustomCalendar({
 
   const today = new Date();
 
+  //================================= Handlers for previous and next month navigation===========================
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
 
+  // ================================Disable past dates and booked dates==============================
   const disabled = (date: Date) =>
     isBefore(date, new Date(today.setHours(0, 0, 0, 0))) || isDateBooked(date);
 
   return (
     <div className="">
-      <div className="flex justify-between  items-center mb-3 text-foreground  pb-2">
+      {/*====================================== Month navigation header =======================================*/}
+      <div className="flex justify-between items-center mb-3 text-foreground pb-2">
         <button
           aria-label="Previous month"
           onClick={prevMonth}
@@ -84,6 +91,7 @@ export default function CustomCalendar({
         </button>
       </div>
 
+      {/*====================================== Weekday labels================================= */}
       <div className="grid grid-cols-7 gap-1 text-xs text-foreground select-none border-b border-slate-700 pb-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div key={day} className="text-center font-medium ">
@@ -92,14 +100,16 @@ export default function CustomCalendar({
         ))}
       </div>
 
+      {/* Calendar days grid */}
       <div className="grid grid-cols-7 gap-1 mt-1 ml-6">
-        {/* Empty cells before month start */}
+        {/* ==============================Empty cells before the first day of the month ====================*/}
         {Array(monthStart.getDay())
           .fill(null)
           .map((_, i) => (
             <div key={`empty-${i}`} />
           ))}
 
+        {/*================================= Render each day button ==========================*/}
         {days.map((date) => {
           const isDisabled = disabled(date);
           const isSelected =
@@ -138,6 +148,7 @@ export default function CustomCalendar({
         })}
       </div>
 
+      {/* =========================Legend for colors======================== */}
       <div className="mt-4 flex gap-4 text-sm text-foreground">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-[#bf9310] rounded" />

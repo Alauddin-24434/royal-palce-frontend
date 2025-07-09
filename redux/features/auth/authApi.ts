@@ -1,9 +1,10 @@
-// redux/api/authApi.ts
+//==== === redux/api/authApi.ts === ===//
 import baseApi from '@/redux/api/baseApi';
 
+//==== === Inject auth-related endpoints into baseApi === ===//
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // ✅ Signup endpoint
+    //==== === Signup user === ===//
     signUpUser: build.mutation({
       query: (body) => ({
         url: '/users/signup',
@@ -12,17 +13,16 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // ✅ Login endpoint
+    //==== === Login user === ===//
     loginUser: build.mutation({
       query: (body) => ({
         url: '/users/login',
         method: 'POST',
-
         body,
       }),
     }),
 
-    // ✅ Get current logged-in user
+    //==== === Get current logged-in user info === ===//
     getMe: build.query({
       query: () => ({
         url: '/users',
@@ -31,7 +31,7 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ['User'],
     }),
 
-    // ✅ Get all users (admin only)
+    //==== === Get all users (admin access) === ===//
     getAllUsers: build.query({
       query: () => ({
         url: '/users',
@@ -40,7 +40,7 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ['User'],
     }),
 
-    // ✅ Get single user by ID
+    //==== === Get a single user by ID === ===//
     getSingleUser: build.query({
       query: (id: string) => ({
         url: `/users/${id}`,
@@ -48,7 +48,8 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ['User'],
     }),
-    // update user by patch
+
+    //==== === Update a user (partial update with PATCH) === ===//
     updateUser: build.mutation({
       query: ({ id, body }) => ({
         url: `/users/${id}`,
@@ -60,6 +61,7 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
+//==== === Export auto-generated hooks === ===//
 export const {
   useSignUpUserMutation,
   useLoginUserMutation,
