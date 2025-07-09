@@ -1,7 +1,7 @@
 'use client';
 
 import { Bed } from 'lucide-react';
-import RoomImageGallery from '@/components/room-details-top-section';
+import RoomImageGallery from '@/components/sections/roomDetailsPage/room-details-top-section';
 import DateRangeCalendar from '@/components/sections/roomDetailsPage/date-range-calendar';
 import RoomReviewsSection from '@/components/sections/roomDetailsPage/room-reviews-section';
 import { useFindSingleRoomQuery } from '@/redux/features/room/room.api';

@@ -10,12 +10,16 @@ import { addCartItem } from '@/redux/features/cart/cartSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
-import CustomCalendar, {
-  DateRange,
-} from '../../shared/mobile-view-booking-calender';
+import CustomCalendar from '@/components/sections/roomDetailsPage/mobile-view-booking-calender';
 import toast, { Toaster } from 'react-hot-toast';
 import { useGetBookedDatesQuery } from '@/redux/features/booking/bookingApi';
 import SimpleCalendar from './simpleCalendar';
+
+
+type DateRange = {
+  from?: Date;
+  to?: Date;
+};
 
 // Room interface
 interface Room {
