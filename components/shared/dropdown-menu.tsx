@@ -65,16 +65,6 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
               <AvatarImage src={user?.image} alt="userImage" />
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
-            <div>
-              <div className="flex flex-col ">
-                <span className="text-sm font-medium text-foreground">
-                  {user?.name || 'User Name'}
-                </span>
-                <span className="text-xs text-foreground">
-                  {user?.role || 'User Role'}
-                </span>
-              </div>
-            </div>
           </div>
         </DropdownMenuTrigger>
       )}
