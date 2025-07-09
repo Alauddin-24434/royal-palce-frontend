@@ -4,10 +4,8 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { CalendarDays } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 
 const HeroSection = () => {
-  const { t } = useTranslation('common');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [adults, setAdults] = useState(1);
@@ -15,13 +13,14 @@ const HeroSection = () => {
 
   const router = useRouter();
 
+  // Handles form submission with validation and redirects to room check page
   const handleSearch = () => {
     if (!checkIn || !checkOut) {
-      alert(t('hero.alertSelectDates'));
+      alert('Please select check-in and check-out dates.');
       return;
     }
     if (new Date(checkOut) <= new Date(checkIn)) {
-      alert(t('hero.alertCheckOutAfterCheckIn'));
+      alert('Check-out date must be after check-in date.');
       return;
     }
 
@@ -32,28 +31,29 @@ const HeroSection = () => {
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden p-4">
-      {/* Background image with dark overlay */}
+      {/*============== Background image with dark overlay=================== */}
       <Image
         src="/images/Hero-Banner.webp"
-        alt={t('hero.titleLine2')}
+        alt="Luxury Resort"
         fill
         className="object-cover"
         priority
       />
       <div className="absolute inset-0 bg-black/60" />
 
-      {/* Hero content */}
+      {/*============================= Hero content with title and description=================== */}
       <div className="relative z-10 max-w-5xl px-4">
         <h1 className="text-base sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-6">
-          {t('hero.titleLine1')}
+          Discover The Perfect
           <br />
-          <span className="title">{t('hero.titleLine2')}</span>
+          <span className="title">Blend of Luxury Resort</span>
         </h1>
         <p className="text-base sm:text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12">
-          {t('hero.description')}
+          Experience unparalleled luxury and comfort in our world-class resort
+          where every moment becomes a cherished memory.
         </p>
 
-        {/* Booking form */}
+        {/*=========================== Booking form section========================================== */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -61,10 +61,10 @@ const HeroSection = () => {
           }}
           className="backdrop-blur-sm border bg-background/50 p-6 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-foreground"
         >
-          {/* Check-in */}
+          {/* Check-in date input */}
           <div className="flex flex-col">
             <label htmlFor="checkIn" className="mb-1 font-semibold">
-              {t('hero.checkIn')}
+              Check-in
             </label>
             <input
               type="date"
@@ -76,10 +76,10 @@ const HeroSection = () => {
             />
           </div>
 
-          {/* Check-out */}
+          {/* Check-out date input */}
           <div className="flex flex-col">
             <label htmlFor="checkOut" className="mb-1 font-semibold">
-              {t('hero.checkOut')}
+              Check-out
             </label>
             <input
               type="date"
@@ -91,10 +91,10 @@ const HeroSection = () => {
             />
           </div>
 
-          {/* Adults */}
+          {/* Adults select input */}
           <div className="flex flex-col">
             <label htmlFor="adults" className="mb-1 font-semibold">
-              {t('hero.adults')}
+              Adults
             </label>
             <select
               id="adults"
@@ -110,10 +110,10 @@ const HeroSection = () => {
             </select>
           </div>
 
-          {/* Children */}
+          {/* Children select input */}
           <div className="flex flex-col">
             <label htmlFor="children" className="mb-1 font-semibold">
-              {t('hero.children')}
+              Children
             </label>
             <select
               id="children"
@@ -129,13 +129,13 @@ const HeroSection = () => {
             </select>
           </div>
 
-          {/* Submit button */}
+          {/*================================ Submit button for room availability ===============================*/}
           <button
             type="submit"
             className="sm:col-span-2 md:col-span-4 cursor-pointer bg-[#bf9310] text-foreground font-bold rounded-md py-3 mt-4 sm:mt-0 hover:bg-yellow-500 transition"
           >
             <CalendarDays className="inline-block mr-2 w-5 h-5" />
-            {t('hero.availableRooms')}
+            Available Rooms
           </button>
         </form>
       </div>
