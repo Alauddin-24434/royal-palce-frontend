@@ -1,3 +1,7 @@
+// ====================================================
+// 📅 CustomCalendar Component – Visual Calendar for Booking with Disabled Dates, Selection & Range
+// ====================================================
+
 'use client';
 
 import React from 'react';
@@ -15,38 +19,38 @@ import {
 } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-//============================== date ranage type=====================
+// ========== 🧾 Types ==========
 type DateRange = {
   from?: Date;
   to?: Date;
 };
 
 interface CustomCalendarProps {
-  bookedDates: string[];
+  bookedDates: string[]; // Expects array of formatted date strings: 'yyyy-MM-dd'
   selectedRange: DateRange;
   onSelectDate: (date: Date) => void;
 }
 
-// ==== === CustomCalendar Component: Calendar UI with month navigation, booked dates disabling, range selection highlighting === === //
-export default function CustomCalendar({
+// ========== 📆 CustomCalendar ==========
+export default function LargeScreenCalendar({
   bookedDates,
   selectedRange,
   onSelectDate,
 }: CustomCalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
-  // =======================================Check if date is booked by comparing with bookedDates array (format: 'yyyy-MM-dd')===============================
-  const isDateBooked = (date: Date) => {
-    if (!isValid(date)) return false;
-    const formatted = format(date, 'yyyy-MM-dd');
-    return bookedDates.includes(formatted);
-  };
-
+  const today = new Date();
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  // =======================================Check if date is inside the selected range (inclusive)============================
+  // ========== ❌ Is Date Booked ==========
+  const isDateBooked = (date: Date) => {
+    if (!isValid(date)) return false;
+    return bookedDates.includes(format(date, 'yyyy-MM-dd'));
+  };
+
+  // ========== 🟡 Is In Selected Range ==========
   const isInRange = (date: Date) => {
     if (!selectedRange.from || !selectedRange.to) return false;
     return (
@@ -56,19 +60,17 @@ export default function CustomCalendar({
     );
   };
 
-  const today = new Date();
-
-  //================================= Handlers for previous and next month navigation===========================
-  const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
-  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
-
-  // ================================Disable past dates and booked dates==============================
+  // ========== 🔒 Disable Logic ==========
   const disabled = (date: Date) =>
     isBefore(date, new Date(today.setHours(0, 0, 0, 0))) || isDateBooked(date);
 
+  // ========== ⬅️➡️ Month Navigation ==========
+  const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
+  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
+
   return (
-    <div className="">
-      {/*====================================== Month navigation header =======================================*/}
+    <div>
+      {/* ========== 📅 Header: Month Navigation ========== */}
       <div className="flex justify-between items-center mb-3 text-foreground pb-2">
         <button
           aria-label="Previous month"
@@ -91,25 +93,24 @@ export default function CustomCalendar({
         </button>
       </div>
 
-      {/*====================================== Weekday labels================================= */}
+      {/* ========== 🗓️ Weekday Headers ========== */}
       <div className="grid grid-cols-7 gap-1 text-xs text-foreground select-none border-b border-slate-700 pb-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="text-center font-medium ">
+          <div key={day} className="text-center font-medium">
             {day}
           </div>
         ))}
       </div>
 
-      {/* Calendar days grid */}
+      {/* ========== 📆 Calendar Days ========== */}
       <div className="grid grid-cols-7 gap-1 mt-1 ml-6">
-        {/* ==============================Empty cells before the first day of the month ====================*/}
+        {/* Empty start cells */}
         {Array(monthStart.getDay())
           .fill(null)
           .map((_, i) => (
             <div key={`empty-${i}`} />
           ))}
 
-        {/*================================= Render each day button ==========================*/}
         {days.map((date) => {
           const isDisabled = disabled(date);
           const isSelected =
@@ -125,11 +126,7 @@ export default function CustomCalendar({
               onClick={() => !isDisabled && onSelectDate(date)}
               disabled={isDisabled}
               aria-label={format(date, 'PPP')}
-              className={`
-                w-10 h-10 
-                flex items-center justify-center
-                text-sm
-                border border-slate-700
+              className={`w-10 h-10 flex items-center justify-center text-sm border 
                 ${
                   isDisabled
                     ? 'bg-red-600 text-foreground cursor-not-allowed border-red-700'
@@ -137,7 +134,7 @@ export default function CustomCalendar({
                       ? 'bg-[#bf9310] text-black font-bold border-yellow-400'
                       : inRange
                         ? 'bg-yellow-600 text-black border-yellow-300'
-                        : 'hover:bg-yellow-400 hover:text-black hover:cursor-pointer text-foreground border-slate-700'
+                        : 'hover:bg-yellow-400 hover:text-black text-foreground border-slate-700'
                 }
                 ${isToday ? 'border-2 border-slate-400' : ''}
               `}
@@ -148,7 +145,7 @@ export default function CustomCalendar({
         })}
       </div>
 
-      {/* =========================Legend for colors======================== */}
+      {/* ========== 🧾 Legend ========== */}
       <div className="mt-4 flex gap-4 text-sm text-foreground">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-[#bf9310] rounded" />

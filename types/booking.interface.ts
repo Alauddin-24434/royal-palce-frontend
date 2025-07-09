@@ -1,3 +1,4 @@
+import { IUser } from './auth.interface';
 import { IRoom } from './room.interface';
 
 interface BookingRoom {
@@ -11,7 +12,7 @@ type BookingStatus = 'pending' | 'booked' | 'cancelled' | string;
 
 export interface IBooking {
   _id: string;
-  userId: string;
+  userId: IUser;
   rooms: BookingRoom[];
   totalAmount: number;
   name: string;

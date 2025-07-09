@@ -1,3 +1,6 @@
+// ====================================================
+// 🧾 UserProfile Component - Editable Profile with Image Upload
+// ====================================================
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -25,20 +28,26 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
 const UserProfile = () => {
+  // ===== 🔹 Select current user info from redux store =====
   const userInfo = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
 
+  // ===== 🔹 Local state for editing, image upload, and edited fields =====
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  // RTK Query mutation for updating user info/image
   const [updateUser] = useUpdateUserMutation();
 
+  // Edited user data state
   const [editedUser, setEditedUser] = useState({
     name: userInfo?.name || '',
     phone: userInfo?.phone || '',
   });
 
+  // ===== 🔹 Clean up preview image URL on unmount or when changed =====
   useEffect(() => {
     return () => {
       if (previewImage) {
@@ -47,6 +56,7 @@ const UserProfile = () => {
     };
   }, [previewImage]);
 
+  // ===== 🔹 If no user info, show error =====
   if (!userInfo) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#1e1f25] text-red-400 text-xl">
@@ -55,12 +65,14 @@ const UserProfile = () => {
     );
   }
 
+  // ===== 🔹 Handle profile info update =====
   const handleInfoUpdate = async () => {
     try {
       const result = await updateUser({
         id: userInfo._id,
         body: editedUser,
       }).unwrap();
+
       const { user } = result.data;
       dispatch(setUser(user));
       setIsEditing(false);
@@ -69,6 +81,7 @@ const UserProfile = () => {
     }
   };
 
+  // ===== 🔹 Handle profile image upload =====
   const handleImageUpdate = async () => {
     if (!profileImage) return;
 
@@ -81,6 +94,7 @@ const UserProfile = () => {
         id: userInfo._id,
         body: formData,
       }).unwrap();
+
       const { user } = result.data;
       dispatch(setUser(user));
       setProfileImage(null);
@@ -92,6 +106,7 @@ const UserProfile = () => {
     }
   };
 
+  // ===== 🔹 Cancel editing and reset form to original user data =====
   const handleCancel = () => {
     setEditedUser({
       name: userInfo.name || '',
@@ -100,6 +115,7 @@ const UserProfile = () => {
     setIsEditing(false);
   };
 
+  // ===== 🔹 Map user role to badge style =====
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin':
@@ -114,6 +130,7 @@ const UserProfile = () => {
   return (
     <div className="min-h-screen px-4 py-6">
       <div className="max-w-5xl mx-auto">
+        {/* ===== 🔹 Profile Title ===== */}
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
             My Profile
@@ -121,7 +138,7 @@ const UserProfile = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Profile Image Section */}
+          {/* ===== 🔹 Profile Image Section ===== */}
           <div>
             <Card className="bg-main border">
               <CardContent className="p-6 flex flex-col items-center">
@@ -145,10 +162,12 @@ const UserProfile = () => {
                       asChild
                       size="sm"
                       className="absolute bottom-0 right-0 rounded-full w-9 h-9 bg-orange-500 hover:bg-orange-600"
+                      aria-label="Upload profile image"
                     >
                       <Camera className="w-4 h-4" />
                     </Button>
                   </label>
+
                   <input
                     id="image-upload"
                     type="file"
@@ -164,6 +183,7 @@ const UserProfile = () => {
                   />
                 </div>
 
+                {/* Upload button only visible when an image is selected */}
                 {profileImage && (
                   <Button
                     onClick={handleImageUpdate}
@@ -210,7 +230,7 @@ const UserProfile = () => {
             </Card>
           </div>
 
-          {/* Profile Info Form */}
+          {/* ===== 🔹 Profile Info Form Section ===== */}
           <div className="lg:col-span-2">
             <Card className="bg-main border">
               <CardHeader className="flex items-center justify-between">
@@ -252,7 +272,7 @@ const UserProfile = () => {
               </CardHeader>
 
               <CardContent className="space-y-6">
-                {/* Name Field */}
+                {/* Full Name Field */}
                 <div className="space-y-2">
                   <Label className="text-foreground font-medium">
                     Full Name
@@ -273,7 +293,7 @@ const UserProfile = () => {
                   )}
                 </div>
 
-                {/* Phone Field */}
+                {/* Phone Number Field */}
                 <div className="space-y-2">
                   <Label className="text-foreground font-medium">Phone</Label>
                   {isEditing ? (

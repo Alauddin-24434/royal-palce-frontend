@@ -1,10 +1,13 @@
-//==== === redux/api/authApi.ts === ===//
+// ====================================================
+// 🧾 Auth API Module - User Authentication & Management
+// ====================================================
+
 import baseApi from '@/redux/api/baseApi';
 
-//==== === Inject auth-related endpoints into baseApi === ===//
+// ===== 🔹 Inject auth-related endpoints into baseApi =====
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    //==== === Signup user === ===//
+    // ===== ✅ Signup user =====
     signUpUser: build.mutation({
       query: (body) => ({
         url: '/users/signup',
@@ -13,7 +16,7 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    //==== === Login user === ===//
+    // ===== ✅ Login user =====
     loginUser: build.mutation({
       query: (body) => ({
         url: '/users/login',
@@ -22,7 +25,7 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    //==== === Get current logged-in user info === ===//
+    // ===== ✅ Get current logged-in user info =====
     getMe: build.query({
       query: () => ({
         url: '/users',
@@ -31,16 +34,23 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ['User'],
     }),
 
-    //==== === Get all users (admin access) === ===//
-    getAllUsers: build.query({
-      query: () => ({
-        url: '/users',
-        method: 'GET',
-      }),
+    // ===== ✅ Get all users (admin access) with filters =====
+    getUsers: build.query({
+      query: (params) => {
+        const queryParams = new URLSearchParams();
+        if (params?.searchTerm)
+          queryParams.append('searchTerm', params.searchTerm);
+        if (params?.page) queryParams.append('page', params.page);
+        if (params?.limit) queryParams.append('limit', params.limit);
+        return {
+          url: `users/?${queryParams.toString()}`,
+          method: 'GET',
+        };
+      },
       providesTags: ['User'],
     }),
 
-    //==== === Get a single user by ID === ===//
+    // ===== ✅ Get a single user by ID =====
     getSingleUser: build.query({
       query: (id: string) => ({
         url: `/users/${id}`,
@@ -49,7 +59,7 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ['User'],
     }),
 
-    //==== === Update a user (partial update with PATCH) === ===//
+    // ===== ✅ Update a user (partial update with PATCH) =====
     updateUser: build.mutation({
       query: ({ id, body }) => ({
         url: `/users/${id}`,
@@ -61,12 +71,12 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-//==== === Export auto-generated hooks === ===//
+// =====  Export auto-generated hooks =====
 export const {
   useSignUpUserMutation,
   useLoginUserMutation,
   useGetMeQuery,
-  useGetAllUsersQuery,
+  useGetUsersQuery,
   useGetSingleUserQuery,
   useUpdateUserMutation,
 } = authApi;

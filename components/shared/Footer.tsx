@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 Footer Component - Site footer with logo, quick links, services & contact info
+// ====================================================
+
 import {
   Crown,
   Facebook,
@@ -10,19 +14,18 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-//==== === Footer Component: Site footer with logo, links, services, and contact info === ===//
 const Footer = () => {
-  // Dummy click handler placeholder
+  // ===== Dummy click handler for navigation or actions =====
   const handleClick = (label: string) => {
     console.log(`Clicked: ${label}`);
-    // TODO: Implement navigation or action
+    // TODO: Implement actual navigation or action here
   };
 
   return (
     <footer className="bg-main shadow-2xl sticky top-0 z-50 py-12 border-t border-b border-gray-800">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-          {/*==== === Logo & Description Section === ===*/}
+          {/* ===== Logo & Description Section ===== */}
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <Crown className="h-8 w-8 text-[#bf9310]" />
@@ -35,7 +38,6 @@ const Footer = () => {
               destination where every moment becomes a treasured memory.
             </p>
             <div className="flex space-x-4">
-              {/*==== === Social Media Buttons === ===*/}
               {[
                 { Icon: Facebook, label: 'Facebook' },
                 { Icon: Twitter, label: 'Twitter' },
@@ -55,7 +57,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/*==== === Quick Links Section === ===*/}
+          {/* ===== Quick Links Section ===== */}
           <div>
             <h3 className="font-bold mb-6 text-lg text-foreground">
               Quick Links
@@ -84,7 +86,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/*==== === Resort Services Section === ===*/}
+          {/* ===== Resort Services Section ===== */}
           <div>
             <h3 className="font-bold mb-6 text-lg text-foreground">
               Resort Services
@@ -113,7 +115,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/*==== === Contact Information Section === ===*/}
+          {/* ===== Contact Information Section ===== */}
           <div>
             <h3 className="font-bold mb-6 text-lg text-foreground">
               Contact Information
@@ -146,7 +148,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/*==== === Bottom Bar Section === ===*/}
+        {/* ===== Bottom Bar Section ===== */}
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-foreground space-y-4 md:space-y-0">
             <p className="text-sm text-center md:text-left">

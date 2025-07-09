@@ -8,9 +8,10 @@ import { ChevronLeft, ChevronRight, Star, ArrowRight } from 'lucide-react';
 import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
+
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import Pagination from '@/components/shared/pagination';
 
 interface IRoom {
   _id: string;
@@ -25,7 +26,7 @@ const roomTypes = ['all', 'luxury', 'suite', 'deluxe', 'twine'];
 
 export default function CheckRooms() {
   const [tab, setTab] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+
   const [page, setPage] = useState(1);
 
   const [queryParams, setQueryParams] = useState({
@@ -65,16 +66,11 @@ export default function CheckRooms() {
   );
 
   const rooms = data?.data?.data || [];
-  const totalPages = data?.meta?.totalPages || 1;
+  const totalPages = data?.meta?.total || 1;
 
   // === Handlers ===
   const onTabChange = (newTab: string) => {
     setTab(newTab);
-    setPage(1);
-  };
-
-  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
     setPage(1);
   };
 
@@ -186,43 +182,12 @@ export default function CheckRooms() {
         ))}
       </div>
 
-      {/* === Pagination === */}
-      <div className="flex justify-center flex-wrap gap-2 mt-10">
-        <Button
-          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-          disabled={page === 1}
-          className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </Button>
-
-        {Array.from({ length: totalPages }).map((_, i) => {
-          const pageNumber = i + 1;
-          const isActive = page === pageNumber;
-
-          return (
-            <Button
-              key={pageNumber}
-              onClick={() => setPage(pageNumber)}
-              className={
-                isActive
-                  ? 'bg-[#bf9310] text-white hover:bg-[#a87e0d]'
-                  : 'border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]'
-              }
-            >
-              {pageNumber}
-            </Button>
-          );
-        })}
-
-        <Button
-          onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
-          disabled={page === totalPages}
-          className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </Button>
-      </div>
+      {/* ===== Pagination controls ===== */}
+      <Pagination
+        page={page}
+        totalPages={totalPages} // your calculated value
+        setPage={setPage}
+      />
     </div>
   );
 }

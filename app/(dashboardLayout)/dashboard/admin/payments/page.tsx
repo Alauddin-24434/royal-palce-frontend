@@ -83,23 +83,37 @@ export default function AdminPaymentsPage() {
     },
   ];
 
+  // Map status to colors
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'paid':
+        return '#10b981'; // green
+      case 'pending':
+        return '#f59e0b'; // amber
+      case 'failed':
+        return '#ef4444'; // red
+      case 'cancelled':
+        return '#6b7280'; // gray
+      case 'refunded':
+        return '#3b82f6'; // blue
+      default:
+        return '#facc15'; // yellow fallback
+    }
+  };
+
   return (
     <div className="space-y-6 p-4">
       {/* ===== Header and Filters ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Payments</h1>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <h1 className="text-3xl font-bold text-foreground">Payments</h1>
+
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Input
             placeholder="Search by guest/email"
             className="bg-main text-foreground"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Select
-            onValueChange={(value) => setStatus(value)}
-            defaultValue="all"
-          >
+          <Select onValueChange={setStatus} defaultValue="all">
             <SelectTrigger className="w-[150px] bg-main text-foreground">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
@@ -146,29 +160,12 @@ export default function AdminPaymentsPage() {
                 itemStyle={{ color: '#fff' }}
               />
               <Bar dataKey="total">
-                {chartData.map((entry, index) => {
-                  let color = '#facc15'; // yellow
-
-                  switch (entry.status.toLowerCase()) {
-                    case 'paid':
-                      color = '#10b981'; // green
-                      break;
-                    case 'pending':
-                      color = '#f59e0b'; // amber
-                      break;
-                    case 'failed':
-                      color = '#ef4444'; // red
-                      break;
-                    case 'cancelled':
-                      color = '#6b7280'; // gray
-                      break;
-                    case 'refunded':
-                      color = '#3b82f6'; // blue
-                      break;
-                  }
-
-                  return <Cell key={`cell-${index}`} fill={color} />;
-                })}
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getStatusColor(entry.status)}
+                  />
+                ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>

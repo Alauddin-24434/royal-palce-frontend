@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 RoomReviewsSection Component
+// ====================================================
+
 'use client';
 
 import { useState } from 'react';
@@ -12,8 +16,8 @@ import {
   Crown,
   Sparkles,
   Filter,
-  Trash,
 } from 'lucide-react';
+
 import {
   useCreateTestimonialMutation,
   useDeleteTestimonialMutation,
@@ -23,6 +27,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import toast from 'react-hot-toast';
 
+// ===== 🔹 Type Definitions ===== //
 interface Review {
   _id: string;
   userId: string;
@@ -33,23 +38,26 @@ interface Review {
   reviewText: string;
   reviewDate: string;
 }
-
 interface RoomReviewsSectionProps {
   roomId?: string;
 }
 
 const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
+  // ===== 🔹 Local States ===== //
   const user = useSelector(selectCurrentUser);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [newReview, setNewReview] = useState({ rating: 5, text: '' });
 
+  // ===== 🔹 RTK Query Hooks ===== //
   const { data, refetch } = useFindTestimonialsByRoomIdQuery(roomId);
   const reviewsData: Review[] = data?.data || [];
+
   const [deleteTestimonial] = useDeleteTestimonialMutation();
-  const [createTestimonial, { isLoading: isSubmitting, error }] =
+  const [createTestimonial, { isLoading: isSubmitting }] =
     useCreateTestimonialMutation();
 
+  // ========== 🔁 Submit Review Handler ========== //
   const submitReviewHandler = async () => {
     if (!newReview.text || !newReview.rating || !roomId) {
       toast.error('Please fill in all fields.');
@@ -67,36 +75,31 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
         reviewDate: new Date().toISOString(),
       };
 
-      await createTestimonial(payload).unwrap();
+      await createTestimonial(payload).unwrap(); // ✅ API call success
       setNewReview({ rating: 5, text: '' });
       setShowWriteReview(false);
-      refetch();
+      refetch(); // ✅ Refresh reviews after submission
     } catch (error: any) {
-      const status = error?.status;
       const message =
         error?.data?.message || 'Something went wrong. Please try again.';
-
-      if (status === 403) {
-        toast.error(message);
-      } else {
-        toast.error(message);
-      }
+      toast.error(message); // ❌ Show error toast
     }
   };
 
+  // ========== 🔁 Delete Review Handler ========== //
   const handleDeleteReview = async (id: string) => {
     try {
       await deleteTestimonial(id).unwrap();
       toast.success('Review deleted successfully!');
-      refetch();
+      refetch(); // ✅ Refresh after deletion
     } catch (error) {
-      toast.error('Failed to delete review. Please try again.');
+      toast.error('Failed to delete review. Please try again.'); // ❌ Deletion failed
     }
   };
 
   return (
     <section className="relative py-20 overflow-x-hidden">
-      {/* Background Pattern */}
+      {/* ===== 🔹 Decorative Background Pattern ===== */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-20 left-20 w-32 h-32 border border-amber-400 rotate-45" />
         <div className="absolute bottom-20 right-20 w-24 h-24 border border-amber-400 rotate-12" />
@@ -105,7 +108,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
+        {/* ===== 🔹 Section Header ===== */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center mb-8 flex-wrap gap-4">
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-24 sm:w-32" />
@@ -120,10 +123,9 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
           </div>
         </div>
 
-        {/* Filter Section */}
-        {/* Filter Section */}
+        {/* ===== 🔹 Filter & Action Panel ===== */}
         <div className="flex flex-wrap items-center justify-between mb-8 gap-4 rounded-lg px-4 py-4 shadow-sm">
-          {/* Left - Filter by rating */}
+          {/* 🔍 Filter by rating */}
           <div className="flex items-center gap-4 flex-wrap">
             <Filter className="w-5 h-5 text-amber-400" />
             <span className="text-foreground">Filter by rating:</span>
@@ -141,23 +143,16 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                 All
               </Button>
               {[5, 4, 3, 2, 1].map((rating) => {
-                const bgColors: Record<number, string> = {
-                  5: 'bg-green-500',
-                  4: 'bg-emerald-500',
-                  3: 'bg-yellow-500',
-                  2: 'bg-orange-500',
-                  1: 'bg-red-500',
-                };
-
+                const isActive = selectedRating === rating;
                 return (
                   <Button
                     key={rating}
                     size="sm"
                     onClick={() => setSelectedRating(rating)}
-                    className={`${
-                      selectedRating === rating
-                        ? `${bgColors[rating]} text-white`
-                        : 'border border-slate-600 text-foreground bg-transparent'
+                    className={`transition-all ${
+                      isActive
+                        ? 'bg-amber-500 text-white'
+                        : 'border border-slate-600 bg-transparent text-foreground hover:bg-slate-700'
                     }`}
                   >
                     {rating} ⭐
@@ -167,7 +162,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
             </div>
           </div>
 
-          {/* Right - Write Review Button */}
+          {/* ✏️ Write review button */}
           <Button
             onClick={() => setShowWriteReview(!showWriteReview)}
             className="cursor-pointer bg-[#bf9310] hover:bg-amber-500 text-foreground"
@@ -177,13 +172,14 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
           </Button>
         </div>
 
-        {/* Write Review Form */}
+        {/* ===== 🔹 Review Form ===== */}
         {showWriteReview && (
           <Card className="bg-main backdrop-blur-sm border mb-8">
             <CardContent className="p-6 sm:p-8">
               <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-6">
                 Share Your Experience
               </h3>
+              {/* ⭐ Rating */}
               <div>
                 <label className="block text-foreground mb-2">Rating</label>
                 <div className="flex gap-2">
@@ -204,6 +200,8 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                   ))}
                 </div>
               </div>
+
+              {/* 📝 Textarea */}
               <div className="mt-4">
                 <label className="block text-foreground mb-2">
                   Your Review
@@ -218,6 +216,8 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                   className="bg-main my-4 border text-foreground"
                 />
               </div>
+
+              {/* Submit / Cancel */}
               <div className="flex gap-4">
                 <Button
                   onClick={submitReviewHandler}
@@ -238,7 +238,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
           </Card>
         )}
 
-        {/* Review List */}
+        {/* ===== 🔹 Review List ===== */}
         <div className="space-y-6">
           {reviewsData
             .filter((review) =>
@@ -263,18 +263,21 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                         <h4 className="text-foreground text-base sm:text-lg font-semibold">
                           {review.userName}
                         </h4>
+
+                        {/* 🗑️ Delete if owner */}
                         {user?._id === review.userId && (
                           <button
                             onClick={() => handleDeleteReview(review._id)}
                             title="Delete review"
                             className="px-4 py-2 border border-red-500 text-red-500 rounded-md 
-             hover:bg-red-500 hover:text-white transition-colors duration-300"
+               hover:bg-red-500 hover:text-white transition-colors duration-300"
                           >
                             Delete
                           </button>
                         )}
                       </div>
 
+                      {/* ⭐ Display stars */}
                       <div className="flex items-center gap-1 mt-1">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
@@ -287,9 +290,13 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                           />
                         ))}
                       </div>
+
+                      {/* 📝 Review Text */}
                       <p className="text-foreground mt-2 leading-relaxed">
                         {review.reviewText}
                       </p>
+
+                      {/* 📅 Review Date */}
                       <p className="text-sm text-foreground mt-2 flex items-center">
                         <Calendar className="inline w-4 h-4 mr-1" />
                         {new Date(review.reviewDate).toLocaleDateString()}

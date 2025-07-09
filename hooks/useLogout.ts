@@ -1,28 +1,32 @@
+// ====================================================
+// 🧾 Custom React Hook for User Logout Handling
+// ====================================================
+
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/redux/hooks';
 import { logout } from '@/redux/features/auth/authSlice';
 
-//==== === Custom hook to handle user logout functionality === ===//
+// ===== Hook to handle user logout logic =====
 export function useLogout() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  //==== === Function to log out user by calling API and updating state === ===//
+  // ===== Function to logout user =====
   const logoutUser = async () => {
     try {
-      //==== === Call backend logout endpoint with credentials === ===//
+      // Call backend logout endpoint with credentials (cookies)
       await fetch('/api/logout', {
         method: 'POST',
         credentials: 'include',
       });
 
-      //==== === Dispatch logout action to clear auth state === ===//
+      // Clear auth state in Redux store
       dispatch(logout());
 
-      //==== === Redirect user to login page after logout === ===//
+      // Redirect to login page
       router.push('/login');
     } catch (error) {
-      //==== === Log error if logout fails === ===//
+      // Log any errors encountered during logout
       console.error('Logout failed', error);
     }
   };

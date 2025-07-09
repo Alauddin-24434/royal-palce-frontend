@@ -2,7 +2,7 @@
 
 import { Bed } from 'lucide-react';
 import RoomImageGallery from '@/components/sections/roomDetailsPage/room-details-top-section';
-import DateRangeCalendar from '@/components/sections/roomDetailsPage/date-range-calendar';
+import DateRangeCalendar from '@/components/sections/roomDetailsPage/date-range-calendar-section';
 import RoomReviewsSection from '@/components/sections/roomDetailsPage/room-reviews-section';
 import { useFindSingleRoomQuery } from '@/redux/features/room/room.api';
 import { useParams } from 'next/navigation';

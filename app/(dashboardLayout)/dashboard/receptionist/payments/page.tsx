@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾  Receptionist Payments Page Component
+// ====================================================
+
 'use client';
 
 import React, { useState } from 'react';
@@ -30,6 +34,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 
+// ===== 🔹 Payment Type Definition =====
 export interface Payment {
   _id: string;
   amount: number;
@@ -39,13 +44,14 @@ export interface Payment {
   createdAt: string;
 }
 
+// ===== 🔁 ReceptionistPaymentsPage Component =====
 export default function ReceptionistPaymentsPage() {
-  // ===== State variables =====
+  // ===== 🔹 State variables for pagination, filter, search =====
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // ===== Fetch payments using RTK Query =====
+  // ===== 🔹 Fetch payments data via RTK Query =====
   const {
     data: paymentData,
     isLoading,
@@ -59,7 +65,7 @@ export default function ReceptionistPaymentsPage() {
 
   const payments = paymentData?.data || [];
 
-  // ===== Prepare data for the bar chart =====
+  // ===== 🔹 Prepare data for BarChart visualization =====
   const chartData = [
     {
       status: 'Paid',
@@ -85,17 +91,19 @@ export default function ReceptionistPaymentsPage() {
 
   return (
     <div className="space-y-6 p-4">
-      {/* ===== Header and Filters ===== */}
+      {/* ===== 🔹 Header and Filter Controls ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Payments</h1>
-        </div>
+        <h1 className="text-3xl font-bold text-foreground">Payments</h1>
+
         <div className="flex flex-col sm:flex-row gap-4">
+          {/* 🔍 Search Input */}
           <Input
             placeholder="Search by guest/email"
             className="bg-main text-foreground"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+
+          {/* 🔽 Status Filter Select */}
           <Select
             onValueChange={(value) => setStatus(value)}
             defaultValue="all"
@@ -113,7 +121,7 @@ export default function ReceptionistPaymentsPage() {
         </div>
       </div>
 
-      {/* ===== Payment Status Chart ===== */}
+      {/* ===== 🔹 Payment Status Bar Chart ===== */}
       <Card className="bg-main">
         <CardHeader>
           <CardTitle className="text-foreground">
@@ -147,7 +155,7 @@ export default function ReceptionistPaymentsPage() {
               />
               <Bar dataKey="total">
                 {chartData.map((entry, index) => {
-                  let color = '#facc15'; // yellow
+                  let color = '#facc15'; // default yellow
 
                   switch (entry.status.toLowerCase()) {
                     case 'paid':
@@ -175,7 +183,7 @@ export default function ReceptionistPaymentsPage() {
         </CardContent>
       </Card>
 
-      {/* ===== Payments Table ===== */}
+      {/* ===== 🔹 Payments Table ===== */}
       <Card className="bg-main">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Payments</CardTitle>

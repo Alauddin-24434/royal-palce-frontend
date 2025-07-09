@@ -1,3 +1,7 @@
+// ====================================================
+// 📅 DateRangeCalendar Component – Select check-in/out dates, add to cart or book
+// ====================================================
+
 'use client';
 
 import React, { useState } from 'react';
@@ -10,18 +14,18 @@ import { addCartItem } from '@/redux/features/cart/cartSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
-import CustomCalendar from '@/components/sections/roomDetailsPage/mobile-view-booking-calender';
+
 import toast, { Toaster } from 'react-hot-toast';
 import { useGetBookedDatesQuery } from '@/redux/features/booking/bookingApi';
-import SimpleCalendar from './simpleCalendar';
+import LargeScreenCalendar from './large-screen-view-calender';
+import SmallScreenCalendar from './small-screen-view-calender';
 
-
+// ========== 🧾 Types ========== //
 type DateRange = {
   from?: Date;
   to?: Date;
 };
 
-// Room interface
 interface Room {
   _id: string;
   name?: string;
@@ -31,24 +35,26 @@ interface Room {
   features?: string[];
 }
 
-// Props
 interface DateRangeCalendarProps {
   room: Room;
 }
 
-export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
+export default function DateRangeCalendarSection({
+  room,
+}: DateRangeCalendarProps) {
+  // ========== 🖼️ State ========== //
   const [mainImage] = useState(room?.images?.[0] || '/placeholder.svg');
   const user = useSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [selectedRange, setSelectedRange] = useState<DateRange>({});
   const router = useRouter();
 
-  // ✅ Load and filter booked dates
+  // ========== 📡 Fetch Booked Dates ========== //
   const { data: bookingData, isLoading } = useGetBookedDatesQuery(room._id);
   const bookedDates =
     bookingData?.filter((d: any) => typeof d === 'string' && d.trim()) || [];
 
-  // 📅 Date selection handler
+  // ========== 📅 Date Selection Logic ========== //
   const handleSelectDate = (date: Date) => {
     if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
       setSelectedRange({ from: date, to: undefined });
@@ -72,7 +78,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
       ? differenceInCalendarDays(selectedRange.to, selectedRange.from)
       : 0;
 
-  // ➕ Add to Cart
+  // ========== ➕ Add to Cart ========== //
   const handleAddToCart = () => {
     if (!selectedRange.from || !selectedRange.to) {
       toast.error('Please select both check-in and check-out dates.');
@@ -99,7 +105,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
     toast.success('Added to cart!');
   };
 
-  // ✅ Book Now
+  // ========== ✅ Book Now ========== //
   const handleBookNow = () => {
     if (!selectedRange.from || !selectedRange.to) {
       toast.error('Please select both check-in and check-out dates.');
@@ -128,7 +134,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {/* Calendar Selection */}
+      {/* ===== 🖥️ Desktop Calendar View ===== */}
       <Card className="bg-main hidden sm:block">
         <CardHeader>
           <CardTitle className="text-foreground flex items-center gap-2">
@@ -142,41 +148,22 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
               Loading available dates...
             </div>
           ) : (
-            <>
-              {/* Desktop: CustomCalendar (hide on small screens) */}
-              <div className="">
-                <CustomCalendar
-                  bookedDates={bookedDates}
-                  selectedRange={selectedRange}
-                  onSelectDate={handleSelectDate}
-                />
-              </div>
-            </>
+            <LargeScreenCalendar
+              bookedDates={bookedDates}
+              selectedRange={selectedRange}
+              onSelectDate={handleSelectDate}
+            />
           )}
         </CardContent>
       </Card>
 
-      {/* Mobile: SimpleCalendar (show on small screens) */}
+      {/* ===== 📱 Mobile Calendar View ===== */}
       <div className="block sm:hidden">
-        <SimpleCalendar
+        <SmallScreenCalendar
           selectedRange={selectedRange}
           bookedDates={bookedDates}
-          onSelectDate={(date) => {
-            if (
-              !selectedRange.from ||
-              (selectedRange.from && selectedRange.to)
-            ) {
-              setSelectedRange({ from: date, to: undefined });
-            } else {
-              if (date < selectedRange.from) {
-                setSelectedRange({ from: date, to: undefined });
-              } else {
-                setSelectedRange({ from: selectedRange.from, to: date });
-              }
-            }
-          }}
+          onSelectDate={handleSelectDate}
         />
-
         {selectedRange.from && (
           <p className="mt-2 text-sm text-foreground">
             Selected date: {format(selectedRange.from, 'PPP')}
@@ -184,12 +171,12 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
         )}
       </div>
 
-      {/* Booking Summary */}
+      {/* ===== 🧾 Booking Summary ===== */}
       <Card className="bg-main flex flex-col h-full">
         <CardHeader className="flex flex-col md:flex-row items-center justify-between">
           <CardTitle className="text-foreground">Summary</CardTitle>
           <p className="text-sm text-center text-slate-300 flex justify-center items-center gap-2">
-            <Moon className="text-[#bf9310]" />{' '}
+            <Moon className="text-[#bf9310]" />
             <span className="text-foreground font-semibold">
               {numberOfNights} night{numberOfNights > 1 ? 's' : ''}
             </span>
@@ -199,6 +186,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
         <CardContent className="flex flex-col justify-between flex-grow space-y-6">
           {selectedRange.from && selectedRange.to ? (
             <>
+              {/* 🗓️ Check-in / Check-out Info */}
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -222,18 +210,18 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
                 </div>
               </div>
 
-              {/* Buttons always at bottom */}
+              {/* 🧾 Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-6">
                 <Button
                   onClick={handleBookNow}
-                  className="flex-1 bg-[#bf9310]  text-foreground hover:bg-[#a87e0d] cursor-pointer"
+                  className="flex-1 bg-[#bf9310] text-foreground hover:bg-[#a87e0d]"
                 >
                   Book Now
                 </Button>
                 <Button
                   onClick={handleAddToCart}
                   variant="outline"
-                  className="flex-1 text-foreground border-slate-600 bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer"
+                  className="flex-1 text-foreground border-slate-600 bg-slate-700/30 hover:bg-slate-700/50"
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   Add to Cart
@@ -241,6 +229,7 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
               </div>
             </>
           ) : (
+            // ❗ Message when no dates selected
             <div className="text-center py-8 flex-1 flex flex-col justify-center">
               <CalendarDays className="w-12 h-12 text-slate-600 mx-auto mb-3" />
               <p className="text-foreground">
@@ -250,6 +239,8 @@ export default function DateRangeCalendar({ room }: DateRangeCalendarProps) {
           )}
         </CardContent>
       </Card>
+
+      {/* 🔔 Toast Notifications */}
       <Toaster position="top-right" reverseOrder={false} />
     </div>
   );

@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 AboutUsSection Component - Showcasing hotel’s royal heritage, features, stats, and elegant design
+// ====================================================
+
 import { Crown, Star, Award, Users } from 'lucide-react';
 import Image from 'next/image';
 
@@ -5,10 +9,10 @@ const AboutUsSection = () => {
   return (
     <section className="bg-main text-white py-20 p-4 relative overflow-hidden">
       <div className="container mx-auto relative z-10">
+        {/* ===== Section Title with Decorative Lines and Icons ===== */}
         <div className="mb-20">
-          {/*=============================== Title Decoration ======================*/}
           <div className="flex items-center justify-center mb-8">
-            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
+            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6" />
             <div className="flex items-center">
               <Crown className="w-6 h-6 text-[#bf9310] mr-3" />
               <h2 className="text-[#bf9310] text-base md:text-sm font-medium tracking-[0.2em] uppercase">
@@ -16,10 +20,10 @@ const AboutUsSection = () => {
               </h2>
               <Crown className="w-6 h-6 text-[#bf9310] ml-3" />
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6"></div>
+            <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6" />
           </div>
 
-          {/*=========================== Main Heading with one consistent color and smaller size =========================*/}
+          {/* ===== Main Heading ===== */}
           <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             Where Royal Heritage Meets
             <br />
@@ -27,9 +31,9 @@ const AboutUsSection = () => {
           </h1>
         </div>
 
-        {/*====================================== Main Content Section ========================================*/}
+        {/* ===== Content Grid ===== */}
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Video/Image Section */}
+          {/* Image/Video Section with Floating Award Badge */}
           <div className="relative">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <Image
@@ -41,7 +45,7 @@ const AboutUsSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
             </div>
 
-            {/* ==============================Floating Award Badge =======================*/}
+            {/* Floating Award Badge */}
             <div className="absolute -bottom-6 -right-6 bg-[#bf9310] p-4 rounded-2xl shadow-2xl">
               <Award className="w-8 h-8 text-slate-900" />
               <div className="text-slate-900 font-bold text-sm mt-1">
@@ -50,9 +54,9 @@ const AboutUsSection = () => {
             </div>
           </div>
 
-          {/* ========================================Content Section =================================*/}
+          {/* Text Content Section */}
           <div>
-            {/* ========================Royal Statistics ====================*/}
+            {/* Royal Statistics */}
             <div className="grid grid-cols-3 gap-8 mb-10">
               <div className="text-center">
                 <div className="text-4xl md:text-5xl font-light text-[#bf9310] mb-2">
@@ -80,7 +84,7 @@ const AboutUsSection = () => {
               </div>
             </div>
 
-            {/* =======================================Royal Description =================================*/}
+            {/* Description Paragraphs */}
             <div className="space-y-6 mb-10">
               <p className="text-foreground leading-relaxed text-base md:text-lg">
                 Nestled in the heart of the city, our Royal Palace Hotel stands
@@ -89,7 +93,6 @@ const AboutUsSection = () => {
                 furnishings, marble bathrooms, and panoramic views that capture
                 the essence of royal living.
               </p>
-
               <p className="text-base md:text-lg text-foreground leading-relaxed">
                 From our award-winning spa treatments to our Michelin-starred
                 dining experiences, every moment at our palace is crafted to
@@ -99,7 +102,7 @@ const AboutUsSection = () => {
               </p>
             </div>
 
-            {/* =========================================Royal Features ==========================================*/}
+            {/* Features Badges */}
             <div className="flex flex-wrap gap-4 mb-10">
               <div className="flex items-center bg-main px-4 py-2 rounded-full border border-slate-700">
                 <Users className="w-4 h-4 text-[#bf9310] mr-2" />

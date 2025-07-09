@@ -1,14 +1,19 @@
-// redux/features/cart/cartSlice.ts
+// ====================================================
+// 🛒 Redux: Cart Slice (Manage User Room Cart)
+// ====================================================
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/redux/store';
 import { createSelector } from 'reselect';
+
+// ========== 🧩 Types & Interfaces ==========
 interface SimpleRoom {
   roomId: string;
   name?: string;
   image: string;
   price?: number;
-  checkInDate: string; // YYYY-MM-DD string
-  checkOutDate: string; // YYYY-MM-DD string
+  checkInDate: string;
+  checkOutDate: string;
 }
 
 interface CartItem {
@@ -20,53 +25,47 @@ interface CartState {
   cartItems: CartItem[];
 }
 
+// ========== 🚀 Initial State ==========
 const initialState: CartState = {
   cartItems: [],
 };
 
+// ========== 🔁 Reducers ==========
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    // ➕ Add item to cart
     addCartItem: (state, action: PayloadAction<CartItem>) => {
-      // ✅ Ensure cartItems is always an array
-      if (!Array.isArray(state.cartItems)) {
-        state.cartItems = [];
-      }
-
       const { userId, room } = action.payload;
-
       const exists = state.cartItems.some(
         (item) => item.userId === userId && item.room.roomId === room.roomId,
       );
-
-      if (!exists) {
-        state.cartItems.push(action.payload);
-        console.log('✅ Cart item added');
-      } else {
-        console.log('⚠️ Duplicate item not added');
-      }
+      if (!exists) state.cartItems.push(action.payload);
     },
 
+    // ❌ Remove item from cart by roomId
     removeCartItem: (state, action: PayloadAction<string>) => {
-      // Remove by roomId (adjust if want by cart item id)
       state.cartItems = state.cartItems.filter(
         (item) => item.room.roomId !== action.payload,
       );
     },
 
+    // 🧹 Clear entire cart
     clearCart: (state) => {
       state.cartItems = [];
     },
   },
 });
 
-export const { addCartItem, removeCartItem, clearCart } = cartSlice.actions;
-export default cartSlice.reducer;
-
-// Selectors
+// ==========  Selectors ==========
 export const selectCartItems = (state: RootState) => state.cart.cartItems;
+
 export const makeSelectCartItemsByUser = (userId: string) =>
   createSelector([selectCartItems], (cartItems) =>
     cartItems.filter((item) => item.userId === userId),
   );
+
+// ==========  Export ==========
+export const { addCartItem, removeCartItem, clearCart } = cartSlice.actions;
+export default cartSlice.reducer;

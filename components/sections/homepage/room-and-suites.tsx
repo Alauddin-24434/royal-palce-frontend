@@ -1,4 +1,9 @@
+// ====================================================
+// 🧾 RoomAndSuites Component - Display grid of hotel rooms & suites with images, info, and animated buttons
+// ====================================================
+
 'use client';
+
 import { Card } from '../../ui/card';
 import { Bed, Home, Star, Users, ArrowRight } from 'lucide-react';
 import { Button } from '../../ui/button';
@@ -11,8 +16,9 @@ const RoomAndSuites = () => {
   const { data: roomsData } = useFindAllRoomsQuery(undefined);
 
   return (
-    <section className="py-24 ">
+    <section className="py-24">
       <div className="container mx-auto px-4">
+        {/* ===== Section Header ===== */}
         <div className="mb-20">
           {/* Title Decoration */}
           <div className="flex items-center justify-center mb-8">
@@ -35,50 +41,50 @@ const RoomAndSuites = () => {
           </h1>
         </div>
 
+        {/* ===== Rooms Grid ===== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {roomsData?.data?.map((room: IRoom) => (
             <Card
-              key={room?._id}
-              className="group relative w-full max-w-md overflow-hidden bg-black rounded-none p-0  transform transition-all duration-500 hover:scale-105 hover:shadow-2xl "
+              key={room._id}
+              className="group relative w-full max-w-md overflow-hidden bg-black rounded-none p-0 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl"
             >
               {/* Background Image */}
               <div className="relative h-96 overflow-hidden">
                 <Image
                   src={
-                    room && room.images && room.images[0]
+                    room.images && room.images[0]
                       ? room.images[0]
                       : '/placeholder.svg'
                   }
-                  alt="Luxury hotel room"
+                  alt={room.title || 'Luxury hotel room'}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-
                 {/* Dark Overlay with hover effect */}
                 <div className="absolute inset-0 bg-black/40 transition-all duration-500 group-hover:bg-black/70" />
 
                 {/* Room Number - top left with hover animation */}
-                <div className="absolute top-4 left-4 px-2 transform transition-all duration-500 ">
+                <div className="absolute top-4 left-4 px-2 transform transition-all duration-500">
                   <div className="text-3xl font-light text-white transition-colors duration-300">
-                    {room?.roomNumber}
+                    {room.roomNumber}
                   </div>
                 </div>
 
                 {/* Price Tag - top right with enhanced hover effect */}
                 <div className="absolute top-4 right-4 transform transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-1">
                   <div className="relative">
-                    <div className="bg-[#bf9310] text-white px-4 py-2 font-semibold text-sm transition-all duration-300 ">
-                      ${room?.price}/night
+                    <div className="bg-[#bf9310] text-white px-4 py-2 font-semibold text-sm transition-all duration-300">
+                      ${room.price}/night
                     </div>
-                    <div className="absolute right-0 top-full w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-[#bf9310] transition-all duration-300 " />
+                    <div className="absolute right-0 top-full w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-[#bf9310] transition-all duration-300" />
                   </div>
                 </div>
 
                 {/* Content - bottom left with staggered animations */}
                 <div className="absolute bottom-6 left-6 text-white space-y-4 z-10 transform transition-all duration-500 group-hover:translate-y-[-8px]">
                   <div>
-                    <div className="text-xl font-light py-2 transition-all duration-300 ">
-                      {room?.title}
+                    <div className="text-xl font-light py-2 transition-all duration-300">
+                      {room.title}
                     </div>
 
                     {/* Star Rating with individual star animations */}
@@ -95,16 +101,16 @@ const RoomAndSuites = () => {
 
                   {/* Amenities with icon animations */}
                   <div className="flex gap-4 text-sm mt-2">
-                    <div className="flex items-center gap-2 transition-all duration-300 ">
-                      <Bed className="w-4 h-4 text-[#bf9310] transition-all duration-300 " />
+                    <div className="flex items-center gap-2 transition-all duration-300">
+                      <Bed className="w-4 h-4 text-[#bf9310]" />
                       <span>King Bed</span>
                     </div>
-                    <div className="flex items-center gap-2 transition-all duration-300 ">
-                      <Users className="w-4 h-4 text-[#bf9310] transition-all duration-300 " />
+                    <div className="flex items-center gap-2 transition-all duration-300">
+                      <Users className="w-4 h-4 text-[#bf9310]" />
                       <span>2 Person</span>
                     </div>
-                    <div className="flex items-center gap-2 transition-all duration-300 ">
-                      <Home className="w-4 h-4 text-[#bf9310] transition-all duration-300 " />
+                    <div className="flex items-center gap-2 transition-all duration-300">
+                      <Home className="w-4 h-4 text-[#bf9310]" />
                       <span>1500 sqft</span>
                     </div>
                   </div>
@@ -113,7 +119,7 @@ const RoomAndSuites = () => {
                   <Link href={`/rooms/${room._id}`}>
                     <Button
                       variant="outline"
-                      className="mt-2 w-fit  bg-transparent text-white border-white cursor-pointer hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300  overflow-hidden relative"
+                      className="mt-2 w-fit bg-transparent text-white border-white cursor-pointer hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
                     >
                       <span className="flex items-center gap-2 transition-all duration-300">
                         VIEW DETAILS

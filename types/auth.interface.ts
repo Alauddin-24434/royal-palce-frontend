@@ -1,10 +1,12 @@
 // User interface
-export interface User {
+export interface IUser {
   _id: string;
   name: string;
   email: string;
   profileImage?: string;
   role: string;
+  phone?: string;
+  isDeleted: boolean;
 }
 
 // JWT Payload interface (আপনার JWT টোকেন থেকে যা ডিকোড হবে)
@@ -20,7 +22,7 @@ export interface JwtPayload {
 
 // Redux Auth State
 export interface AuthState {
-  user: User | null;
+  user: IUser | null;
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;

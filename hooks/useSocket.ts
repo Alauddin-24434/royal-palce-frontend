@@ -1,18 +1,21 @@
-// hooks/useSocket.ts
+// ====================================================
+// 🧾 Custom Hook: useSocket - Manage socket.io connection based on authenticated user
+// ====================================================
+
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { io, Socket } from 'socket.io-client';
 
-//==== === Custom hook to manage socket.io connection based on authenticated user === ===//
 export const useSocket = () => {
-  //==== === Get current logged-in user from Redux store === ===//
+  // ===== Get current authenticated user from Redux store =====
   const user = useSelector(selectCurrentUser);
-  //==== === Ref to hold socket instance === ===//
+
+  // ===== Ref to hold socket instance =====
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    //==== === Initialize socket connection only if user exists and socket not yet created === ===//
+    // ===== Initialize socket only if user exists and socket is not already connected =====
     if (user && !socketRef.current) {
       const socket = io(process.env.NEXT_PUBLIC_API_BASE_URL as string, {
         withCredentials: true,
@@ -23,15 +26,15 @@ export const useSocket = () => {
         },
       });
 
-      //==== === Optional: Setup socket event listeners here === ===//
-      // socket.on("notification", (data) => {
-      //   console.log("Notification received", data);
+      // ===== Optional: Setup socket event listeners here =====
+      // socket.on('notification', (data) => {
+      //   console.log('Notification received', data);
       // });
 
       socketRef.current = socket;
     }
 
-    //==== === Cleanup: disconnect socket on unmount or user change === ===//
+    // ===== Cleanup: Disconnect socket when component unmounts or user changes =====
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
@@ -40,6 +43,6 @@ export const useSocket = () => {
     };
   }, [user]);
 
-  //==== === Return current socket instance === ===//
+  // ===== Return current socket instance =====
   return socketRef.current;
 };

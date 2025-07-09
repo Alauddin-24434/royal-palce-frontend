@@ -1,3 +1,7 @@
+// ====================================================
+// 🧭 AppSidebar Component (Dynamic Role-Based Sidebar)
+// ====================================================
+
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -43,10 +47,12 @@ import { Button } from '@/components/ui/button';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import { useLogout } from '@/hooks/useLogout';
 
+// ========== 🔐 Role Types ========== //
 interface JwtPayload {
   role: 'admin' | 'receptionist' | 'guest';
 }
 
+// ========== 🔧 Menu Configurations ========== //
 const adminMenuItems = [
   { title: 'Dashboard', url: '/dashboard/admin', icon: Crown },
   {
@@ -66,6 +72,7 @@ const adminMenuItems = [
     url: '/dashboard/admin/services',
     icon: Building,
   },
+  { title: 'Profile', url: '/dashboard/common/profile', icon: User },
 ];
 
 const receptionistMenuItems = [
@@ -86,24 +93,27 @@ const receptionistMenuItems = [
     url: '/dashboard/receptionist/reservations',
     icon: Calendar,
   },
+  { title: 'Profile', url: '/dashboard/common/profile', icon: User },
 ];
 
 const guestMenuItems = [
   { title: 'My Dashboard', url: '/dashboard/user', icon: Crown },
   { title: 'Booked Room', url: '/dashboard/user/bookings', icon: Bed },
   { title: 'Payments', url: '/dashboard/user/payments', icon: CreditCard },
-  { title: 'Profile', url: '/dashboard/user/profile', icon: User },
-  { title: 'Support', url: '/dashboard/user/support', icon: User },
+  { title: 'Profile', url: '/dashboard/common/profile', icon: User },
 ];
+
+// ====================================================
+// 🧭 AppSidebar Component
+// ====================================================
 
 export function AppSidebar() {
   const pathname = usePathname();
   const user = useSelector(selectCurrentUser);
   const logout = useLogout();
-
   const [role, setRole] = useState<JwtPayload['role'] | null>(null);
 
-  // ✅ Get user role from /api/me
+  // ========== 🔐 Fetch Authenticated User Role ========== //
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -111,9 +121,7 @@ export function AppSidebar() {
           method: 'GET',
           credentials: 'include',
         });
-
-        if (!res.ok) throw new Error('Failed to fetch');
-
+        if (!res.ok) throw new Error('Failed to fetch user role');
         const data = await res.json();
         setRole(data?.user?.role);
       } catch (err) {
@@ -125,35 +133,37 @@ export function AppSidebar() {
     fetchUser();
   }, []);
 
+  // ========== 🔀 Determine Role Menu ========== //
   const currentRole: JwtPayload['role'] =
     role ?? (user?.role as JwtPayload['role']) ?? 'guest';
 
-  let menuToRender: { title: string; url: string; icon: React.ElementType }[] =
-    [];
+  const menuToRender: {
+    title: string;
+    url: string;
+    icon: React.ElementType;
+  }[] =
+    currentRole === 'admin'
+      ? adminMenuItems
+      : currentRole === 'receptionist'
+        ? receptionistMenuItems
+        : guestMenuItems;
 
-  switch (currentRole) {
-    case 'admin':
-      menuToRender = adminMenuItems;
-      break;
-    case 'receptionist':
-      menuToRender = receptionistMenuItems;
-      break;
-    case 'guest':
-      menuToRender = guestMenuItems;
-      break;
-    default:
-      menuToRender = [];
-  }
-
+  // ====================================================
+  // 🔧 Render Sidebar
+  // ====================================================
   return (
     <Sidebar className="border-r bg-main">
+      {/* ========== 🔰 Header ========== */}
       <SidebarHeader className="border-b p-4">
         <Link href="/" className="flex items-center space-x-2">
           <Crown className="h-8 w-8 text-[#bf9310]" />
-          <div className="text-2xl font-bold text-yellow-500">ROYAL PALACE</div>
+          <span className="text-2xl font-bold text-yellow-500">
+            ROYAL PALACE
+          </span>
         </Link>
       </SidebarHeader>
 
+      {/* ========== 📂 Sidebar Menu ========== */}
       <SidebarContent className="px-2 py-4">
         <SidebarGroup>
           <SidebarGroupLabel className="text-foreground text-xs uppercase tracking-wider">
@@ -168,7 +178,9 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      className={`hover:bg-slate-700/50 rounded-none ${isActive ? 'bg-[#2a2d38] text-white font-semibold' : ''}`}
+                      className={`hover:bg-slate-700/50 rounded-none ${
+                        isActive ? 'bg-[#2a2d38] text-white font-semibold' : ''
+                      }`}
                     >
                       <Link
                         href={item.url}
@@ -186,6 +198,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
+      {/* ========== 👤 User Dropdown ========== */}
       <SidebarFooter className="border-t border-slate-700 p-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -208,7 +221,7 @@ export function AppSidebar() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-main" align="end">
-            <Link href="/dashboard/user/profile">
+            <Link href="/dashboard/common/profile">
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4 text-foreground" />
                 <span className="text-foreground">Profile</span>
@@ -226,6 +239,7 @@ export function AppSidebar() {
         </DropdownMenu>
       </SidebarFooter>
 
+      {/* ========== 📦 Sidebar Rail ========== */}
       <SidebarRail />
     </Sidebar>
   );

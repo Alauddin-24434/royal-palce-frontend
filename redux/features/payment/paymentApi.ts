@@ -1,7 +1,12 @@
+// ====================================================
+// 🧾  Payment API Endpoints Module
+// ====================================================
+
 import baseApi from '@/redux/api/baseApi';
 
 const paymentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    // ===== Get all payments with optional filters =====
     getPayments: build.query({
       query: (params) => {
         const query = new URLSearchParams();
@@ -18,7 +23,8 @@ const paymentApi = baseApi.injectEndpoints({
       },
       providesTags: ['Payment'],
     }),
-    //  getting payments by userId
+
+    // ===== Get payments for a specific user by ID =====
     getPaymentsByUserId: build.query({
       query: (id: string) => ({
         url: `/payments/${id}`,
@@ -27,6 +33,10 @@ const paymentApi = baseApi.injectEndpoints({
       providesTags: ['Payment'],
     }),
   }),
+  overrideExisting: false,
 });
 
+// ===== Hooks export =====
 export const { useGetPaymentsQuery, useGetPaymentsByUserIdQuery } = paymentApi;
+
+export default paymentApi;

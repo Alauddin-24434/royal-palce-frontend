@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾  Guest Dashboard Component
+// ====================================================
+
 'use client';
 
 import React, { JSX } from 'react';
@@ -7,6 +11,7 @@ import { Bed, Calendar, DollarSign } from 'lucide-react';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 import { IBooking } from '@/types/booking.interface';
 
+// ===== 🔹 Icon Mapping for Stat Cards =====
 export interface IStat {
   title: string;
   value: number;
@@ -20,6 +25,7 @@ const iconMap: Record<string, JSX.Element> = {
 };
 
 export default function GuestDashboard() {
+  // ===== 🔹 Fetch dashboard data via RTK Query =====
   const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
     undefined,
     {
@@ -27,6 +33,7 @@ export default function GuestDashboard() {
     },
   );
 
+  // ===== 🔁 Loading state UI =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -38,18 +45,19 @@ export default function GuestDashboard() {
     );
   }
 
+  // ===== 🔹 Extract stats and bookings data =====
   const stats = dashboardData?.stats ?? [];
   const bookings = dashboardData?.bookings ?? [];
   const pastBookings = dashboardData?.pastBookings ?? [];
 
   return (
     <div className="space-y-8 px-4 py-6">
-      {/* Header */}
+      {/* ===== 🔹 Header Section ===== */}
       <h2 className="text-3xl font-bold text-foreground mb-1">
         Guest Dashboard
       </h2>
 
-      {/* === Stat Cards === */}
+      {/* ===== 🔹 Stats Cards Section ===== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {stats.map((stat: IStat, index: number) => {
           let bgColor = '';
@@ -77,7 +85,7 @@ export default function GuestDashboard() {
         })}
       </div>
 
-      {/* === Recent Bookings === */}
+      {/* ===== 🔹 Recent Bookings Section ===== */}
       <Card className="bg-main border border-slate-700 shadow-md">
         <CardHeader>
           <CardTitle className="text-foreground">
@@ -147,7 +155,7 @@ export default function GuestDashboard() {
         </CardContent>
       </Card>
 
-      {/* === Past Bookings === */}
+      {/* ===== 🔹 Past Bookings Section ===== */}
       <Card className="bg-main border border-slate-700 shadow-md">
         <CardHeader>
           <CardTitle className="text-foreground">Your Past Bookings</CardTitle>

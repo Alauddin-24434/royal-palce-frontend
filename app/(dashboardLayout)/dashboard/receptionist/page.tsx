@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 Receptionist Dashboard Component
+// ====================================================
+
 'use client';
 
 import React from 'react';
@@ -8,6 +12,7 @@ import { Cell, Tooltip, Legend, BarChart, XAxis, YAxis, Bar } from 'recharts';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 import { IBooking } from '@/types/booking.interface';
 
+// ===== 🔹 Interface for Stat Card Data =====
 interface IStatCardData {
   title: string;
   value: number | string;
@@ -15,17 +20,19 @@ interface IStatCardData {
   color: string;
   icon: keyof typeof iconMap;
 }
-// Icon mapping
-const iconMap: any = {
+
+// ===== 🔹 Icon Mapping for Stat Cards =====
+const iconMap = {
   Calendar: <Calendar className="h-6 w-6" />,
   Users: <Users className="h-6 w-6" />,
   Bed: <Bed className="h-6 w-6" />,
 };
 
-// Reusable pie colors
+// ===== 🔹 Colors for Bar Chart =====
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
 export default function ReceptionistDashboard() {
+  // ===== 🔹 Fetch dashboard data using RTK Query =====
   const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
     undefined,
     {
@@ -33,6 +40,7 @@ export default function ReceptionistDashboard() {
     },
   );
 
+  // ===== 🔹 Loading state UI =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -44,16 +52,18 @@ export default function ReceptionistDashboard() {
     );
   }
 
+  // ===== 🔹 Extract stats and bookings data =====
   const stats = dashboardData?.stats ?? [];
   const bookings = dashboardData?.bookings ?? [];
 
+  // ===== 🔹 Calculate booking status counts for the chart =====
   const statusCount: Record<string, number> = {};
-
   bookings.forEach((booking: IBooking) => {
     const status = booking.bookingStatus || 'unknown';
     statusCount[status] = (statusCount[status] || 0) + 1;
   });
 
+  // ===== 🔹 Prepare data for Bar Chart =====
   const pieChartData = Object.entries(statusCount).map(([name, value]) => ({
     name,
     value,
@@ -61,16 +71,17 @@ export default function ReceptionistDashboard() {
 
   return (
     <div className="space-y-8 px-4 py-6">
+      {/* ===== 🔹 Dashboard Title ===== */}
       <div>
         <h2 className="text-3xl font-bold text-foreground mb-1">
           Receptionist Dashboard
         </h2>
       </div>
 
-      {/* === Stat Cards === */}
+      {/* ===== 🔹 Stat Cards Grid ===== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {stats.map((stat: IStatCardData, index: number) => (
-          <Card key={index} className="bg-main  backdrop-blur-sm">
+          <Card key={index} className="bg-main backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-foreground">
                 {stat.title}
@@ -91,7 +102,7 @@ export default function ReceptionistDashboard() {
         ))}
       </div>
 
-      {/* === Booking Status Bar Chart === */}
+      {/* ===== 🔹 Booking Status Bar Chart ===== */}
       <Card className="bg-main backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-foreground">
@@ -118,8 +129,8 @@ export default function ReceptionistDashboard() {
         </CardContent>
       </Card>
 
-      {/* === Recent Bookings Table === */}
-      <Card className="bg-main  backdrop-blur-sm">
+      {/* ===== 🔹 Recent Bookings Table ===== */}
+      <Card className="bg-main backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
         </CardHeader>
@@ -134,10 +145,10 @@ export default function ReceptionistDashboard() {
               </tr>
             </thead>
             <tbody>
-              {bookings.map((booking: any) => (
-                <tr key={booking._id} className="border-b ">
-                  <td className="py-2">{booking.userId?.name}</td>
-                  <td>{booking.rooms?.[0]?.roomId}</td>
+              {bookings.map((booking: IBooking) => (
+                <tr key={booking._id} className="border-b">
+                  <td className="py-2">{booking.userId?.name || 'N/A'}</td>
+                  <td>{booking.rooms?.[0]?.roomId?.title || 'N/A'}</td>
                   <td>${booking.totalAmount}</td>
                   <td>
                     <Badge className="capitalize">

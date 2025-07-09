@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾  User Bookings Page Component
+// ====================================================
+
 'use client';
 
 import React from 'react';
@@ -22,30 +26,29 @@ import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 
 export default function UserBookings() {
-  // ===== Get current user from Redux store =====
+  // ===== 🔹 Redux state: Get current logged-in user info =====
   const user = useSelector(selectCurrentUser);
 
-  // ===== Fetch bookings by userId via RTK Query =====
+  // ===== 🔹 RTK Query: Fetch bookings for current user =====
   const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(
     user?._id ?? '',
   );
 
-  //===== Camcel booking req by RoomId via RTK Query============
+  // ===== 🔹 RTK Mutation: Cancel booking API call =====
+  const [cancelBooking] = useCancelBookingMutation();
 
-  const [cnacelBooking] = useCancelBookingMutation();
-
-  //=============booking cancelel =================
-
-  const cancelBookingHandeller = async (roomId: string) => {
+  // ========== 🔁 Handler: Cancel booking by booking ID ========== //
+  const cancelBookingHandeller = async (bookingId: string) => {
     try {
-      await cnacelBooking(roomId);
+      await cancelBooking(bookingId);
+      toast.success('Booking cancelled successfully'); // ✅ Booking cancelled successfully
     } catch (error) {
-      console.log(error);
-      toast.error('Error cancel booking');
+      console.error(error);
+      toast.error('Error cancelling booking'); // ❌ Error cancelling booking
     }
   };
 
-  // ===== Loading state UI =====
+  // ===== 🔹 Loading UI while fetching bookings =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -58,15 +61,13 @@ export default function UserBookings() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* ===== Page Title ===== */}
+    <>
+      {/* ===== 🔹 Page Header ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Booked Rooms</h1>
-        </div>
+        <h1 className="text-3xl font-bold text-foreground">Booked Rooms</h1>
       </div>
 
-      {/* ===== Bookings Table ===== */}
+      {/* ===== 🔹 Bookings Table ===== */}
       <Card className="bg-main border border-slate-700 shadow-md">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
@@ -76,22 +77,32 @@ export default function UserBookings() {
             <Table>
               <TableHeader className="bg-[#2a2d38] text-white">
                 <TableRow>
-                  <TableHead className="text-white">Room Title</TableHead>
-                  <TableHead className="text-white">Room Count</TableHead>
-                  <TableHead className="text-white">Check-in</TableHead>
-                  <TableHead className="text-white">Check-out</TableHead>
-                  <TableHead className="text-white">Amount</TableHead>
-                  <TableHead className="text-white">Status</TableHead>
-                  <TableHead className="text-white">Action</TableHead>
+                  <TableHead>Room Title</TableHead>
+                  <TableHead>Room Count</TableHead>
+                  <TableHead>Check-in</TableHead>
+                  <TableHead>Check-out</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {bookingData.data.map((booking: IBooking) => (
+                {bookingData?.data.length === 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={7}
+                      className="text-center p-4 text-foreground"
+                    >
+                      No bookings found.
+                    </TableCell>
+                  </TableRow>
+                )}
+                {bookingData?.data.map((booking: IBooking) => (
                   <TableRow
                     key={booking._id}
                     className="border hover:bg-slate-800/40 transition text-foreground"
                   >
-                    {/* ===== Comma separated room titles ===== */}
+                    {/* ===== 🔹 Comma separated room titles ===== */}
                     <TableCell>
                       {booking.rooms
                         ?.map((r) =>
@@ -102,21 +113,21 @@ export default function UserBookings() {
                         .join(', ')}
                     </TableCell>
 
-                    {/* ===== Number of rooms in booking ===== */}
+                    {/* ===== 🔹 Number of rooms in booking ===== */}
                     <TableCell>{booking.rooms.length}</TableCell>
 
-                    {/* ===== Check-in date from first room ===== */}
+                    {/* ===== 🔹 Check-in date (first room) ===== */}
                     <TableCell>{booking.rooms[0]?.checkInDate}</TableCell>
 
-                    {/* ===== Check-out date from first room ===== */}
+                    {/* ===== 🔹 Check-out date (first room) ===== */}
                     <TableCell>{booking.rooms[0]?.checkOutDate}</TableCell>
 
-                    {/* ===== Total amount ===== */}
-                    <TableCell className="font-semibold ">
+                    {/* ===== 🔹 Total amount ===== */}
+                    <TableCell className="font-semibold">
                       ${booking.totalAmount}
                     </TableCell>
 
-                    {/* ===== Booking status with colored badge ===== */}
+                    {/* ===== 🔹 Booking status badge ===== */}
                     <TableCell>
                       <Badge
                         variant={
@@ -137,7 +148,8 @@ export default function UserBookings() {
                         {booking.bookingStatus}
                       </Badge>
                     </TableCell>
-                    {/* ==== cancel button============= */}
+
+                    {/* ===== 🔁 Cancel Booking Button ===== */}
                     <TableCell>
                       <Button
                         variant="outline"
@@ -158,6 +170,6 @@ export default function UserBookings() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }

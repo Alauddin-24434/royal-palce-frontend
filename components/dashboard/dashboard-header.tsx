@@ -1,3 +1,7 @@
+// ====================================================
+// 🧭 DashboardHeader Component
+// ====================================================
+
 'use client';
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -8,27 +12,32 @@ import { useNotificationStore } from '@/zustand/useNotificationStore';
 import { useState } from 'react';
 
 export function DashboardHeader() {
+  // ========== 🌗 Theme Setup ========== //
   const { theme, setTheme } = useTheme();
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const unreadCount = useNotificationStore((state) => state.unreadCount);
-
-  // থিম টগল ফাংশন
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // ========== 🔔 Notification Setup ========== //
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
   const toggleNotification = () => {
     setIsNotificationOpen((prev) => !prev);
   };
+
+  // ========== 🧩 Render Header ========== //
   return (
-    <header className="sticky top-0 z-40 border-b  bg-sidebar">
-      <div className="flex h-16  justify-between items-center  gap-4 px-6">
+    <header className="sticky top-0 z-40 border-b bg-sidebar">
+      <div className="flex h-16 justify-between items-center gap-4 px-6">
+        {/* ===== 🔹 Sidebar Toggle Button ===== */}
         <SidebarTrigger className="text-foreground hover:text-white" />
+
+        {/* ===== 🔹 Right Controls ===== */}
         <div className="flex items-center space-x-4 relative">
-          {/* Notification Bell */}
+          {/* ===== 🔔 Notification Bell ===== */}
           <button
             onClick={(e) => {
-              e.preventDefault(); // reload প্রতিরোধ
+              e.preventDefault(); // Prevent reload
               toggleNotification();
             }}
             aria-label="Toggle Notifications"
@@ -43,14 +52,14 @@ export function DashboardHeader() {
             )}
           </button>
 
-          {/* Notification Dropdown */}
+          {/* ===== 📩 Notification Dropdown ===== */}
           {isNotificationOpen && (
             <NotificationDropdown
               onClose={() => setIsNotificationOpen(false)}
             />
           )}
 
-          {/* থিম টগল */}
+          {/* ===== 🌙 Theme Toggle Button ===== */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle Dark Mode"

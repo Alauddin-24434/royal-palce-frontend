@@ -1,10 +1,14 @@
+// ====================================================
+// 🧾 SocketNotificationListener Component - Listen to socket events and add notifications to store
+// ====================================================
+
 'use client';
 
 import { useEffect } from 'react';
-
 import { useNotificationStore } from '@/zustand/useNotificationStore';
 import { useSocket } from '@/hooks/useSocket';
 
+// ===== Define socket events and corresponding message format =====
 const EVENTS: { event: string; getMessage: (payload: any) => string }[] = [
   {
     event: 'booking-created',
@@ -28,7 +32,7 @@ const EVENTS: { event: string; getMessage: (payload: any) => string }[] = [
   },
   {
     event: 'booking-cancelled',
-    getMessage: (data) => `Payment initiated for booking ${data.bookingId}`,
+    getMessage: (data) => `Booking cancelled for booking ${data.bookingId}`,
   },
 ];
 
@@ -41,6 +45,7 @@ const SocketNotificationListener = () => {
   useEffect(() => {
     if (!socket) return;
 
+    // ===== Register event handlers for each socket event =====
     const handlers = EVENTS.map(({ event, getMessage }) => {
       const handler = (payload: any) => {
         addNotification({
@@ -54,6 +59,7 @@ const SocketNotificationListener = () => {
       return { event, handler };
     });
 
+    // ===== Cleanup: Remove all event handlers on unmount or socket change =====
     return () => {
       handlers.forEach(({ event, handler }) => {
         socket.off(event, handler);

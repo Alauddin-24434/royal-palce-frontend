@@ -1,3 +1,7 @@
+// ====================================================
+// 🗓️ SimpleCalendar Component
+// ====================================================
+
 import React, { useState } from 'react';
 import {
   format,
@@ -10,6 +14,7 @@ import {
   isSameDay,
 } from 'date-fns';
 
+// ===== 🔹 Props & Weekdays ===== //
 interface SimpleCalendarProps {
   onSelectDate: (date: Date) => void;
   selectedRange?: { from?: Date; to?: Date };
@@ -18,11 +23,12 @@ interface SimpleCalendarProps {
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-export default function SimpleCalendar({
+export default function SmallScreenCalendar({
   onSelectDate,
   selectedRange,
   bookedDates = [],
 }: SimpleCalendarProps) {
+  // ===== 🔹 State Setup ===== //
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const monthStart = startOfMonth(currentMonth);
@@ -39,11 +45,13 @@ export default function SimpleCalendar({
     day = addDays(day, 1);
   }
 
+  // ========== 🔁 Month Navigation Handlers ========== //
   const prevMonth = () => setCurrentMonth(addDays(monthStart, -1));
   const nextMonth = () => setCurrentMonth(addDays(monthEnd, 1));
 
   return (
     <div className="p-4 bg-main rounded-lg text-foreground font-sans max-w-md mx-auto">
+      {/* ===== 🔹 Month Navigation ===== */}
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={prevMonth}
@@ -59,14 +67,14 @@ export default function SimpleCalendar({
 
         <button
           onClick={nextMonth}
-          className="px-1 md:px-2 bg-[#bf9310]  rounded text-foreground hover:bg-[#a87e0d]"
+          className="px-1 md:px-2 bg-[#bf9310] rounded text-foreground hover:bg-[#a87e0d]"
           aria-label="Next Month"
         >
           &gt;
         </button>
       </div>
 
-      {/* দিনগুলোর নাম */}
+      {/* ===== 🔹 Weekday Labels ===== */}
       <div className="grid grid-cols-7 text-center text-[#bf9310] font-medium mb-2">
         {daysOfWeek.map((dayName, index) => (
           <div key={index} className="py-1 border-b border-gray-700">
@@ -75,7 +83,7 @@ export default function SimpleCalendar({
         ))}
       </div>
 
-      {/* তারিখের গ্রিড */}
+      {/* ===== 🔹 Date Grid ===== */}
       <div className="grid grid-cols-7 gap-1 text-center">
         {days.map((dayItem) => {
           const isCurrentMonth = isSameMonth(dayItem, currentMonth);

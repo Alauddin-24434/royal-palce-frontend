@@ -1,7 +1,12 @@
+// ====================================================
+// 🧾 TeamSection Component - Showcase key staff members with images, titles & badges
+// ====================================================
+
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Award, Users } from 'lucide-react';
 
+// ===== 👥 Team Member Data =====
 const teamMembers = [
   {
     name: 'Alexander Windsor',
@@ -19,7 +24,6 @@ const teamMembers = [
       'Your first point of contact, ensuring every guest feels like royalty',
     specialty: 'Guest Relations',
   },
-
   {
     name: 'Sophia Blackwood',
     role: 'Room Service Manager',
@@ -27,7 +31,6 @@ const teamMembers = [
     description: 'Delivering exceptional in-room dining experiences 24/7',
     specialty: 'Premium Service',
   },
-
   {
     name: 'Victoria Ashford',
     role: 'Housekeeping Supervisor',
@@ -39,11 +42,11 @@ const teamMembers = [
 
 export default function TeamSection() {
   return (
-    <section className="py-24  to-white">
+    <section className="py-24 to-white">
       <div className="container mx-auto px-4">
-        {/* Header */}
+        {/* ===== 🏷️ Section Header ===== */}
         <div className="mb-20">
-          {/* Title Decoration */}
+          {/* Decorative Title Bar */}
           <div className="flex items-center justify-center mb-8">
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
             <div className="flex items-center">
@@ -64,7 +67,7 @@ export default function TeamSection() {
           </h1>
         </div>
 
-        {/* Team Grid */}
+        {/* ===== 🧑‍💼 Team Grid Cards ===== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
             <Card
@@ -72,7 +75,9 @@ export default function TeamSection() {
               className="group hover:shadow-2xl transition-all duration-500 border-0 bg-main hover:-translate-y-2 p-0 rounded-none"
             >
               <CardContent className="p-0">
+                {/* ==== 👤 Image & Badge ==== */}
                 <div className="relative overflow-hidden">
+                  {/* Team Member Image */}
                   <div className="aspect-square relative">
                     <Image
                       src={member.image || '/placeholder.svg'}
@@ -80,6 +85,7 @@ export default function TeamSection() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
+                    {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
 
@@ -91,6 +97,7 @@ export default function TeamSection() {
                   </div>
                 </div>
 
+                {/* ==== 📋 Name & Role ==== */}
                 <div className="p-6">
                   <div className="mb-3">
                     <h3 className="text-xl font-bold text-foreground mb-1">

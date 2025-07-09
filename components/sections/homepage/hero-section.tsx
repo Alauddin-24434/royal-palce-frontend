@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 HeroSection Component - Fullscreen hero with background image, overlay, title, description, and booking form
+// ====================================================
+
 'use client';
 
 import Image from 'next/image';
@@ -13,7 +17,7 @@ const HeroSection = () => {
 
   const router = useRouter();
 
-  // Handles form submission with validation and redirects to room check page
+  // ===== Handle booking search form submission with validation =====
   const handleSearch = () => {
     if (!checkIn || !checkOut) {
       alert('Please select check-in and check-out dates.');
@@ -23,7 +27,7 @@ const HeroSection = () => {
       alert('Check-out date must be after check-in date.');
       return;
     }
-
+    // Redirect to check-rooms page with query parameters
     router.push(
       `/check-rooms?checkInDate=${checkIn}&checkOutDate=${checkOut}&adults=${adults}&children=${children}`,
     );
@@ -31,7 +35,7 @@ const HeroSection = () => {
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden p-4">
-      {/*============== Background image with dark overlay=================== */}
+      {/* ===== Background image with dark overlay ===== */}
       <Image
         src="/images/Hero-Banner.webp"
         alt="Luxury Resort"
@@ -41,7 +45,7 @@ const HeroSection = () => {
       />
       <div className="absolute inset-0 bg-black/60" />
 
-      {/*============================= Hero content with title and description=================== */}
+      {/* ===== Hero content: title, description, and booking form ===== */}
       <div className="relative z-10 max-w-5xl px-4">
         <h1 className="text-base sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-6">
           Discover The Perfect
@@ -53,7 +57,7 @@ const HeroSection = () => {
           where every moment becomes a cherished memory.
         </p>
 
-        {/*=========================== Booking form section========================================== */}
+        {/* ===== Booking form ===== */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -129,7 +133,7 @@ const HeroSection = () => {
             </select>
           </div>
 
-          {/*================================ Submit button for room availability ===============================*/}
+          {/* Submit button */}
           <button
             type="submit"
             className="sm:col-span-2 md:col-span-4 cursor-pointer bg-[#bf9310] text-foreground font-bold rounded-md py-3 mt-4 sm:mt-0 hover:bg-yellow-500 transition"

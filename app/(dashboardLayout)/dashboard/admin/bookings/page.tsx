@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 AdminBookingsPage Component - Booking Management Dashboard
+// ====================================================
+
 'use client';
 
 import React, { useState } from 'react';
@@ -45,29 +49,27 @@ interface Booking {
   status: string;
 }
 
-// ===== Component =====
-
 export default function AdminBookingsPage() {
-  // ===== State variables =====
+  // ===== 🔹 State variables =====
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState<Room[]>([]);
 
-  // ===== Fetch bookings with filters =====
+  // ===== 🔹 Fetch bookings with applied search and status filters =====
   const { data: bookingData, isLoading: bookingLoading } =
     useGetAllBookingsQuery({
       searchTerm,
       status: statusFilter === 'all' ? '' : statusFilter,
     });
 
-  // ===== Open modal & set selected rooms =====
+  // ===== 🔹 Open modal & set selected rooms =====
   const openRoomsModal = (rooms: Room[]) => {
     setSelectedRooms(rooms);
     setModalOpen(true);
   };
 
-  // ===== Close modal & clear rooms =====
+  // ===== 🔹 Close modal & clear rooms =====
   const closeModal = () => {
     setModalOpen(false);
     setSelectedRooms([]);
@@ -75,14 +77,14 @@ export default function AdminBookingsPage() {
 
   return (
     <div className="space-y-6 p-4 min-h-screen">
-      {/* ===== Page Title ===== */}
+      {/* ===== 🔹 Page Title ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold text-foreground">
           Booking Management
         </h1>
       </div>
 
-      {/* ===== Filters Section ===== */}
+      {/* ===== 🔹 Filters Section ===== */}
       <Card className="bg-main border rounded-md">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -98,10 +100,7 @@ export default function AdminBookingsPage() {
             </div>
 
             {/* Status Filter Select */}
-            <Select
-              onValueChange={(value) => setStatusFilter(value)}
-              defaultValue="all"
-            >
+            <Select onValueChange={setStatusFilter} defaultValue="all">
               <SelectTrigger className="w-full sm:w-48 bg-main border text-foreground rounded-md">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -116,7 +115,7 @@ export default function AdminBookingsPage() {
         </CardContent>
       </Card>
 
-      {/* ===== Bookings Table ===== */}
+      {/* ===== 🔹 Bookings Table ===== */}
       <Card className="bg-main border rounded-md">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
@@ -243,7 +242,7 @@ export default function AdminBookingsPage() {
         </CardContent>
       </Card>
 
-      {/* ===== Modal for Room Details ===== */}
+      {/* ===== 🔹 Modal for Room Details ===== */}
       {modalOpen && (
         <div className="fixed inset-0 bg-main bg-opacity-70 flex justify-center items-center p-4 z-50">
           <div className="bg-main rounded-md max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-lg relative">

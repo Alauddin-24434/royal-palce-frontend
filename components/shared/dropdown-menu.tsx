@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾 DropdownMenuInNav Component - User avatar dropdown with dashboard & logout
+// ====================================================
+
 import { useState, useEffect } from 'react';
 import {
   DropdownMenu,
@@ -15,15 +19,14 @@ import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import Link from 'next/link';
 import { JwtPayload } from '@/types/auth.interface';
 
-//==== === DropdownMenuInNav Component: User avatar dropdown menu with dashboard and logout === ===//
 export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
-  //==== === Get user info from Redux store === ===//
+  // ===== Get user from Redux store =====
   const user = useSelector(selectCurrentUser);
 
-  //==== === Local state to store fetched user role === ===//
+  // ===== Local state for user role fetched from backend =====
   const [role, setRole] = useState<JwtPayload['role'] | null>(null);
 
-  //==== === Fetch user role from backend on mount === ===//
+  // ===== Fetch user role on component mount =====
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -32,7 +35,7 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
           credentials: 'include',
         });
 
-        if (!res.ok) throw new Error('Failed to fetch');
+        if (!res.ok) throw new Error('Failed to fetch user role');
 
         const data = await res.json();
         setRole(data?.user?.role);
@@ -45,11 +48,11 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
     fetchUser();
   }, []);
 
-  //==== === Determine current role with fallback to Redux user or 'guest' === ===//
+  // ===== Determine current role: backend role > redux role > guest fallback =====
   const currentRole: JwtPayload['role'] =
     role ?? (user?.role as JwtPayload['role']) ?? 'guest';
 
-  //==== === Set dashboard route based on user role === ===//
+  // ===== Map user role to dashboard route =====
   const dashboardRoute = (() => {
     switch (currentRole) {
       case 'admin':
@@ -57,12 +60,15 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
       case 'receptionist':
         return '/dashboard/receptionist';
       case 'guest':
-      default:
         return '/dashboard/user';
+      default:
+
+        return '/login';
     }
   })();
 
-  //==== === Render dropdown menu === ===//
+
+  // ===== Render Dropdown Menu =====
   return (
     <DropdownMenu>
       {user && (
@@ -78,6 +84,7 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
 
       <DropdownMenuContent className="w-56" align="start">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
         <DropdownMenuGroup>
           <Link href={dashboardRoute} passHref>
             <DropdownMenuItem>
@@ -86,6 +93,7 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
 
         <DropdownMenuItem onClick={onClick}>

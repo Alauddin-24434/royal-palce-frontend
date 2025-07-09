@@ -1,20 +1,31 @@
+// ====================================================
+// 🧾 Room API Endpoints Module
+// ====================================================
+
 import baseApi from '@/redux/api/baseApi';
 
 const roomApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    // ===== ✅ Create a new room =====
     createRoom: build.mutation({
       query: (body) => ({
         url: '/rooms',
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Room'],
     }),
+
+    // ===== ✅ Get all rooms =====
     findAllRooms: build.query({
       query: () => ({
         url: '/rooms',
         method: 'GET',
       }),
+      providesTags: ['Room'],
     }),
+
+    // ===== 🔍 Filter rooms with search, date, guest & price params =====
     filterAllRooms: build.query({
       query: (params) => {
         const queryParams = new URLSearchParams();
@@ -40,38 +51,48 @@ const roomApi = baseApi.injectEndpoints({
           method: 'GET',
         };
       },
+      providesTags: ['Room'],
     }),
 
+    // ===== ✅ Get single room by ID =====
     findSingleRoom: build.query({
       query: (id) => ({
         url: `/rooms/${id}`,
         method: 'GET',
       }),
+      providesTags: ['Room'],
     }),
+
+    // ===== ✅ Update room by ID =====
     updateRoom: build.mutation({
       query: ({ id, ...formData }) => ({
         url: `/rooms/${id}`,
-        method: 'PATCH', // or PUT, depending on your API
+        method: 'PATCH',
         body: formData,
       }),
+      invalidatesTags: ['Room'],
     }),
+
+    // ===== ✅ Delete room by ID =====
     deleteRoom: build.mutation({
       query: (id) => ({
         url: `/rooms/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Room'],
     }),
   }),
   overrideExisting: false,
 });
 
+// =====  Hooks export =====
 export const {
   useCreateRoomMutation,
   useFindAllRoomsQuery,
+  useFilterAllRoomsQuery,
   useFindSingleRoomQuery,
   useUpdateRoomMutation,
   useDeleteRoomMutation,
-  useFilterAllRoomsQuery,
 } = roomApi;
 
 export default roomApi;

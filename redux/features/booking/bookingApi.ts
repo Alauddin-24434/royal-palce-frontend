@@ -1,8 +1,12 @@
+// ====================================================
+// 🧾 Booking API Endpoints Module
+// ====================================================
+
 import baseApi from '@/redux/api/baseApi';
 
 const bookingApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // ✅ Initiate Booking
+    // ===== ✅ Initiate Booking =====
     bookingInitiate: build.mutation({
       query: (body) => ({
         url: '/bookings',
@@ -12,7 +16,7 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ['Booking'],
     }),
 
-    // ✅ Cancel Booking
+    // ===== ✅ Cancel Booking by booking ID =====
     cancelBooking: build.mutation({
       query: (id: string) => ({
         url: `/bookings/${id}`,
@@ -21,7 +25,7 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ['Booking'],
     }),
 
-    // ✅ Get All Bookings (with optional filters)
+    // ===== ✅ Get All Bookings (with optional filters) =====
     getAllBookings: build.query({
       query: (params) => ({
         url: '/bookings',
@@ -31,7 +35,7 @@ const bookingApi = baseApi.injectEndpoints({
       providesTags: ['Booking'],
     }),
 
-    // ✅ Get Booking By ID
+    // ===== ✅ Get Booking By ID =====
     getBookingById: build.query({
       query: (id: string) => ({
         url: `/bookings/${id}`,
@@ -40,7 +44,7 @@ const bookingApi = baseApi.injectEndpoints({
       providesTags: ['Booking'],
     }),
 
-    // ✅ Get Bookings by User ID
+    // ===== ✅ Get Bookings by User ID =====
     getBookingsByUserId: build.query({
       query: (id: string) => ({
         url: `/bookings/userId/${id}`,
@@ -49,7 +53,7 @@ const bookingApi = baseApi.injectEndpoints({
       providesTags: ['Booking'],
     }),
 
-    // ✅ Get Booked Dates for a Room
+    // ===== ✅ Get Booked Dates for a Room/User =====
     getBookedDates: build.query<string[], string>({
       query: (userId) => ({
         url: `/bookings/${userId}`,
@@ -66,7 +70,7 @@ const bookingApi = baseApi.injectEndpoints({
       providesTags: ['Booking'],
     }),
 
-    // ========= cancel booking by roomId========================
+    // ===== ⚠️ Duplicate Cancel Booking Mutation (typo in name 'cnacelBooking') =====
     cnacelBooking: build.mutation({
       query: (id: string) => ({
         url: `/bookings/${id}`,
@@ -75,8 +79,10 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ['Booking'],
     }),
   }),
+  overrideExisting: false,
 });
 
+// ===== Hooks export =====
 export const {
   useBookingInitiateMutation,
   useCancelBookingMutation,

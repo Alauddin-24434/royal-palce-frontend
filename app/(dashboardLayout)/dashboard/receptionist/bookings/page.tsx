@@ -1,3 +1,7 @@
+// ====================================================
+// 🧾  Receptionist Bookings Page Component
+// ====================================================
+
 'use client';
 
 import React, { useState } from 'react';
@@ -23,7 +27,7 @@ import {
 import { Search, Eye, Edit, Trash2, X } from 'lucide-react';
 import { useGetAllBookingsQuery } from '@/redux/features/booking/bookingApi';
 
-// ===== Types =====
+// ===== 🔹 Type Definitions =====
 
 interface Room {
   _id: string;
@@ -45,29 +49,29 @@ interface Booking {
   status: string;
 }
 
-// ===== Component =====
+// ===== 🔁 ReceptionistBookingsPage Component =====
 
 export default function ReceptionistBookingsPage() {
-  // ===== State variables =====
+  // ===== 🔹 State variables =====
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState<Room[]>([]);
 
-  // ===== Fetch bookings with filters =====
+  // ===== 🔹 Fetch bookings with applied filters =====
   const { data: bookingData, isLoading: bookingLoading } =
     useGetAllBookingsQuery({
       searchTerm,
       status: statusFilter === 'all' ? '' : statusFilter,
     });
 
-  // ===== Open modal & set selected rooms =====
+  // ===== 🔁 Open modal and set selected rooms =====
   const openRoomsModal = (rooms: Room[]) => {
     setSelectedRooms(rooms);
     setModalOpen(true);
   };
 
-  // ===== Close modal & clear rooms =====
+  // ===== 🔁 Close modal and clear selected rooms =====
   const closeModal = () => {
     setModalOpen(false);
     setSelectedRooms([]);
@@ -75,18 +79,18 @@ export default function ReceptionistBookingsPage() {
 
   return (
     <div className="space-y-6 p-4 min-h-screen">
-      {/* ===== Page Title ===== */}
+      {/* ===== 🔹 Page Title ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold text-foreground">
           Booking Management
         </h1>
       </div>
 
-      {/* ===== Filters Section ===== */}
+      {/* ===== 🔹 Filters Section ===== */}
       <Card className="bg-main border rounded-md">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
-            {/* Search Input */}
+            {/* 🔍 Search Input */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-foreground" />
               <Input
@@ -97,7 +101,7 @@ export default function ReceptionistBookingsPage() {
               />
             </div>
 
-            {/* Status Filter Select */}
+            {/* 🔽 Status Filter Select */}
             <Select
               onValueChange={(value) => setStatusFilter(value)}
               defaultValue="all"
@@ -116,7 +120,7 @@ export default function ReceptionistBookingsPage() {
         </CardContent>
       </Card>
 
-      {/* ===== Bookings Table ===== */}
+      {/* ===== 🔹 Bookings Table Section ===== */}
       <Card className="bg-main border rounded-md">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
@@ -145,12 +149,12 @@ export default function ReceptionistBookingsPage() {
                       key={booking._id}
                       className="border-b hover:bg-[#2a2d38] transition"
                     >
-                      {/* Booking Name */}
+                      {/* 🧾 Booking Name */}
                       <TableCell className="font-medium text-foreground">
                         {booking.name}
                       </TableCell>
 
-                      {/* Guest name and email */}
+                      {/* 🧾 Guest Name and Email */}
                       <TableCell>
                         <div>
                           <p className="font-medium text-foreground">
@@ -162,7 +166,7 @@ export default function ReceptionistBookingsPage() {
                         </div>
                       </TableCell>
 
-                      {/* Rooms button to open modal */}
+                      {/* 🔍 Rooms count button triggers modal */}
                       <TableCell>
                         <Button
                           variant="outline"
@@ -175,12 +179,12 @@ export default function ReceptionistBookingsPage() {
                         </Button>
                       </TableCell>
 
-                      {/* Total amount */}
+                      {/* 🧾 Total Amount */}
                       <TableCell className="font-semibold text-amber-400">
                         ${booking.totalAmount.toFixed(2)}
                       </TableCell>
 
-                      {/* Booking status badge */}
+                      {/* 🧾 Booking Status Badge */}
                       <TableCell>
                         <Badge
                           variant={
@@ -205,7 +209,7 @@ export default function ReceptionistBookingsPage() {
                         </Badge>
                       </TableCell>
 
-                      {/* Action buttons (View, Edit, Delete) */}
+                      {/* 🔁 Action Buttons: View, Edit, Delete */}
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <Button
@@ -243,10 +247,11 @@ export default function ReceptionistBookingsPage() {
         </CardContent>
       </Card>
 
-      {/* ===== Modal for Room Details ===== */}
+      {/* ===== 🔹 Modal: Room Details ===== */}
       {modalOpen && (
         <div className="fixed inset-0 bg-main bg-opacity-70 flex justify-center items-center p-4 z-50">
           <div className="bg-main rounded-md max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-lg relative">
+            {/* Modal Header */}
             <div className="flex justify-between items-center p-4 border-b">
               <h3 className="text-xl font-semibold text-foreground">
                 Room Details
@@ -259,6 +264,8 @@ export default function ReceptionistBookingsPage() {
                 <X className="h-6 w-6" />
               </button>
             </div>
+
+            {/* Modal Content */}
             <div className="p-4 space-y-4">
               {selectedRooms.length === 0 ? (
                 <p className="text-foreground">No rooms available</p>

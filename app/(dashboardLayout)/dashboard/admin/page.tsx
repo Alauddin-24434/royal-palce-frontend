@@ -31,8 +31,10 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h2>
-        <p className="text-slate-400">System-wide overview and statistics</p>
+        <h2 className="text-3xl font-bold text-foreground mb-2">
+          Admin Dashboard
+        </h2>
+        <p className="text-foreground">System-wide overview and statistics</p>
       </div>
 
       <div
@@ -41,19 +43,19 @@ export default function AdminDashboard() {
         {stats.map((stat: any, index: number) => {
           const Icon = require('lucide-react')[stat.icon] || UserCheck;
           return (
-            <Card key={index} className="bg-[#191a1e]">
+            <Card key={index} className="bg-main">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-slate-300">
+                <CardTitle className="text-sm font-medium text-foreground">
                   {stat.title}
                 </CardTitle>
                 <Icon className={`h-4 w-4 ${stat.color}`} />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">
+                <div className="text-2xl font-bold text-foreground">
                   {stat.value}
                 </div>
                 {stat.change && (
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-foreground">
                     <span
                       className={
                         stat.change.startsWith('+')
@@ -73,24 +75,26 @@ export default function AdminDashboard() {
       </div>
 
       <div className="mt-6">
-        <Card className="bg-[#191a1e]">
+        <Card className="bg-main">
           <CardHeader>
-            <CardTitle className="text-white">Recent Bookings</CardTitle>
+            <CardTitle className="text-foreground">Recent Bookings</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {bookings.map((booking: any) => (
                 <div
                   key={booking._id}
-                  className="flex items-center justify-between p-4 bg-[#191a1e] rounded-lg"
+                  className="flex items-center justify-between p-4 bg-main rounded-lg"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full flex items-center justify-center">
-                      <UserCheck className="h-5 w-5 text-slate-900" />
+                    <div className="w-10 h-10 bg-main rounded-full flex items-center justify-center">
+                      <UserCheck className="h-5 w-5 text-foreground" />
                     </div>
                     <div>
-                      <p className="font-medium text-white">{booking.guest}</p>
-                      <p className="text-sm text-slate-400">{booking.room}</p>
+                      <p className="font-medium text-foreground">
+                        {booking.guest}
+                      </p>
+                      <p className="text-sm text-foreground">{booking.room}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">

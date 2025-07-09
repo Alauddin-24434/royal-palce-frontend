@@ -9,6 +9,7 @@ import { Star, ChevronLeft, ChevronRight, ArrowRight, Bed } from 'lucide-react';
 import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
 import Image from 'next/image';
 import Link from 'next/link';
+import Pagination from '@/components/shared/pagination';
 
 interface IRoom {
   _id: string;
@@ -186,41 +187,11 @@ export default function RoomsPage() {
       </div>
 
       {/* ===== Pagination controls ===== */}
-      <div className="flex justify-center flex-wrap gap-2 mt-10">
-        <Button
-          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-          disabled={page === 1}
-          className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </Button>
-
-        {Array.from({ length: totalPages }).map((_, i) => {
-          const pageNumber = i + 1;
-          const isActive = page === pageNumber;
-          return (
-            <Button
-              key={pageNumber}
-              onClick={() => setPage(pageNumber)}
-              className={
-                isActive
-                  ? 'bg-[#bf9310] text-white hover:bg-[#a87e0d]'
-                  : 'border border-[#bf9310] text-[#bf9310] bg-white hover:bg-[#fce9b9]'
-              }
-            >
-              {pageNumber}
-            </Button>
-          );
-        })}
-
-        <Button
-          onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
-          disabled={page === totalPages}
-          className="bg-[#bf9310] text-white hover:bg-[#a87e0d]"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </Button>
-      </div>
+      <Pagination
+        page={page}
+        totalPages={totalPages} // your calculated value
+        setPage={setPage}
+      />
     </div>
   );
 }
