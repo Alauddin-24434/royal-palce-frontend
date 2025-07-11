@@ -119,177 +119,185 @@ export default function RoyalCheckoutPage() {
   };
 
   return (
-   <PrivateRoute>
-     <div className="min-h-screen bg-background text-foreground py-10 px-4">
-      {/* ===== Title Section ===== */}
-      <div className="flex items-center justify-center pb-10 px-4 text-center flex-wrap">
-        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
-        <div className="flex items-center justify-center">
-          <Bed className="w-5 h-5 sm:w-6 sm:h-6 title mr-2" />
-          <h2 className="title text-base sm:text-lg md:text-xl font-medium tracking-[0.2em] uppercase">
-            Chekout Rooms
-          </h2>
-          <Bed className="w-5 h-5 sm:w-6 sm:h-6 title ml-2" />
+    <PrivateRoute>
+      <div className="min-h-screen bg-background text-foreground py-10 px-4">
+        {/* ===== Title Section ===== */}
+        <div className="flex items-center justify-center pb-10 px-4 text-center flex-wrap">
+          <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
+          <div className="flex items-center justify-center">
+            <Bed className="w-5 h-5 sm:w-6 sm:h-6 title mr-2" />
+            <h2 className="title text-base sm:text-lg md:text-xl font-medium tracking-[0.2em] uppercase">
+              Chekout Rooms
+            </h2>
+            <Bed className="w-5 h-5 sm:w-6 sm:h-6 title ml-2" />
+          </div>
+          <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 ml-4" />
         </div>
-        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 ml-4" />
-      </div>
 
-      {/* If Cart is Empty */}
-      {cartItems.length === 0 ? (
-        <div className="container mx-auto flex flex-col items-center text-center space-y-6 py-20">
-          <ShoppingCart className="w-16 h-16 text-muted-foreground" />
-          <p className="text-xl font-medium text-muted-foreground">
-            Your booking cart is empty
-          </p>
-          <Link href="/rooms">
-            <Button
-              variant="default"
-              className="bg-yellow-500 hover:bg-yellow-600 text-black"
-            >
-              Explore Rooms
-            </Button>
-          </Link>
-        </div>
-      ) : (
-        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* LEFT SIDE */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex justify-between items-center border p-2 rounded-md">
-              <h3 className="text-xl font-semibold">Selected Rooms</h3>
-              <Button onClick={handleClearCart} variant="destructive" size="sm">
-                Clear Cart
-              </Button>
-            </div>
-
-            {cartSummary.map((cart, idx) => (
-              <Card
-                key={idx}
-                className="bg-main border border-yellow-500/20 shadow"
+        {/* If Cart is Empty */}
+        {cartItems.length === 0 ? (
+          <div className="container mx-auto flex flex-col items-center text-center space-y-6 py-20">
+            <ShoppingCart className="w-16 h-16 text-muted-foreground" />
+            <p className="text-xl font-medium text-muted-foreground">
+              Your booking cart is empty
+            </p>
+            <Link href="/rooms">
+              <Button
+                variant="default"
+                className="bg-yellow-500 hover:bg-yellow-600 text-black"
               >
-                <CardContent className="p-4 flex flex-col sm:flex-row gap-4">
-                  <div className="relative w-full sm:w-28 h-28 rounded overflow-hidden">
-                    <Image
-                      src={cart.room.image}
-                      alt="room"
-                      fill
-                      className="object-cover rounded"
-                    />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <h4 className="text-lg font-bold">{cart.room.name}</h4>
-                    <p className="text-sm">
-                      ${cart.room.price} x {cart.nights} nights ={' '}
-                      <span className="text-yellow-500 font-semibold">
-                        ${cart.subtotal.toFixed(2)}
-                      </span>
-                    </p>
-                    <p className="text-xs">Check-in: {cart.room.checkInDate}</p>
-                    <p className="text-xs">
-                      Check-out: {cart.room.checkOutDate}
-                    </p>
-                    <Button
-                      onClick={() => handleRemove(cart.room.roomId)}
-                      variant="outline"
-                      size="sm"
-                      className="text-red-500 border-red-300 hover:bg-red-100"
-                    >
-                      Remove
-                    </Button>
-                  </div>
+                Explore Rooms
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* LEFT SIDE */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="flex justify-between items-center border p-2 rounded-md">
+                <h3 className="text-xl font-semibold">Selected Rooms</h3>
+                <Button
+                  onClick={handleClearCart}
+                  variant="destructive"
+                  size="sm"
+                >
+                  Clear Cart
+                </Button>
+              </div>
+
+              {cartSummary.map((cart, idx) => (
+                <Card
+                  key={idx}
+                  className="bg-main border border-yellow-500/20 shadow"
+                >
+                  <CardContent className="p-4 flex flex-col sm:flex-row gap-4">
+                    <div className="relative w-full sm:w-28 h-28 rounded overflow-hidden">
+                      <Image
+                        src={cart.room.image}
+                        alt="room"
+                        fill
+                        className="object-cover rounded"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <h4 className="text-lg font-bold">{cart.room.name}</h4>
+                      <p className="text-sm">
+                        ${cart.room.price} x {cart.nights} nights ={' '}
+                        <span className="text-yellow-500 font-semibold">
+                          ${cart.subtotal.toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs">
+                        Check-in: {cart.room.checkInDate}
+                      </p>
+                      <p className="text-xs">
+                        Check-out: {cart.room.checkOutDate}
+                      </p>
+                      <Button
+                        onClick={() => handleRemove(cart.room.roomId)}
+                        variant="outline"
+                        size="sm"
+                        className="text-red-500 border-red-300 hover:bg-red-100"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {/* Guest Form */}
+              <Card className="bg-main">
+                <CardHeader>
+                  <CardTitle className="text-foreground">
+                    Your Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <InputField
+                    label="Full Name"
+                    value={name}
+                    onChange={setName}
+                    required
+                  />
+                  <InputField
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    required
+                  />
+                  <InputField
+                    label="Phone"
+                    type="tel"
+                    value={phone}
+                    onChange={setPhone}
+                    required
+                  />
+                  <InputField
+                    label="Address"
+                    value={address}
+                    onChange={setAddress}
+                    required
+                  />
+                  <InputField
+                    label="City"
+                    value={city}
+                    onChange={setCity}
+                    required
+                  />
                 </CardContent>
               </Card>
-            ))}
+            </div>
 
-            {/* Guest Form */}
-            <Card className="bg-main">
-              <CardHeader>
-                <CardTitle className="text-foreground">Your Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <InputField
-                  label="Full Name"
-                  value={name}
-                  onChange={setName}
-                  required
-                />
-                <InputField
-                  label="Email"
-                  type="email"
-                  value={email}
-                  onChange={setEmail}
-                  required
-                />
-                <InputField
-                  label="Phone"
-                  type="tel"
-                  value={phone}
-                  onChange={setPhone}
-                  required
-                />
-                <InputField
-                  label="Address"
-                  value={address}
-                  onChange={setAddress}
-                  required
-                />
-                <InputField
-                  label="City"
-                  value={city}
-                  onChange={setCity}
-                  required
-                />
-              </CardContent>
-            </Card>
+            {/* RIGHT SIDE */}
+            <div className="sticky top-24 space-y-6">
+              <Card className="bg-main shadow border">
+                <CardHeader>
+                  <CardTitle className="text-foreground">
+                    Booking Summary
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>${totalAmount.toFixed(2)}</span>
+                  </div>
+                  <div className="pt-4 border-t">
+                    <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Award className="w-4 h-4" />
+                      Royal Inclusions
+                    </h4>
+                    <ul className="text-sm space-y-1 text-green-400">
+                      <li className="flex items-center gap-2">
+                        <Check className="w-4 h-4" />
+                        Breakfast Included
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-4 h-4" />
+                        Spa Access
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-4 h-4" />
+                        Free Cancellation
+                      </li>
+                    </ul>
+                  </div>
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="w-full bg-yellow-500 text-black font-bold hover:bg-yellow-600"
+                  >
+                    {isSubmitting ? 'Processing...' : 'Confirm Booking'}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-
-          {/* RIGHT SIDE */}
-          <div className="sticky top-24 space-y-6">
-            <Card className="bg-main shadow border">
-              <CardHeader>
-                <CardTitle className="text-foreground">
-                  Booking Summary
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${totalAmount.toFixed(2)}</span>
-                </div>
-                <div className="pt-4 border-t">
-                  <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                    <Award className="w-4 h-4" />
-                    Royal Inclusions
-                  </h4>
-                  <ul className="text-sm space-y-1 text-green-400">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4" />
-                      Breakfast Included
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4" />
-                      Spa Access
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4" />
-                      Free Cancellation
-                    </li>
-                  </ul>
-                </div>
-                <Button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="w-full bg-yellow-500 text-black font-bold hover:bg-yellow-600"
-                >
-                  {isSubmitting ? 'Processing...' : 'Confirm Booking'}
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      )}
-      <Toaster position="top-right" />
-    </div>
-   </PrivateRoute>
+        )}
+        <Toaster position="top-right" />
+      </div>
+    </PrivateRoute>
   );
 }
 

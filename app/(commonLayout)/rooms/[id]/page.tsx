@@ -7,6 +7,7 @@ import RoomReviewsSection from '@/components/sections/roomDetailsPage/room-revie
 import { useFindSingleRoomQuery } from '@/redux/features/room/room.api';
 import { useParams } from 'next/navigation';
 import PrivateRoute from '@/privateRoute/privateRoute';
+import { motion } from 'framer-motion';
 
 export default function RoomDetailsPage() {
   const params = useParams();
@@ -30,7 +31,12 @@ export default function RoomDetailsPage() {
     <PrivateRoute>
       <div className="min-h-screen text-white overflow-x-hidden">
         {/* ===== Title Section ===== */}
-        <div className="flex items-center justify-center py-6 sm:py-10 px-4 text-center flex-wrap">
+        <motion.div
+          className="flex items-center justify-center py-6 sm:py-10 px-4 text-center flex-wrap"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
           <div className="flex items-center justify-center">
             <Bed className="w-5 h-5 sm:w-6 sm:h-6 title mr-2" />
@@ -40,21 +46,32 @@ export default function RoomDetailsPage() {
             <Bed className="w-5 h-5 sm:w-6 sm:h-6 title ml-2" />
           </div>
           <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 ml-4" />
-        </div>
+        </motion.div>
 
         {/* ===== Main Content ===== */}
         <div className="container mx-auto space-y-12 px-4 sm:px-6 lg:px-8">
           {/* ===== Room Image Gallery ===== */}
-          {room?.images?.length ? (
-            <RoomImageGallery room={room} />
-          ) : (
-            <div className="w-full h-64 bg-gray-100 flex items-center justify-center rounded-md text-gray-500">
-              No images available
-            </div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {room?.images?.length ? (
+              <RoomImageGallery room={room} />
+            ) : (
+              <div className="w-full h-64 bg-gray-100 flex items-center justify-center rounded-md text-gray-500">
+                No images available
+              </div>
+            )}
+          </motion.div>
 
           {/* ===== Room Info and Features ===== */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             {/* === Room Description === */}
             <div>
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 title">
@@ -65,8 +82,9 @@ export default function RoomDetailsPage() {
                   'Every Signature Room is luxurious, with panoramic views, stunning original architecture and 24-hour personal concierge service.'}
               </p>
               <p className="text-foreground leading-relaxed text-sm sm:text-base md:text-lg">
-                Each room is individually designed with a private marble bathroom,
-                luxury amenities, flat-screen TV, free Wi-Fi, and more.
+                Each room is individually designed with a private marble
+                bathroom, luxury amenities, flat-screen TV, free Wi-Fi, and
+                more.
               </p>
             </div>
 
@@ -101,11 +119,25 @@ export default function RoomDetailsPage() {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* ===== Booking Calendar & Reviews Section ===== */}
-          <DateRangeCalendar room={room} />
-          <RoomReviewsSection roomId={id as string} />
+          {/* ===== Booking Calendar Section ===== */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <DateRangeCalendar room={room} />
+          </motion.div>
+
+          {/* ===== Room Reviews Section ===== */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <RoomReviewsSection roomId={id as string} />
+          </motion.div>
         </div>
       </div>
     </PrivateRoute>

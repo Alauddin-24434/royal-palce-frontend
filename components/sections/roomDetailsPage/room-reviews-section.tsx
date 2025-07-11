@@ -89,7 +89,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
   // ========== 🔁 Delete Review Handler ========== //
   const handleDeleteReview = async (id: string) => {
     try {
-      await deleteTestimonial(id)
+      await deleteTestimonial(id);
       toast.success('Review deleted successfully!');
       refetch(); // ✅ Refresh after deletion
     } catch (error) {
@@ -99,14 +99,6 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
 
   return (
     <section className="relative py-20 overflow-x-hidden">
-      {/* ===== 🔹 Decorative Background Pattern ===== */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-20 w-32 h-32 border border-amber-400 rotate-45" />
-        <div className="absolute bottom-20 right-20 w-24 h-24 border border-amber-400 rotate-12" />
-        <Sparkles className="absolute top-16 right-16 w-12 h-12 text-amber-400/20 animate-pulse" />
-        <Crown className="absolute bottom-32 left-32 w-16 h-16 text-amber-400/15 animate-float" />
-      </div>
-
       <div className="container mx-auto px-4 relative z-10">
         {/* ===== 🔹 Section Header ===== */}
         <div className="text-center mb-16">
@@ -269,7 +261,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
                           <button
                             onClick={() => handleDeleteReview(review._id)}
                             title="Delete review"
-                            className="px-4 py-2 border border-red-500 text-red-500 rounded-md 
+                            className="px-4 py-2 border border-red-500 text-red-500 rounded-md cursor-pointer
                hover:bg-red-500 hover:text-white transition-colors duration-300"
                           >
                             Delete

@@ -3,14 +3,20 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { selectCurrentUser, selectAuthLoading } from '@/redux/features/auth/authSlice';
+import {
+  selectCurrentUser,
+  selectAuthLoading,
+} from '@/redux/features/auth/authSlice';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
   allowedRoles?: string[]; // ✅ Optional Role Guard
 }
 
-export default function PrivateRoute({ children, allowedRoles }: PrivateRouteProps) {
+export default function PrivateRoute({
+  children,
+  allowedRoles,
+}: PrivateRouteProps) {
   const user = useSelector(selectCurrentUser);
   const loading = useSelector(selectAuthLoading);
   const router = useRouter();

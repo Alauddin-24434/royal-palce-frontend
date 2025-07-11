@@ -1,14 +1,10 @@
-// ====================================================
-// 🧾 SocketNotificationListener Component - Listen to socket events and add notifications to store
-// ====================================================
-
 'use client';
 
 import { useEffect } from 'react';
-import { useNotificationStore } from '@/zustand/useNotificationStore';
 import { useSocket } from '@/hooks/useSocket';
+import { useAppDispatch } from '@/redux/hooks'; // তোমার redux hooks থেকে import করো
+import { addNotification } from '@/redux/features/notifications/notificationsSlice';
 
-// ===== Define socket events and corresponding message format =====
 const EVENTS: { event: string; getMessage: (payload: any) => string }[] = [
   {
     event: 'booking-created',
@@ -38,34 +34,32 @@ const EVENTS: { event: string; getMessage: (payload: any) => string }[] = [
 
 const SocketNotificationListener = () => {
   const socket = useSocket();
-  const addNotification = useNotificationStore(
-    (state) => state.addNotification,
-  );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!socket) return;
 
-    // ===== Register event handlers for each socket event =====
     const handlers = EVENTS.map(({ event, getMessage }) => {
       const handler = (payload: any) => {
-        addNotification({
-          id: payload.id || payload._id || `${event}-${Date.now()}`,
-          message: getMessage(payload),
-          time: new Date().toISOString(),
-          isRead: false,
-        });
+        dispatch(
+          addNotification({
+            id: payload.id || payload._id || `${event}-${Date.now()}`,
+            message: getMessage(payload),
+            time: new Date().toISOString(),
+            isRead: false,
+          }),
+        );
       };
       socket.on(event, handler);
       return { event, handler };
     });
 
-    // ===== Cleanup: Remove all event handlers on unmount or socket change =====
     return () => {
       handlers.forEach(({ event, handler }) => {
         socket.off(event, handler);
       });
     };
-  }, [socket, addNotification]);
+  }, [socket, dispatch]);
 
   return null;
 };

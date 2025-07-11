@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import Link from 'next/link';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
 type MenuItem = {
   title: string;
@@ -24,7 +24,7 @@ const RoleBasedSidebarMenu = ({ items, pathname }: RoleBasedMenuProps) => {
             <SidebarMenuButton
               asChild
               className={`hover:bg-slate-700/50 rounded-none ${
-                isActive ? "bg-[#2a2d38] text-white font-semibold" : ""
+                isActive ? 'bg-[#2a2d38] text-white font-semibold' : ''
               }`}
             >
               <Link

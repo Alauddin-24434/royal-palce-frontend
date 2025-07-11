@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -36,14 +36,13 @@ export default function SignupPage() {
   const onSubmit = async (data: SignupFormData) => {
     try {
       const response = await signup(data).unwrap();
-         const { user, accessToken } = response.data;
-    
+      const { user, accessToken } = response.data;
 
       // === Save user and token to Redux store ===
       dispatch(setUser({ user, token: accessToken }));
 
       reset();
-      router.push("/")
+      router.push('/');
     } catch (err: any) {
       toast.error(err?.message || 'An unexpected error occurred');
     }

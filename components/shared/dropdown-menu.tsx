@@ -18,12 +18,11 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 import Link from 'next/link';
 
-
 export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
   // ===== Get user from Redux store =====
   const user = useSelector(selectCurrentUser);
 
-  const currentRole = user?.role
+  const currentRole = user?.role;
 
   // ===== Map user role to dashboard route =====
   const dashboardRoute = (() => {
@@ -44,7 +43,7 @@ export function DropdownMenuInNav({ onClick }: { onClick?: () => void }) {
     <DropdownMenu>
       {user && (
         <DropdownMenuTrigger asChild>
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div className="flex items-center gap-2 cursor-pointer border border-[#bf9310] rounded-full">
             <Avatar>
               <AvatarImage src={user?.image} alt="userImage" />
               <AvatarFallback>AV</AvatarFallback>

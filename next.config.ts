@@ -9,14 +9,14 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/api/:path*',
-  //       destination: `http://localhost:5000/api/:path*`,
-  //     },
-  //   ];
-  // },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `https://royal-place-backend-production.up.railway.app/api/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

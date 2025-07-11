@@ -1,12 +1,12 @@
 // features/auth/authSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../store';
 
 // User interface
 export interface User {
   _id: string;
   name: string;
-  phone:string;
+  phone: string;
   email: string;
   image?: string;
   role: string;
@@ -32,7 +32,7 @@ const initialState: AuthState = {
 
 // Slice
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     // When API call starts
@@ -71,6 +71,7 @@ export default authSlice.reducer;
 // Selectors
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const selectCurrentToken = (state: RootState) => state.auth.token;
-export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
+export const selectIsAuthenticated = (state: RootState) =>
+  state.auth.isAuthenticated;
 export const selectAuthLoading = (state: RootState) => state.auth.loading;
 export const selectAuthError = (state: RootState) => state.auth.error;

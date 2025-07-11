@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Star, ArrowRight } from 'lucide-react';
-
+import { Star, ArrowRight, Bed } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useFilterAllRoomsQuery } from '@/redux/features/room/room.api';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -90,6 +90,23 @@ export default function CheckRooms() {
 
   return (
     <div className="min-h-screen container mx-auto px-4 py-8 md:py-12">
+      {/* ===== Title Section with Animation ===== */}
+      <motion.div
+        className="flex items-center justify-center px-4 text-center flex-wrap mb-8"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
+        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
+        <div className="flex items-center justify-center">
+          <Bed className="w-5 h-5 sm:w-6 sm:h-6 title mr-2" />
+          <h2 className="title text-base sm:text-lg md:text-xl font-medium tracking-[0.2em] uppercase">
+            Check Rooms
+          </h2>
+          <Bed className="w-5 h-5 sm:w-6 sm:h-6 title ml-2" />
+        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 ml-4" />
+      </motion.div>
       {/* === Room Filter Controls === */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
         {/* Mobile Dropdown */}
@@ -123,64 +140,69 @@ export default function CheckRooms() {
             ))}
           </TabsList>
         </Tabs>
-
-        {/* Search bar (optional future feature) */}
-        {/* 
-        <Input
-          placeholder="Search rooms..."
-          value={searchTerm}
-          onChange={onSearchChange}
-          className="w-full md:w-80"
-        /> 
-        */}
       </div>
 
       {/* === Room Cards Grid === */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+        initial="hidden"
+        animate="show"
+      >
         {rooms.map((room: IRoom) => (
-          <Card
+          <motion.div
             key={room._id}
-            className="group relative p-0 bg-black rounded-none overflow-hidden hover:scale-105 transition-transform duration-500"
+            variants={{
+              hidden: { opacity: 0, y: 30, scale: 0.95 },
+              show: { opacity: 1, y: 0, scale: 1 },
+            }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <div className="relative h-80 sm:h-96 overflow-hidden">
-              <Image
-                src={room.images[0] || '/placeholder.svg'}
-                alt={room.title}
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-all duration-500" />
-              <div className="absolute top-4 right-4 bg-[#bf9310] text-white px-3 py-1 text-xs md:text-sm font-semibold">
-                ${room.price}/night
-              </div>
-
-              {/* Card Content */}
-              <div className="absolute bottom-6 left-6 text-white space-y-2 text-sm md:text-base">
-                <div className="font-light text-lg md:text-xl">
-                  {room.title}
+            <Card className="group relative p-0 bg-black rounded-none overflow-hidden hover:scale-105 transition-transform duration-500">
+              <div className="relative h-80 sm:h-96 overflow-hidden">
+                <Image
+                  src={room.images[0] || '/placeholder.svg'}
+                  alt={room.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-all duration-500" />
+                <div className="absolute top-4 right-4 bg-[#bf9310] text-white px-3 py-1 text-xs md:text-sm font-semibold">
+                  ${room.price}/night
                 </div>
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-[#bf9310] text-[#bf9310]"
-                    />
-                  ))}
+                <div className="absolute bottom-6 left-6 text-white space-y-2 text-sm md:text-base">
+                  <div className="font-light text-lg md:text-xl">
+                    {room.title}
+                  </div>
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-4 h-4 fill-[#bf9310] text-[#bf9310]"
+                      />
+                    ))}
+                  </div>
+                  <Link href={`/rooms/${room._id}`}>
+                    <Button
+                      variant="outline"
+                      className="mt-2 bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
+                    >
+                      VIEW DETAILS <ArrowRight className="w-4 h-4 inline" />
+                    </Button>
+                  </Link>
                 </div>
-
-                <Link href={`/rooms/${room._id}`}>
-                  <Button
-                    variant="outline"
-                    className="mt-2 bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none cursor-pointer"
-                  >
-                    VIEW DETAILS <ArrowRight className="w-4 h-4 inline ml-1" />
-                  </Button>
-                </Link>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* ===== Pagination controls ===== */}
       <Pagination

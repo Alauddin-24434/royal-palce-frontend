@@ -1,10 +1,9 @@
-// ====================================================
-// 🧾 TeamSection Component - Showcase key staff members with images, titles & badges
-// ====================================================
+'use client';
 
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Award, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 // ===== 👥 Team Member Data =====
 const teamMembers = [
@@ -42,11 +41,16 @@ const teamMembers = [
 
 export default function TeamSection() {
   return (
-    <section className="py-24 to-white">
+    <section className="py-24">
       <div className="container mx-auto px-4">
-        {/* ===== 🏷️ Section Header ===== */}
-        <div className="mb-20">
-          {/* Decorative Title Bar */}
+        {/* ===== Section Header with Motion ===== */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
           <div className="flex items-center justify-center mb-8">
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 mr-6"></div>
             <div className="flex items-center">
@@ -59,57 +63,57 @@ export default function TeamSection() {
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6"></div>
           </div>
 
-          {/* Main Heading */}
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
+          <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             Dedicated Professionals Behind
             <br />
             Our Royal Experience
           </h1>
-        </div>
+        </motion.div>
 
-        {/* ===== 🧑‍💼 Team Grid Cards ===== */}
+        {/* ===== Team Cards with Animation ===== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
-            <Card
+            <motion.div
               key={index}
-              className="group hover:shadow-2xl transition-all duration-500 border-0 bg-main hover:-translate-y-2 p-0 rounded-none"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              viewport={{ once: true }}
             >
-              <CardContent className="p-0">
-                {/* ==== 👤 Image & Badge ==== */}
-                <div className="relative overflow-hidden">
-                  {/* Team Member Image */}
-                  <div className="aspect-square relative">
-                    <Image
-                      src={member.image || '/placeholder.svg'}
-                      alt={member.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  {/* Floating Badge */}
-                  <div className="absolute top-4 right-4">
-                    <div className="flex items-center text-[#bf9310]">
-                      <Award className="h-6 w-6" />
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-main hover:-translate-y-2 p-0 rounded-none">
+                <CardContent className="p-0">
+                  {/* ==== Image & Badge ==== */}
+                  <div className="relative overflow-hidden">
+                    <div className="aspect-square relative">
+                      <Image
+                        src={member.image || '/placeholder.svg'}
+                        alt={member.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <div className="flex items-center text-[#bf9310]">
+                        <Award className="h-6 w-6" />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* ==== 📋 Name & Role ==== */}
-                <div className="p-6">
-                  <div className="mb-3">
-                    <h3 className="text-xl font-bold text-foreground mb-1">
-                      {member.name}
-                    </h3>
-                    <p className="title font-semibold text-sm uppercase tracking-wide">
-                      {member.role}
-                    </p>
+                  {/* ==== Name & Role ==== */}
+                  <div className="p-6">
+                    <div className="mb-3">
+                      <h3 className="text-xl font-bold text-foreground mb-1">
+                        {member.name}
+                      </h3>
+                      <p className="title font-semibold text-sm uppercase tracking-wide text-[#bf9310]">
+                        {member.role}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>

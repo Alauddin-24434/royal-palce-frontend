@@ -1,4 +1,3 @@
-
 import { DashboardHeader } from '@/components/dashboard/dashboardHeader';
 import { AppSidebar } from '@/components/dashboard/dashboardSidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -17,7 +16,6 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </SidebarProvider>
     </PrivateRoute>
-
   );
 };
 

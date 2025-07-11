@@ -73,8 +73,8 @@ const UserProfile = () => {
         body: editedUser,
       }).unwrap();
 
-      const { user } = result.data;
-      dispatch(setUser(user));
+      const { user, accessToken } = result.data;
+      dispatch(setUser({ user, token: accessToken }));
       setIsEditing(false);
     } catch (err) {
       console.error('Error updating user info:', err);
@@ -95,8 +95,8 @@ const UserProfile = () => {
         body: formData,
       }).unwrap();
 
-      const { user } = result.data;
-      dispatch(setUser(user));
+      const { user, accessToken } = result.data;
+      dispatch(setUser({ user, token: accessToken }));
       setProfileImage(null);
       setPreviewImage(null);
     } catch (err) {

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -24,7 +24,7 @@ export default function LoginPage() {
 
   const searchParams = useSearchParams();
 
-const redirectTo = searchParams.get('redirectTo') || '/';
+  const redirectTo = searchParams.get('redirectTo') || '/';
   const [login, { isLoading }] = useLoginUserMutation();
 
   const {
@@ -39,7 +39,6 @@ const redirectTo = searchParams.get('redirectTo') || '/';
     try {
       const response = await login(data).unwrap();
       const { user, accessToken } = response.data;
-    
 
       // === Save user and token to Redux store ===
       dispatch(setUser({ user, token: accessToken }));

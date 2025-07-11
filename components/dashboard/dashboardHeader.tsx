@@ -8,8 +8,10 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Bell, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { NotificationDropdown } from '../shared/NotificationDropdown';
-import { useNotificationStore } from '@/zustand/useNotificationStore';
+
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export function DashboardHeader() {
   // ========== 🌗 Theme Setup ========== //
@@ -20,7 +22,10 @@ export function DashboardHeader() {
 
   // ========== 🔔 Notification Setup ========== //
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const unreadCount = useSelector(
+    (state: RootState) => state.notification.unreadCount,
+  );
+
   const toggleNotification = () => {
     setIsNotificationOpen((prev) => !prev);
   };
@@ -63,7 +68,7 @@ export function DashboardHeader() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle Dark Mode"
-            className="p-2 rounded hover:title hover:text-foreground transition"
+            className="p-2 rounded hover:title hover:text-foreground transition cursor-pointer"
           >
             {theme === 'dark' ? (
               <Sun className="w-5 h-5" />

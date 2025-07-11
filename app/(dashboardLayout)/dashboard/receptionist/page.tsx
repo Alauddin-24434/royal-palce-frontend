@@ -12,7 +12,6 @@ import { Cell, Tooltip, Legend, BarChart, XAxis, YAxis, Bar } from 'recharts';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 import { IBooking } from '@/types/booking.interface';
 
-
 // ===== 🔹 Interface for Stat Card Data =====
 interface IStatCardData {
   title: string;

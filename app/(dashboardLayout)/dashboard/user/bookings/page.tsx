@@ -1,12 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -26,6 +21,15 @@ import { IBooking } from '@/types/booking.interface';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 
+const statusColorMap: Record<string, string> = {
+  success: 'bg-emerald-600',
+  pending: 'bg-yellow-600',
+  failed: 'bg-red-600',
+  cancel: 'bg-red-600',
+  booked: 'bg-green-600',
+  initialCancel: 'bg-orange-600',
+  // Add more if needed
+};
 export default function UserBookings() {
   const user = useSelector(selectCurrentUser);
   const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(
@@ -71,8 +75,19 @@ export default function UserBookings() {
             <Table>
               <TableHeader className="bg-[#2a2d38]">
                 <TableRow>
-                  {['Room Title', 'Room Count', 'Check-in', 'Check-out', 'Amount', 'Status', 'Action'].map((header) => (
-                    <TableHead key={header} className="text-white border border-slate-700">
+                  {[
+                    'Room Title',
+                    'Room Count',
+                    'Check-in',
+                    'Check-out',
+                    'Amount',
+                    'Status',
+                    'Action',
+                  ].map((header) => (
+                    <TableHead
+                      key={header}
+                      className="text-white border border-slate-700"
+                    >
                       {header}
                     </TableHead>
                   ))}
@@ -110,13 +125,17 @@ export default function UserBookings() {
 
                     <TableCell className="text-foreground border border-slate-700">
                       {booking.rooms[0]?.checkInDate
-                        ? new Date(booking.rooms[0].checkInDate).toLocaleDateString()
+                        ? new Date(
+                            booking.rooms[0].checkInDate,
+                          ).toLocaleDateString()
                         : '-'}
                     </TableCell>
 
                     <TableCell className="text-foreground border border-slate-700">
                       {booking.rooms[0]?.checkOutDate
-                        ? new Date(booking.rooms[0].checkOutDate).toLocaleDateString()
+                        ? new Date(
+                            booking.rooms[0].checkOutDate,
+                          ).toLocaleDateString()
                         : '-'}
                     </TableCell>
 
@@ -126,12 +145,9 @@ export default function UserBookings() {
 
                     <TableCell className="border border-slate-700">
                       <Badge
-                        className={`capitalize border-none text-white ${
-                          booking.bookingStatus === 'booked'
-                            ? 'bg-emerald-600'
-                            : booking.bookingStatus === 'pending'
-                            ? 'bg-yellow-600'
-                            : 'bg-red-600'
+                        className={`text-white capitalize ${
+                          statusColorMap[booking?.bookingStatus] ||
+                          'bg-gray-600'
                         }`}
                       >
                         {booking.bookingStatus}
@@ -142,9 +158,9 @@ export default function UserBookings() {
                       <Button
                         variant="outline"
                         onClick={() => cancelBookingHandeller(booking._id)}
-                        disabled={
-                          ['cancelled', 'pending', 'failed'].includes(booking.bookingStatus)
-                        }
+                        disabled={['cancelled', 'pending', 'failed'].includes(
+                          booking.bookingStatus,
+                        )}
                       >
                         Cancel
                       </Button>
