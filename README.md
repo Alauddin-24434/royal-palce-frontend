@@ -61,7 +61,7 @@ npm run dev
 
 ```bash
 NEXT_PUBLIC_API_BASE_URL=your backednd url add hare
-JWT_SECRET=your jwtsecrect add hare but must be same as backend and clint same sercet
+JWT_ACCESS_TOKEN_SECRET=your jwtsecrect add hare but must be same as backend and clint same sercet
 ```
 
 ### Production
