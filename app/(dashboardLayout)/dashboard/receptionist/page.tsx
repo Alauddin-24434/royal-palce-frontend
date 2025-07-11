@@ -12,6 +12,7 @@ import { Cell, Tooltip, Legend, BarChart, XAxis, YAxis, Bar } from 'recharts';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 import { IBooking } from '@/types/booking.interface';
 
+
 // ===== 🔹 Interface for Stat Card Data =====
 interface IStatCardData {
   title: string;
@@ -31,7 +32,7 @@ const iconMap = {
 // ===== 🔹 Colors for Bar Chart =====
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
-export default function ReceptionistDashboard() {
+function ReceptionistDashboard() {
   // ===== 🔹 Fetch dashboard data using RTK Query =====
   const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
     undefined,
@@ -164,3 +165,5 @@ export default function ReceptionistDashboard() {
     </div>
   );
 }
+
+export default ReceptionistDashboard;

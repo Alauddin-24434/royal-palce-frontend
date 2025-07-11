@@ -1,11 +1,12 @@
-// ====================================================
-// 🧾  User Bookings Page Component
-// ====================================================
-
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -26,29 +27,22 @@ import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 
 export default function UserBookings() {
-  // ===== 🔹 Redux state: Get current logged-in user info =====
   const user = useSelector(selectCurrentUser);
-
-  // ===== 🔹 RTK Query: Fetch bookings for current user =====
   const { data: bookingData, isLoading } = useGetBookingsByUserIdQuery(
     user?._id ?? '',
   );
-
-  // ===== 🔹 RTK Mutation: Cancel booking API call =====
   const [cancelBooking] = useCancelBookingMutation();
 
-  // ========== 🔁 Handler: Cancel booking by booking ID ========== //
   const cancelBookingHandeller = async (bookingId: string) => {
     try {
       await cancelBooking(bookingId);
-      toast.success('Booking cancelled successfully'); // ✅ Booking cancelled successfully
+      toast.success('Booking cancelled successfully');
     } catch (error) {
       console.error(error);
-      toast.error('Error cancelling booking'); // ❌ Error cancelling booking
+      toast.error('Error cancelling booking');
     }
   };
 
-  // ===== 🔹 Loading UI while fetching bookings =====
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -61,29 +55,27 @@ export default function UserBookings() {
   }
 
   return (
-    <>
+    <div className="space-y-6">
       {/* ===== 🔹 Page Header ===== */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold text-foreground">Booked Rooms</h1>
       </div>
 
       {/* ===== 🔹 Bookings Table ===== */}
-      <Card className="bg-main border border-slate-700 shadow-md">
+      <Card className="bg-main border border-slate-700 shadow-md rounded-xl">
         <CardHeader>
           <CardTitle className="text-foreground">Recent Bookings</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="bg-[#2a2d38] text-white">
+              <TableHeader className="bg-[#2a2d38]">
                 <TableRow>
-                  <TableHead>Room Title</TableHead>
-                  <TableHead>Room Count</TableHead>
-                  <TableHead>Check-in</TableHead>
-                  <TableHead>Check-out</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Action</TableHead>
+                  {['Room Title', 'Room Count', 'Check-in', 'Check-out', 'Amount', 'Status', 'Action'].map((header) => (
+                    <TableHead key={header} className="text-white border border-slate-700">
+                      {header}
+                    </TableHead>
+                  ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -91,7 +83,7 @@ export default function UserBookings() {
                   <TableRow>
                     <TableCell
                       colSpan={7}
-                      className="text-center p-4 text-foreground"
+                      className="text-center p-4 text-foreground border border-slate-700"
                     >
                       No bookings found.
                     </TableCell>
@@ -100,10 +92,9 @@ export default function UserBookings() {
                 {bookingData?.data.map((booking: IBooking) => (
                   <TableRow
                     key={booking._id}
-                    className="border hover:bg-slate-800/40 transition text-foreground"
+                    className="border border-slate-700 hover:bg-slate-800/50 transition duration-200"
                   >
-                    {/* ===== 🔹 Comma separated room titles ===== */}
-                    <TableCell>
+                    <TableCell className="text-foreground border border-slate-700">
                       {booking.rooms
                         ?.map((r) =>
                           r.roomId && 'title' in r.roomId
@@ -113,51 +104,46 @@ export default function UserBookings() {
                         .join(', ')}
                     </TableCell>
 
-                    {/* ===== 🔹 Number of rooms in booking ===== */}
-                    <TableCell>{booking.rooms.length}</TableCell>
+                    <TableCell className="text-foreground border border-slate-700">
+                      {booking.rooms.length}
+                    </TableCell>
 
-                    {/* ===== 🔹 Check-in date (first room) ===== */}
-                    <TableCell>{booking.rooms[0]?.checkInDate}</TableCell>
+                    <TableCell className="text-foreground border border-slate-700">
+                      {booking.rooms[0]?.checkInDate
+                        ? new Date(booking.rooms[0].checkInDate).toLocaleDateString()
+                        : '-'}
+                    </TableCell>
 
-                    {/* ===== 🔹 Check-out date (first room) ===== */}
-                    <TableCell>{booking.rooms[0]?.checkOutDate}</TableCell>
+                    <TableCell className="text-foreground border border-slate-700">
+                      {booking.rooms[0]?.checkOutDate
+                        ? new Date(booking.rooms[0].checkOutDate).toLocaleDateString()
+                        : '-'}
+                    </TableCell>
 
-                    {/* ===== 🔹 Total amount ===== */}
-                    <TableCell className="font-semibold">
+                    <TableCell className="text-green-400 font-semibold border border-slate-700">
                       ${booking.totalAmount}
                     </TableCell>
 
-                    {/* ===== 🔹 Booking status badge ===== */}
-                    <TableCell>
+                    <TableCell className="border border-slate-700">
                       <Badge
-                        variant={
+                        className={`capitalize border-none text-white ${
                           booking.bookingStatus === 'booked'
-                            ? 'default'
+                            ? 'bg-emerald-600'
                             : booking.bookingStatus === 'pending'
-                              ? 'secondary'
-                              : 'outline'
-                        }
-                        className={
-                          booking.bookingStatus === 'booked'
-                            ? 'bg-emerald-600 hover:bg-emerald-700'
-                            : booking.bookingStatus === 'pending'
-                              ? 'bg-amber-600 hover:bg-amber-700'
-                              : 'bg-blue-600 hover:bg-blue-700'
-                        }
+                            ? 'bg-yellow-600'
+                            : 'bg-red-600'
+                        }`}
                       >
                         {booking.bookingStatus}
                       </Badge>
                     </TableCell>
 
-                    {/* ===== 🔁 Cancel Booking Button ===== */}
-                    <TableCell>
+                    <TableCell className="border border-slate-700">
                       <Button
                         variant="outline"
                         onClick={() => cancelBookingHandeller(booking._id)}
                         disabled={
-                          booking.bookingStatus === 'cancelled' ||
-                          booking.bookingStatus === 'pending' ||
-                          booking.bookingStatus === 'failed'
+                          ['cancelled', 'pending', 'failed'].includes(booking.bookingStatus)
                         }
                       >
                         Cancel
@@ -170,6 +156,6 @@ export default function UserBookings() {
           </div>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }

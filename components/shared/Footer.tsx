@@ -29,7 +29,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <Crown className="h-8 w-8 text-[#bf9310]" />
-              <span className="text-2xl font-bold text-foreground">
+              <span className="text-2xl font-bold  text-[#bf9310]">
                 ROYAL PLACE
               </span>
             </div>

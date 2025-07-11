@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
+import PrivateRoute from '@/privateRoute/privateRoute';
 
 export default function RoyalCheckoutPage() {
   const user = useSelector(selectCurrentUser);
@@ -118,7 +119,8 @@ export default function RoyalCheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground py-10 px-4">
+   <PrivateRoute>
+     <div className="min-h-screen bg-background text-foreground py-10 px-4">
       {/* ===== Title Section ===== */}
       <div className="flex items-center justify-center pb-10 px-4 text-center flex-wrap">
         <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-20 sm:w-32 mr-4" />
@@ -287,6 +289,7 @@ export default function RoyalCheckoutPage() {
       )}
       <Toaster position="top-right" />
     </div>
+   </PrivateRoute>
   );
 }
 

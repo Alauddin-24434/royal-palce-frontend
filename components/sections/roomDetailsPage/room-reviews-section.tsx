@@ -89,7 +89,7 @@ const RoomReviewsSection = ({ roomId }: RoomReviewsSectionProps) => {
   // ========== 🔁 Delete Review Handler ========== //
   const handleDeleteReview = async (id: string) => {
     try {
-      await deleteTestimonial(id).unwrap();
+      await deleteTestimonial(id)
       toast.success('Review deleted successfully!');
       refetch(); // ✅ Refresh after deletion
     } catch (error) {

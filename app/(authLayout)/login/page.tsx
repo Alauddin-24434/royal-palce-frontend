@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams} from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -21,11 +21,10 @@ interface LoginFormData {
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const searchParams = useSearchParams();
 
-  // === Get redirect URL from query string or fallback to home ===
-  const redirect = searchParams.get('redirect') || '/';
-
+const redirectTo = searchParams.get('redirectTo') || '/';
   const [login, { isLoading }] = useLoginUserMutation();
 
   const {
@@ -39,14 +38,15 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await login(data).unwrap();
-      const { user } = response.data;
+      const { user, accessToken } = response.data;
+    
 
       // === Save user and token to Redux store ===
-      dispatch(setUser(user));
+      dispatch(setUser({ user, token: accessToken }));
 
       // === Reset form and navigate ===
       reset();
-      router.replace(redirect);
+      router.replace(redirectTo);
     } catch (err: any) {
       toast.error(err?.message || 'An unexpected error occurred');
     }

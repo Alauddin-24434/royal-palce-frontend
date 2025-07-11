@@ -17,6 +17,7 @@ import { ShoppingCart, Trash2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
+import PrivateRoute from '@/privateRoute/privateRoute';
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
@@ -50,7 +51,8 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-10 bg-background text-foreground">
+   <PrivateRoute>
+     <div className="min-h-screen px-4 py-10 bg-background text-foreground">
       <div className="max-w-5xl mx-auto">
         {/* ===== Title Section ===== */}
         <div className="flex items-center justify-center pb-10 px-4 text-center flex-wrap">
@@ -148,6 +150,7 @@ const CartPage = () => {
         )}
       </div>
     </div>
+   </PrivateRoute>
   );
 };
 

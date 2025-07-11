@@ -6,7 +6,7 @@ import { UserCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 
-export default function AdminDashboard() {
+function AdminDashboard() {
   const { data: dashboardData, isLoading } = useGetDashboardDataQuery(
     undefined,
     {
@@ -129,3 +129,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+export default AdminDashboard
