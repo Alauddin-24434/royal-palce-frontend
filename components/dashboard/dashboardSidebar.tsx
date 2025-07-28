@@ -47,7 +47,7 @@ const adminMenuItems = [
     url: '/dashboard/admin/bookings',
     icon: Calendar,
   },
-  { title: 'Users Management', url: '/dashboard/admin/users', icon: Users },
+
   {
     title: 'Service Management',
     url: '/dashboard/admin/services',

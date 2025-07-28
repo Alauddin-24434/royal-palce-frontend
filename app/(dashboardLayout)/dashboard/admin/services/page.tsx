@@ -17,6 +17,7 @@ import {
   Save,
   X,
   Upload,
+  Activity,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -477,35 +478,24 @@ export default function ServicesPage() {
                         {service.description || 'No description'}
                       </TableCell>
                       <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              className="h-8 w-8 p-0 text-foreground hover:text-foreground"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="bg-main ">
-                            <DropdownMenuItem
-                              onClick={() => openEditModal(service)}
-                              className="text-foreground hover:bg-main"
-                            >
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                service._id && handleDeleteService(service._id)
-                              }
-                              className="text-red-400 hover:bg-main"
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openEditModal(service)}
+                            className="text-blue-500 hover:text-blue-600 cursor-pointer transition-colors"
+                            title="Edit"
+                          >
+                            <Edit className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => service._id && handleDeleteService(service._id)}
+                            className="text-red-500 hover:text-red-600 cursor-pointer transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
                       </TableCell>
+
                     </TableRow>
                   ))}
                 </TableBody>
@@ -669,7 +659,7 @@ export default function ServicesPage() {
                 <Button
                   type="submit"
                   disabled={uploading}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+                  className="flex-1 bg-gradient-to-r cursor-pointer from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {uploading ? 'Uploading...' : 'Add Service'}

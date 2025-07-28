@@ -135,7 +135,7 @@ export default function AdminBookingsPage() {
                     <TableHead className="text-foreground">Rooms</TableHead>
                     <TableHead className="text-foreground">Amount</TableHead>
                     <TableHead className="text-foreground">Status</TableHead>
-                    <TableHead className="text-foreground">Actions</TableHead>
+                    {/* <TableHead className="text-foreground">Actions</TableHead> */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -205,7 +205,7 @@ export default function AdminBookingsPage() {
                       </TableCell>
 
                       {/* Action buttons (View, Edit, Delete) */}
-                      <TableCell>
+                      {/* <TableCell>
                         <div className="flex items-center gap-2">
                           <Button
                             variant="ghost"
@@ -232,7 +232,7 @@ export default function AdminBookingsPage() {
                             <Trash2 className="h-5 w-5" />
                           </Button>
                         </div>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
