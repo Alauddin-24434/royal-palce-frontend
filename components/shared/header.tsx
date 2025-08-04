@@ -3,22 +3,21 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Crown, Sun, Moon, Bell } from 'lucide-react';
+import { Crown, Sun, Moon, } from 'lucide-react';
 import { DropdownMenuInNav } from './dropdown-menu';
 import { useTheme } from 'next-themes';
-import { NotificationDropdown } from './NotificationDropdown';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLogout } from '@/hooks/useLogout';
+import { Button } from '../ui/button';
+import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 
 export function Header() {
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const unreadCount = useSelector(
-    (state: RootState) => state.notification.unreadCount,
-  );
+  const user = useSelector(selectCurrentUser);
 
   const logout = useLogout();
   const pathname = usePathname();
@@ -27,6 +26,7 @@ export function Header() {
     { name: 'Home', href: '/' },
     { name: 'Rooms', href: '/rooms' },
     { name: 'Amenities', href: '/amenities' },
+    { name: 'Faq', href: '/faq' },
     { name: 'Checkout', href: '/checkout' },
     { name: 'Cart', href: '/cart' },
   ];
@@ -37,9 +37,7 @@ export function Header() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  const toggleNotification = () => {
-    setIsNotificationOpen((prev) => !prev);
-  };
+
 
   return (
     <header className="bg-main sticky top-0 z-50 shadow-lg border-b">
@@ -54,16 +52,15 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex space-x-10">
+          <nav className="hidden md:hidden lg:flex space-x-10">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`font-medium transition-colors duration-200 ${
-                  pathname === item.href
-                    ? 'title'
-                    : 'text-foreground hover:title'
-                }`}
+                className={`font-medium transition-colors duration-200 ${pathname === item.href
+                  ? 'title'
+                  : 'text-foreground hover:title'
+                  }`}
               >
                 {item.name}
               </Link>
@@ -72,45 +69,48 @@ export function Header() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
-            {/* Notifications */}
-            <button
-              onClick={toggleNotification}
-              aria-label="Toggle Notifications"
-              className="relative p-2 rounded hover:title hover:text-foreground transition cursor-pointer"
-            >
-              <Bell className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-                  {unreadCount}
-                </span>
-              )}
-            </button>
 
-            {isNotificationOpen && (
-              <NotificationDropdown
-                onClose={() => setIsNotificationOpen(false)}
-              />
-            )}
+            {/* signup and login button */}
+
+            {
+              user ? <Button className=" bg-[#bf9310] hover:bg-yellow-600 text-black">
+                Logout
+              </Button> : <>
+
+                <Button className=" bg-[#bf9310] hover:bg-yellow-600 text-black hidden md:block">
+                  <Link href="/signup" className="text-sm font-medium">
+                    Sign Up
+                  </Link>
+                </Button>
+                <Button className=" bg-[#bf9310] cursor-pointer hover:bg-yellow-600 hidden md:block text-black">
+                  <Link href="/login" className="text-sm font-medium">
+                    Login
+                  </Link>
+                </Button>
+              </>
+            }
+
 
             {/* Theme toggle */}
-            <button
+            <Button
               onClick={toggleTheme}
-              aria-label="Toggle Dark Mode"
-              className="p-2 rounded hover:title hover:text-foreground transition cursor-pointer hidden md:block"
+              variant={theme === 'dark' ? 'outline' : 'ghost'}
+
+              className="p-2 rounded border hover:title hover:text-foreground transition cursor-pointer hidden md:block"
             >
               {theme === 'dark' ? (
                 <Sun className="w-5 h-5" />
               ) : (
                 <Moon className="w-5 h-5" />
               )}
-            </button>
+            </Button>
 
             {/* User dropdown */}
             <DropdownMenuInNav onClick={logout} />
 
             {/* Mobile menu toggle */}
             <button
-              className="md:hidden p-2 rounded cursor-pointer
+              className="lg:hidden p-2 rounded cursor-pointer
     focus:outline-none focus:ring-0
     border-0"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -166,11 +166,10 @@ export function Header() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block  font-medium transition-all duration-200 py-2 px-3  border ${
-                  pathname === item.href
-                    ? 'bg-[#bf9310] text-foreground'
-                    : 'text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-l-4 hover:border-title'
-                }`}
+                className={`block  font-medium transition-all duration-200 py-2 px-3  border ${pathname === item.href
+                  ? 'bg-[#bf9310] text-foreground'
+                  : 'text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-l-4 hover:border-title'
+                  }`}
               >
                 {item.name}
               </Link>

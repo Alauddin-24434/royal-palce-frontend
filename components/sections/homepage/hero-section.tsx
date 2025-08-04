@@ -43,28 +43,25 @@ const HeroSection = () => {
 
       {/* 📦 Content Center */}
       <div className="relative z-20 flex flex-col justify-center items-center h-full px-4 text-center">
-        {/* 🧾 Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: -40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-white font-serif font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6"
-        >
-          Discover The Perfect
-          <br />
-          <span className="text-[#bf9310]">Blend of Luxury Resort</span>
-        </motion.h1>
+    <motion.h1
+  initial={{ opacity: 0, y: -40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  className="text-white font-serif font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6"
+>
+  Discover the Perfect Room
+  <br />
+  <span className="text-[#bf9310]">for Your Luxury Escape</span>
+</motion.h1>
 
-        {/* 🗒️ Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-white text-base sm:text-lg md:text-xl max-w-2xl mb-10"
-        >
-          Experience unparalleled luxury and comfort in our world-class resort
-          where every moment becomes a cherished memory.
-        </motion.p>
+<motion.p
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.3 }}
+  className="text-white text-base sm:text-lg md:text-xl max-w-2xl mb-10"
+>
+  From romantic getaways to family retreats — experience the comfort, elegance, and hospitality of our premium resort rooms.
+</motion.p>
 
         {/* 📅 Booking Form */}
         <motion.form
@@ -148,7 +145,7 @@ const HeroSection = () => {
           {/* Button */}
           <button
             type="submit"
-            className="sm:col-span-2 md:col-span-4 bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition flex justify-center items-center"
+            className="sm:col-span-2 md:col-span-4 bg-[#bf9310] cursor-pointer hover:bg-yellow-600 text-black font-semibold py-3 rounded-md transition flex justify-center items-center"
           >
             <CalendarDays className="w-5 h-5 mr-2" />
             Available Rooms

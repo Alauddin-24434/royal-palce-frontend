@@ -28,8 +28,8 @@ const Amenities = () => {
 
   // === ==== Main Section ==== ===
   return (
-    <section className="relative py-24 bg-main overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="min-h-screen container mx-auto px-4 py-8 md:py-12">
+      
         {/* ===== Section Header with Animation ===== */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -118,7 +118,7 @@ const Amenities = () => {
             </motion.div>
           ))}
         </div>
-      </div>
+  
     </section>
   );
 };

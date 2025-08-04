@@ -6,6 +6,9 @@ import TestimonialsSection from '@/components/sections/homepage/testimonials-sec
 
 import TeamSection from '@/components/sections/homepage/team-section';
 import AmenitiesSection from '@/components/sections/homepage/amineties-section';
+import { Contact } from 'lucide-react';
+import { ContactUs } from '@/components/sections/homepage/contact-us-section';
+import { FAQSection } from '@/components/sections/homepage/faq-section';
 
 export default function Home() {
   return (
@@ -33,6 +36,9 @@ export default function Home() {
 
       {/* ===== Blogs Section (commented out) ===== */}
       {/* <BlogsSection /> */}
+      <FAQSection />
+      <ContactUs />
+      
     </div>
   );
 }
