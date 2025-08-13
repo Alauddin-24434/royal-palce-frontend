@@ -18,14 +18,14 @@ import storage from 'redux-persist/lib/storage'; // localStorage for web
 // ===== Feature Reducers =====
 import authReducer from '@/redux/features/auth/authSlice';
 import cartReducer from '@/redux/features/cart/cartSlice';
-import notificationsReducer from '@/redux/features/notifications/notificationsSlice';
+
 import baseApi from './api/baseApi'; // RTK Query base API slice
 
 // ===== Combine Reducers =====
 const rootReducer = combineReducers({
   auth: authReducer,
   cart: cartReducer,
-  notification: notificationsReducer,
+
   [baseApi.reducerPath]: baseApi.reducer, // RTK Query API reducer
 });
 
@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'cart', 'notification'], // persist only these slices
+  whitelist: ['auth', 'cart', ], // persist only these slices
 };
 
 // ===== Persisted Reducer =====

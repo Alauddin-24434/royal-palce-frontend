@@ -3,7 +3,6 @@ import { Noto_Serif } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import ReduxProvider from './reduxProvider';
-import SocketNotificationListener from '@/components/shared/SocketNotificationListener';
 
 const notoSerif = Noto_Serif({
   variable: '--font-noto-serif',
@@ -29,7 +28,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReduxProvider>
-            <SocketNotificationListener />
+       
             {children}
           </ReduxProvider>
         </ThemeProvider>

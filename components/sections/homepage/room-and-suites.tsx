@@ -123,7 +123,7 @@ const RoomAndSuites = () => {
                     <Link href={`/rooms/${room._id}`}>
                       <Button
                         variant="outline"
-                        className="mt-2 w-fit bg-transparent text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
+                        className="mt-2 w-fit bg-transparent cursor-pointer text-white border-white hover:bg-[#bf9310] hover:border-[#bf9310] rounded-none transition-all duration-300 overflow-hidden relative"
                       >
                         <span className="flex items-center gap-2">
                           VIEW DETAILS

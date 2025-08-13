@@ -136,7 +136,7 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50"
             >
-             {isLoading ? "Loading..." : "Sign In"}  {isLoading ? 'Loading' : 'Create Account'}
+             {isLoading ? "Loading..." : "Sign In"} 
             </Button>
           
             
@@ -147,7 +147,7 @@ export default function LoginPage() {
             <Button
               onClick={() => handleRoleLogin("guest")}
               disabled={isLoading}
-              className="w-full bg-transparent hover:bg-transparent cursor-pointer  border  text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg "
+              className="w-full bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-foreground   border  font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg "
             >
             Login as Guest
             </Button>
@@ -161,7 +161,7 @@ export default function LoginPage() {
             <Button
               onClick={() => handleRoleLogin("admin")}
               disabled={isLoading}
-               className="w-full bg-transparent hover:bg-transparent cursor-pointer  border  text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg "
+               className="w-full bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-foreground   border font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg "
             >
               Login as Admin
             </Button>

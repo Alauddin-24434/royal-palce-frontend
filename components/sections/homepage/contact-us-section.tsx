@@ -1,37 +1,62 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useForm } from "react-hook-form"
 import emailjs from "@emailjs/browser"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { MailCheck, MapPin, Phone, MessageSquare } from "lucide-react"
-import { motion } from 'framer-motion'
-import { toast } from "react-hot-toast"
+import { MessageSquare } from "lucide-react"
+import { motion } from "framer-motion"
+import { toast, Toaster } from "react-hot-toast"
+import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
+
+type FormValues = {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
 
 export function ContactUs() {
-  const form = useRef<HTMLFormElement>(null)
-  const [loading, setLoading] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>()
 
-  const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+
+  const onSubmit = async (data: FormValues) => {
+    if (!serviceId || !templateId || !publicKey) {
+      toast.error("Email service configuration is missing.")
+      return
+    }
+
+    const templateParams = {
+      from_name: data.name,
+      reply_to: data.email,
+      subject: data.subject,
+      message: data.message,
+    }
 
     try {
-      await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        form.current!,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      const result = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
       )
-      toast.success("Message sent successfully!")
-      form.current?.reset()
+     
+        toast.success("Message sent successfully!")
+        reset()
+      
     } catch (error) {
-      console.error(error)
-      toast.error("Failed to send message. Please try again.")
-    } finally {
-      setLoading(false)
+      console.error("EmailJS Error:", error)
+      toast.error("An error occurred while sending the message.")
     }
   }
 
@@ -57,75 +82,131 @@ export function ContactUs() {
             <div className="h-px bg-gradient-to-r from-transparent via-[#bf9310] to-transparent w-32 ml-6"></div>
           </div>
 
-          <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-4xl mx-auto text-foreground">
+          <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl font-medium leading-snug text-center max-w-6xl mx-auto text-foreground">
             We'd love to hear from you!
             <br />
-            <span className="block text-muted-foreground text-xl lg:text-2xl mt-4">Reach out with any questions or requests</span>
+            <span className="block">
+              Reach out with any questions or requests
+            </span>
           </h1>
         </motion.div>
 
-        <div className="mx-auto grid max-w-6xl items-start gap-8 py-12 lg:grid-cols-2 lg:gap-16">
-          {/* Contact Info */}
-          <div className="flex flex-col justify-center space-y-6">
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">Contact Information</h3>
-              <p className="text-muted-foreground">Our team is here to help you 24/7. Feel free to reach out!</p>
-            </div>
-            <div className="space-y-3 text-foreground">
-              <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-[#bf9310]" />
-                <span>123 Luxury Lane, Paradise City, Maldives</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-[#bf9310]" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <MailCheck className="h-5 w-5 text-[#bf9310]" />
-                <span>info@royalpalace.com</span>
-              </div>
-            </div>
-            <div className="w-full h-[280px] rounded-xl overflow-hidden border border-slate-700 shadow">
-              <img
-                src="/placeholder.svg?height=300&width=500"
-                alt="Map location"
-                className="w-full h-full object-cover"
-              />
-            </div>
+        <div className="flex flex-col lg:flex-row">
+          {/* Left - Image */}
+          <div className="relative flex-1 min-h-[400px] lg:min-h-[600px] bg-gray-200">
+            <Image
+              src="/images/contact.jpg"
+              alt="Contact"
+              unoptimized
+              fill
+              className="absolute inset-0 object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/40 z-10" />
+            <Card className="absolute bottom-8 left-8 right-8 lg:bottom-16 lg:left-16 lg:right-auto lg:w-[400px] bg-main/70 backdrop-blur-sm border rounded-none p-0 hidden lg:block z-20">
+              <CardContent className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-white">
+                <div>
+                  <h3 className="font-semibold">Email</h3>
+                  <p>info@example.com</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Phone</h3>
+                  <p>+99 021 324 258</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Address</h3>
+                  <p>340 Main St, USA</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Contact Form */}
-          <div className="w-full max-w-md border p-8 mx-auto space-y-5">
-            <form className="space-y-5" ref={form} onSubmit={sendEmail}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-foreground">Name</Label>
-                  <Input name="name" placeholder="Your name" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-foreground">Email</Label>
-                  <Input type="email" name="email" placeholder="you@example.com" required />
-                </div>
-              </div>
+          {/* Right - Form */}
+          <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-main">
+            <div className="w-full max-w-md space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="subject" className="text-foreground">Subject</Label>
-                <Input name="subject" placeholder="Message subject" required />
+                <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                  Let's talk about your problem.
+                </h2>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-foreground">Message</Label>
-                <Textarea name="message" placeholder="Write your message..." required />
-              </div>
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#bf9310] hover:bg-[#a87e0d] text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg"
-              >
-                {loading ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
+              <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground">
+                    Your Name
+                  </label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    {...register("name", { required: "Name is required" })}
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-foreground">
+                    Your Email
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-foreground">
+                    Subject
+                  </label>
+                  <Input
+                    id="subject"
+                    type="text"
+                    placeholder="Enter subject"
+                    {...register("subject", { required: "Subject is required" })}
+                  />
+                  {errors.subject && (
+                    <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-foreground">
+                    Your Message
+                  </label>
+                  <Textarea
+                    id="message"
+                    rows={5}
+                    placeholder="Enter your message"
+                    className="resize-none"
+                    {...register("message", { required: "Message is required" })}
+                  />
+                  {errors.message && (
+                    <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
+                  )}
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#bf9310] hover:bg-yellow-600 text-black font-semibold py-3 rounded-md transition"
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
+        <Toaster position="top-center" />
     </section>
   )
 }

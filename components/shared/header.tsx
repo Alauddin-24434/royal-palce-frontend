@@ -41,7 +41,7 @@ export function Header() {
 
   return (
     <header className="bg-main sticky top-0 z-50 shadow-lg border-b">
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 lg:px-0">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -73,7 +73,7 @@ export function Header() {
             {/* signup and login button */}
 
             {
-              user ? <Button className=" bg-[#bf9310] hover:bg-yellow-600 text-black">
+              user ? <Button onClick={logout} className=" bg-[#bf9310] hover:bg-yellow-600 text-black">
                 Logout
               </Button> : <>
 

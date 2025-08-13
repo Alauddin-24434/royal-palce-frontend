@@ -7,11 +7,6 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Bell, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { NotificationDropdown } from '../shared/NotificationDropdown';
-
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 export function DashboardHeader() {
   // ========== 🌗 Theme Setup ========== //
@@ -20,15 +15,9 @@ export function DashboardHeader() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  // ========== 🔔 Notification Setup ========== //
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const unreadCount = useSelector(
-    (state: RootState) => state.notification.unreadCount,
-  );
 
-  const toggleNotification = () => {
-    setIsNotificationOpen((prev) => !prev);
-  };
+
+
 
   // ========== 🧩 Render Header ========== //
   return (
@@ -39,31 +28,9 @@ export function DashboardHeader() {
 
         {/* ===== 🔹 Right Controls ===== */}
         <div className="flex items-center space-x-4 relative">
-          {/* ===== 🔔 Notification Bell ===== */}
-          <button
-            onClick={(e) => {
-              e.preventDefault(); // Prevent reload
-              toggleNotification();
-            }}
-            aria-label="Toggle Notifications"
-            className="relative p-2 rounded hover:title hover:text-foreground transition"
-          >
-            <Bell className="w-6 h-6" />
+        
 
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </button>
-
-          {/* ===== 📩 Notification Dropdown ===== */}
-          {isNotificationOpen && (
-            <NotificationDropdown
-              onClose={() => setIsNotificationOpen(false)}
-            />
-          )}
-
+       
           {/* ===== 🌙 Theme Toggle Button ===== */}
           <button
             onClick={toggleTheme}
