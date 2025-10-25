@@ -151,20 +151,20 @@ export default function LoginPage() {
             >
             Login as Guest
             </Button>
-            <Button
+            {/* <Button
               onClick={() => handleRoleLogin("receptionist")}
               disabled={isLoading}
               className="w-full bg-transparent hover:bg-transparent cursor-pointer  border  text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg "
             >
             Login as Receptionist
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               onClick={() => handleRoleLogin("admin")}
               disabled={isLoading}
                className="w-full bg-[#bf9310] cursor-pointer hover:bg-yellow-500 text-foreground   border font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg "
             >
               Login as Admin
-            </Button>
+            </Button> */}
           </div>
 
           {/* === Signup Redirect Link === */}

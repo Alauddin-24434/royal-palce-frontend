@@ -46,7 +46,7 @@ const RoomAndSuites = () => {
 
         {/* ===== Rooms Grid ===== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {roomsData?.data?.map((room: IRoom, index: number) => (
+          {roomsData?.data?.data?.map((room: IRoom, index: number) => (
             <motion.div
               key={room._id}
               initial={{ opacity: 0, y: 50 }}
