@@ -47,7 +47,7 @@ const roomApi = baseApi.injectEndpoints({
         if (params?.page) queryParams.append('page', String(params.page));
 
         return {
-          url: `/rooms/filter?${queryParams.toString()}`,
+          url: `/rooms?${queryParams.toString()}`,
           method: 'GET',
         };
       },

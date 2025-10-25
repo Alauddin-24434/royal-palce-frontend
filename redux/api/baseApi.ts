@@ -15,7 +15,7 @@ interface IRefreshResponse {
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/api',
+  baseUrl: '/api/v1',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).auth.token;
