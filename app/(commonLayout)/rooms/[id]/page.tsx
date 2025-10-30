@@ -5,10 +5,7 @@ import RoomReviewsSection from '@/components/sections/roomDetailsPage/room-revie
 import PrivateRoute from '@/privateRoute/privateRoute';
 
 // Server-side component
-export default async function RoomDetailsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
+export default async function RoomDetailsPage({params}: {params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
 
